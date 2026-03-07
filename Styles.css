@@ -105,3 +105,196 @@ header {
     height: 540px;
     border-radius: 5px 5px 0 0;
 }
+
+.header-USA {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--wolf-usa-accent);
+    background-color: var(--wolf-usa-primary);
+}
+
+.header-USA-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.header-USA-content-buttons {
+    display: flex;
+    gap: 1rem;
+}
+
+.header-USA-content-buttons button {
+    background-color: var(--wolf-dark);
+    color: var(--wolf-white);
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.header-USA-content-buttons button:hover {
+    background-color: var(--wolf-white);
+    color: var(--wolf-usa-primary);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+}
+
+.Bienvenida-USA {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding: 4rem;
+}
+
+.img-principal {
+    width: 975px;
+    height: 650px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--wolf-usa-accent);
+}
+
+.Text-Bienvenida {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-cars {
+    display: flex;
+    gap: 2rem;
+    padding: 4rem;
+    background-color: var(--wolf-white);
+    border-radius: 10px;
+}
+
+.container-cars-filters {
+    display: flex;
+    gap: 1rem;
+}
+
+.container-cars-filters button {
+    background-color: var(--wolf-dark);
+    color: var(--wolf-white);
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container-cars-filters button:hover {
+    background-color: var(--wolf-usa-primary);
+    color: var(--wolf-white);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+}
+
+.container-cars-filters-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 2vh;
+}
+
+.container-cars-filters-buttons a {
+    color: var(--wolf-dark);
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.container-cars-filters-buttons a:hover {
+    color: var(--wolf-usa-primary);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+}
+
+.div-container-cars {
+    color: var(--wolf-black)
+}
+
+.Divisor {
+    width: 3px;
+    height: 500px;
+    background: linear-gradient(to bottom, transparent, var(--wolf-usa-primary), transparent);
+}
+
+.Title-Container-Car {
+    color: var(--wolf-usa-primary);
+}
+
+@keyframes fadeInSlide {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-USA {
+    animation: fadeInSlide 1.5s ease-out forwards;
+}
+
+@keyframes slideFromRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.fade-EURO {
+    animation: slideFromRight 1.5s ease-out forwards;
+}
+
+@keyframes slideFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-JDM {
+    animation: slideFromBottom 1.5s ease-out forwards;
+}
+
+.History-Car-USA {
+    background-color: var(--wolf-usa-primary);
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px var(--wolf-white);
+    padding: 2vh;
+}
+
+.Div-History-Text {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    color: var(--wolf-black);
+}
+
+.Text-History {
+    font-size: larger;
+}
+
+.Divisor-Large {
+    width: 500px;
+    height: 3px;
+    background: linear-gradient(to bottom, transparent, var(--wolf-white), transparent);
+}
