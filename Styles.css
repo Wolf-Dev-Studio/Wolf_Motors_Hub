@@ -1,14 +1,13 @@
 :root {
     /* WOLF CORE */
-    --wolf-black: #0a0a0a;
-    --wolf-dark: #1a1a1a;
-    --wolf-gray: #4a4a4a;
-    --wolf-white: #ffffff;
+    --wolf-black: #292823;
+    --wolf-gray: #D7D7D7;
 
     /* AMERICANOS */
-    --wolf-usa-primary: #FF6200;
-    --wolf-usa-secondary: #FFFFFF;
-    --wolf-usa-accent: #FFD700;
+    --wolf-usa-primary: #FC5C02;
+    --wolf-usa-secondary: #E2CEAE;
+    --wolf-usa-tertiary: #7C6B51;
+    --wolf-usa-quaternary: #312B1E;
 
     /* JAPONESES */
     --wolf-jdm-primary: #ff0000;
@@ -23,7 +22,6 @@
 
 body {
     background-color: var(--wolf-black);
-    color: var(--wolf-white);
 }
 
 header {
@@ -43,19 +41,18 @@ header {
 
 .Title {
     font-weight: bold;
-    color: var(--wolf-white);
-    text-shadow: 0 0 10px var(--wolf-green);
+    color: var(--wolf-gray);
 }
 
 .Subtitle {
     font-size: 1.2rem;
-    color: var(--wolf-white);
+    color: var(--wolf-gray);
     text-align: center;
 }
 
 .Subtitle2 {
     font-size: 1.2rem;
-    color: var(--wolf-white);
+    color: var(--wolf-gray);
 }
 
 .container-cards {
@@ -66,7 +63,6 @@ header {
 
 .card {
     background-color: var(--wolf-gray);
-    color: var(--wolf-white);
     border: none;
     padding: 0.5rem;
     border-radius: 5px;
@@ -75,7 +71,7 @@ header {
 
 .usa:hover {
     background-image: linear-gradient(90deg, #B22234, #FFFFFF, #0a3f90);
-    color: var(--wolf-black);
+    color: var(--wolf-usa-quaternary);
     transition: color 0.7s ease;
     transition: background-image 1s ease;
     transition: transform 1s ease;
@@ -84,7 +80,7 @@ header {
 
 .jdm:hover {
     background-image: linear-gradient(90deg, #FFFFFF, #B0313F, #FFFFFF);
-    color: var(--wolf-black);
+    color: var(--wolf-usa-quaternary);
     transition: color 0.7s ease;
     transition: background-image 1s ease;
     transition: transform 1s ease;
@@ -93,7 +89,7 @@ header {
 
 .eu:hover {
     background-image: linear-gradient(90deg, #003399, #FFCC00, #003399);
-    color: var(--wolf-black);
+    color: var(--wolf-usa-quaternary);
     transition: color 0.7s ease;
     transition: background-image 1s ease;
     transition: transform 1s ease;
@@ -115,6 +111,11 @@ header {
     background-color: var(--wolf-usa-primary);
 }
 
+.Title-Header-USA {
+    color: var(--wolf-usa-quaternary);
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
 .header-USA-content {
     display: flex;
     flex-direction: column;
@@ -129,8 +130,8 @@ header {
 }
 
 .header-USA-content-buttons button {
-    background-color: var(--wolf-dark);
-    color: var(--wolf-white);
+    background-color: var(--wolf-usa-quaternary);
+    color: var(--wolf-usa-secondary);
     border: none;
     padding: 0.5rem;
     border-radius: 5px;
@@ -138,8 +139,8 @@ header {
 }
 
 .header-USA-content-buttons button:hover {
-    background-color: var(--wolf-white);
-    color: var(--wolf-usa-primary);
+    background-color: var(--wolf-usa-secondary);
+    color: var(--wolf-usa-quaternary);
     transition: color 0.7s ease;
     transition: background-color 0.7s ease;
 }
@@ -167,7 +168,7 @@ header {
     display: flex;
     gap: 2rem;
     padding: 4rem;
-    background-color: var(--wolf-white);
+    background-color: var(--wolf-usa-secondary);
     border-radius: 10px;
     margin-top: 5vh;
 }
@@ -178,8 +179,8 @@ header {
 }
 
 .container-cars-filters button {
-    background-color: var(--wolf-dark);
-    color: var(--wolf-white);
+    background-color: var(--wolf-usa-quaternary);
+    color: var(--wolf-usa-secondary);
     border: none;
     padding: 0.5rem;
     border-radius: 5px;
@@ -188,7 +189,7 @@ header {
 
 .container-cars-filters button:hover {
     background-color: var(--wolf-usa-primary);
-    color: var(--wolf-white);
+    color: var(--wolf-usa-secondary);
     transition: color 0.7s ease;
     transition: background-color 0.7s ease;
 }
@@ -201,7 +202,7 @@ header {
 }
 
 .container-cars-filters-buttons a {
-    color: var(--wolf-dark);
+    color: var(--wolf-usa-quaternary);
     border: none;
     padding: 0.5rem;
     border-radius: 5px;
@@ -215,7 +216,7 @@ header {
 }
 
 .div-container-cars {
-    color: var(--wolf-black)
+    color: var(--wolf-usa-quaternary)
 }
 
 .Divisor {
@@ -226,6 +227,64 @@ header {
 
 .Title-Container-Car {
     color: var(--wolf-usa-primary);
+}
+
+.Parraf-Container-Car {
+    color: var(--wolf-usa-secondary);
+}
+
+.container-cars-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    padding: 20px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--wolf-usa-primary) var(--wolf-gray);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 500px;
+}
+
+.card-aut {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.card-auto-premium {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card-auto-premium:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.img-card-auto {
+    width: 300px;
+    height: 180px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px var(--wolf-usa-accent);
+}
+
+.container-cars-cards::-webkit-scrollbar {
+    width: 8px;
+}
+
+.container-cars-cards::-webkit-scrollbar-track {
+    background: var(--wolf-gray);
+    border-radius: 50px;
+}
+
+.container-cars-cards::-webkit-scrollbar-thumb {
+    background: var(--wolf-usa-primary);
+    border-radius: 10px;
+}
+
+.info-car {
+    color: var(--wolf-usa-quaternary);
 }
 
 @keyframes fadeInSlide {
@@ -277,9 +336,9 @@ header {
 }
 
 .History-Car-USA {
-    background-color: var(--wolf-usa-primary);
+    background-color: var(--wolf-usa-secondary);
     border-radius: 10px;
-    box-shadow: 0px 0px 10px var(--wolf-white);
+    box-shadow: 0px 0px 10px var(--wolf-usa-primary);
     padding: 2vh;
 }
 
@@ -287,7 +346,7 @@ header {
     display: flex;
     align-items: center;
     flex-direction: column;
-    color: var(--wolf-black);
+    color: var(--wolf-usa-quaternary);
 }
 
 .Text-History {
@@ -298,7 +357,7 @@ header {
     width: 1500px;
     height: 5px;
     margin: auto;
-    background: linear-gradient(to bottom, transparent, var(--wolf-white), transparent);
+    background: linear-gradient(to bottom, transparent, var(--wolf-usa-primary), transparent);
 }
 
 .IMG-History {
@@ -311,7 +370,7 @@ header {
 .Div-History-IMG {
     display: flex;
     align-items: center;
-    color: var(--wolf-black);
+    color: var(--wolf-usa-quaternary);
     gap: 1vh;
 }
 
@@ -330,12 +389,12 @@ header {
 
 .Divisor-Footer {
     width: 3px;
-    height: 100px;
-    background: linear-gradient(to bottom, transparent, var(--wolf-usa-primary), transparent);
+    height: 150px;
+    background: linear-gradient(to bottom, transparent, var(--wolf-usa-secondary), transparent);
 }
 
 .text-Footer-Title {
-    color: var(--wolf-usa-primary);
+    color: var(--wolf-usa-quaternary);
     text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
@@ -352,4 +411,7 @@ header {
     align-items: center;
     justify-content: center;
     gap: 1vh;
+    background-color: var(--wolf-usa-primary);
+    margin-top: 2vh;
+    border-radius: 20px;
 }

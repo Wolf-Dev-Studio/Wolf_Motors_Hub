@@ -1,6 +1,70 @@
-import autos from "./Data.js";
+import MostrarAutos from "./Filters.js";
+import { autos } from "./Data.js";
 
-document.getElementById("usa").addEventListener('click', AbrirUSA);
+// 1. Función para crear las tarjetas
+export function PintarTarjetas(lista) {
+    const contenedor = document.getElementById("contenedor-cards-usa");
+
+    if (!contenedor) {
+        console.error("No encontré el contenedor 'contenedor-cards-usa'");
+        return;
+    }
+
+    contenedor.innerHTML = ""; // Limpiamos
+
+    lista.forEach(auto => {
+        contenedor.innerHTML += `
+            <div class="card-auto">
+                <img class="img-card-auto" src="${auto.img}" alt="${auto.modelo}">
+                <div class="info-car">
+                    <h3>${auto.marca} ${auto.modelo}</h3>
+                    <p class="precio">${auto.precio}</p>
+                </div>
+            </div>
+        `;
+    });
+}
+
+let filtrosActivos = {
+    brand: "*",
+    category: "*"
+};
+
+// Función para inicializar los eventos de los botones
+function SetupFiltros() {
+    // 1. Manejar botones de MARCA
+    const botonesMarca = document.querySelectorAll(".btn-filter-brand");
+    botonesMarca.forEach(boton => {
+        boton.addEventListener("click", (e) => {
+            filtrosActivos.brand = e.target.dataset.value; // Captura el valor del botón
+            ActualizarCatalogo();
+        });
+    });
+
+    // 2. Manejar botones de CATEGORÍA
+    const botonesCat = document.querySelectorAll(".btn-filter-category");
+    botonesCat.forEach(boton => {
+        boton.addEventListener("click", (e) => {
+            filtrosActivos.category = e.target.dataset.value;
+            ActualizarCatalogo();
+        });
+    });
+}
+
+// Función que une TODO
+function ActualizarCatalogo() {
+    // Usamos tu función de Filters.js
+    const resultados = MostrarAutos("americanos", filtrosActivos.brand, filtrosActivos.category);
+    // Usamos la función de dibujo (Render)
+    DibujarAutos(resultados, "contenedor-cards-usa");
+}
+
+const btnUSA = document.getElementById("usa");
+if (btnUSA) {
+    btnUSA.addEventListener('click', () => {
+        AbrirUSA();
+    });
+}
 
 function AbrirUSA() {
     const content = document.getElementById("Page-USA");
@@ -12,7 +76,7 @@ function AbrirUSA() {
     <div class="fade-USA">
     <section class="header-USA">
         <div class="header-USA-content">
-            <h2>Wolf Motors USA</h2>
+            <h1 class="Title-Header-USA"><em>Wolf Motors USA</em></h1>
             <div class="header-USA-content-buttons">
                 <button>Menu</button>
                 <button onclick="AbrirHome()">Home</button>
@@ -26,7 +90,7 @@ function AbrirUSA() {
         </div>
         <div class="Text-Bienvenida">
             <h2 class="Title-Container-Car">Wolf Motors USA</h2>
-            <p>No es solo metal desplazándose; es fuerza bruta domando el asfalto. 
+            <p class="Parraf-Container-Car">No es solo metal desplazándose; es fuerza bruta domando el asfalto. 
             Un V8 americano es el rugido de la libertad y el orgullo de un chasis que 
             no conoce la sutileza. Aquí no hay espacio para lo frágil: es potencia indomable, 
             torque puro y el carácter necesario para convertir el caos en velocidad absoluta.</p>
@@ -66,21 +130,21 @@ function AbrirUSA() {
             <h2 class="Title-Container-Car" >Nuestros Autos</h2>
             <p>Descubre nuestra colección de autos americanos</p>
             <div class="container-cars-filters">
-                <button>Todos</button>
-                <button>Dodge</button>
-                <button>Ford</button>
-                <button>Chevrolet</button>
+                <button class="btn-filter-brand" data-value="*">Todos</button>
+                <button class="btn-filter-brand" data-value="Dodge">Dodge</button>
+                <button class="btn-filter-brand" data-value="Ford">Ford</button>
+                <button class="btn-filter-brand" data-value="Chevrolet">Chevrolet</button>
             </div>
             <div class="container-cars-filters-buttons">
-                <a id="Sedan">Sedan</a>
-                <a id="Coupe">Coupe</a>
-                <a id="SUV">SUV</a>
-                <a id="Pickup">Pickup</a>
-                <a id="Muscle">Muscle</a>
+                <a class="btn-filter-category" data-value="Sedan">Sedan</a>
+                <a class="btn-filter-category" data-value="Coupe">Coupe</a>
+                <a class="btn-filter-category" data-value="SUV">SUV</a>
+                <a class="btn-filter-category" data-value="Pickup">Pickup</a>
+                <a class="btn-filter-category" data-value="Muscle">Muscle</a>
             </div>
         </div>
-        <div class="Divisor" ></div>
-        <div class="container-cars-cards">
+        <div class="Divisor"></div>
+        <div class="container-cars-cards" id="contenedor-cards-usa">
         </div>
     </section>       
     <section class="Footer-USA">
@@ -100,15 +164,9 @@ function AbrirUSA() {
     </section>
     </div>
     `;
+    console.log("Intentando pintar autos:", autos.americanos);
+    PintarTarjetas(autos.americanos);
 }
-
-function MostrarAutos(country, brand, category) {
-    console.log(autos[country]);
-    console.log(autos[country].filter(auto => brand === "*" ? autos[country] : auto.marca === brand));
-}
-category === "*" ? autos[country] : auto.categoria === category
-
-MostrarAutos("americanos", "*", "SUV");
 
 export default AbrirUSA;
 

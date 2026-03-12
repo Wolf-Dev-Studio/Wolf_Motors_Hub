@@ -54,4 +54,4 @@ const autos = {
 }
 
 
-export default autos;
+export { autos };
