@@ -222,6 +222,16 @@ function AbrirUSA() {
                 <img class="IMG-History" src="./Assent/US/Pony-Car.jpg" alt="Pony Car">
                 <p class="Text-History-3">1964 – La Era del Pony Car: El lanzamiento del Ford Mustang.</p>
             </div>
+            <div class="Divisor-Large Divisor-History">
+            </div>
+            <div class="Div-History-IMG">
+                <p class="Text-History-2">1966-1970 – La Guerra del Torque: Los años dorados. Aparecen leyendas como el Dodge Charger, el Chevelle SS y el Plymouth Hemi 'Cuda'. Es la época del "no hay sustituto para la cilindrada".</p>
+                <img class="IMG-History" src="./Assent/US/Dart-1970.jpg" alt="" >
+                <p class="Text-History-2">1987 – El Renacimiento: Tras una década difícil por la crisis del petróleo, el Buick GNX demuestra que el músculo americano está de vuelta, ahora con tecnología de turbocompresores.</p>
+                <img class="IMG-History" src="./Assent/US/Buik-GNX.webp" alt="" >
+                <p class="Text-History-2">2015-Presente – La Era del Hiper-Músculo: Con el Dodge Hellcat y el Shelby GT500, los americanos rompen la barrera de los 700 caballos de fuerza de fábrica, llevando el legado del V8 a niveles de superdeportivo.</p>
+                <img class="IMG-History" src="./Assent/US/Shelby-gt500.jpg" alt="" >
+            </div>
         </section>
 
         <section class="container-cars">
