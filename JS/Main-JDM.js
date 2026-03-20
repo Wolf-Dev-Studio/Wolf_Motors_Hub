@@ -1,8 +1,73 @@
+// =========================================================
+// 1. IMPORTACIONES Y ESTADO GLOBAL (CONFIGURACIÓN DE MOTOR)
+// =========================================================
 import MostrarAutos from "./Filters.js";
 import { autos } from "./Data.js";
 
-// 1. FUNCIÓN PARA PINTAR LAS TARJETAS 
-export function PintarTarjetasJDM(lista) { // <-- Le cambiamos el nombre para que no choque con USA
+// Estado de la vista actual (Filtros activos)
+let filtrosActivosJDM = { brand: "*", category: "*" };
+
+// =========================================================
+// 2. LÓGICA DE NEGOCIO (EL "CORE")
+// =========================================================
+function ActualizarCatalogoJDM() {
+    const resultados = MostrarAutos("japoneses", filtrosActivosJDM.brand, filtrosActivosJDM.category);
+    PintarTarjetasJDM(resultados);
+}
+
+// =========================================================
+// 3. INTERFAZ DE USUARIO (RENDERIZADO Y DOM)
+// =========================================================
+
+// Función principal para cargar la página JDM
+function AbrirJDM() {
+    const content = document.getElementById("Page-JDM");
+    const PageHome = document.getElementById("Page-Home");
+
+    if (PageHome) PageHome.style.display = "none";
+    if (content) content.style.display = "block";
+
+    // Inyección de la UI Premium exacta que diseñaste
+    content.innerHTML = `
+        <section class="Header-JDM" id="Header-JDM">
+            <div class="Container-Header-JDM">
+                <button class="Button-Nav1" id="btn-back-home-jdm">Home</button>
+                <button class="Button-Start-JDM" id="btn-start-jdm"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                    <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/></svg></button>
+                <button class="Button-Nav2" id="btn-login-jdm">Login<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                </svg></button>
+            </div>
+            <div class="Container-Text-JDM">
+                <h1><em>Welcome To JAPAN</em></h1>
+            </div>
+            <img class="IMG-Container-JDM" src="./Assent/JDM/Hub.jpg" alt="">
+        </section>
+        <section class="Main-JDM" id="Main-JDM">
+             <div class="Container-Nav-JDM">
+                <button class="Button-Nav1" id="btn-back-home-jdm">Home</button>
+                <button class="Button-Nav2" id="btn-login-jdm">Login<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
+                </svg></button>
+             </div>
+             <div class="Container-Main-JDM">
+                <div class="Container-Title-JDM">
+                    <h1><em>DE KATANAS A MOTORES</em></h1>
+                </div>
+                <div class="Container-Parrafo-JDM">
+                    <p>Japón no solo fabrica máquinas; forja leyendas. Lo que comenzó en talleres humildes tras la posguerra, se convirtió en una revolución de precisión y disciplina. Desde las rutas nocturnas de la Wangan hasta el dominio en los circuitos del mundo, la filosofía JDM es la búsqueda incansable de la perfección. Aquí, el coche no es un objeto, es una extensión del alma de quien lo conduce. Bienvenidos a la tierra donde la ingeniería se encuentra con el honor</p>
+                </div>
+             </div>
+        </section>
+    `;
+
+    // Inicialización de eventos y renderizado
+    SetupFiltrosJDM();
+    PintarTarjetasJDM(autos.japoneses);
+    SetupEventosLocalesJDM();
+    SearchButton()
+}
+
+// Función para pintar las tarjetas en el DOM
+export function PintarTarjetasJDM(lista) {
     const contenedor = document.getElementById("contenedor-cards-jdm");
 
     if (!contenedor) {
@@ -34,13 +99,13 @@ export function PintarTarjetasJDM(lista) { // <-- Le cambiamos el nombre para qu
     });
 }
 
-// 2. FUNCIÓN PARA EL MODAL 
-function abrirDetallesWolfJDM(coche) { // <-- Nombre único
+// Función para renderizar el Modal Completo
+function abrirDetallesWolfJDM(coche) {
     let modalContainer = document.getElementById('wolf-modal-container-jdm');
 
     if (!modalContainer) {
         modalContainer = document.createElement('div');
-        modalContainer.id = 'wolf-modal-container-jdm'; // <-- ID único
+        modalContainer.id = 'wolf-modal-container-jdm';
         document.body.appendChild(modalContainer);
     }
 
@@ -128,8 +193,9 @@ function abrirDetallesWolfJDM(coche) { // <-- Nombre único
     };
 }
 
-// 3. GESTIÓN DE FILTROS JDM
-let filtrosActivosJDM = { brand: "*", category: "*" };
+// =========================================================
+// 4. CONTROLADORES DE EVENTOS (LISTENERS)
+// =========================================================
 
 function SetupFiltrosJDM() {
     const botonesMarca = document.querySelectorAll("#Page-JDM .btn-filter-brand");
@@ -149,12 +215,15 @@ function SetupFiltrosJDM() {
     });
 }
 
-function ActualizarCatalogoJDM() {
-    const resultados = MostrarAutos("japoneses", filtrosActivosJDM.brand, filtrosActivosJDM.category);
-    PintarTarjetasJDM(resultados);
+function SetupEventosLocalesJDM() {
+    // Usamos querySelectorAll por si hay múltiples botones "Home" con el mismo ID en el HTML inyectado
+    const botonesBack = document.querySelectorAll("#btn-back-home-jdm");
+    botonesBack.forEach(btn => {
+        btn.addEventListener('click', () => window.location.reload());
+    });
 }
 
-// 4. LÓGICA DE NAVEGACIÓN
+// Disparador principal (Navegación Home -> JDM)
 const btnJDM = document.getElementById("jdm");
 if (btnJDM) {
     btnJDM.addEventListener('click', () => {
@@ -162,127 +231,34 @@ if (btnJDM) {
     });
 }
 
-function AbrirJDM() {
-    const content = document.getElementById("Page-JDM");
-    const PageHome = document.getElementById("Page-Home");
+function SearchButton() {
+    let btnStart = document.getElementById('btn-start-jdm');
 
-    if (PageHome) PageHome.style.display = "none";
-    if (content) content.style.display = "block";
+    if (!btnStart) {
+        btnStart = document.querySelector('.Button-Start-JDM');
+    }
 
-    content.innerHTML = `
-    <section class="Body-JDM">
-        <section class="header-JDM">
-            <div class="header-JDM-content">
-                <h1 class="Title-Header-JDM">Wolf Imports</h1>
-                <div class="header-JDM-content-buttons">
-                    <button id="btn-back-home-jdm">Home</button>
-                </div>
-            </div>
-        </section>
+    const heroSection = document.querySelector('.Header-JDM');
+    const historiaSection = document.querySelector('.Main-JDM');
 
-        <section class="Bienvenida-JDM">
-            <div class="IMG-Bienvenida">
-                <img class="img-principal" src="./Assent/JDM/JDM-Bienvenida.jpg" alt="Supra Home">
-            </div>
-            <div class="Text-Bienvenida">
-                <h2 class="Title-Container-Car-JDM">Wolf Motors JDM</h2>
-                <p class="Parraf-Container-Car-JDM">No es solo ingeniería; es la búsqueda obsesiva de la armonía perfecta entre hombre y máquina. 
-                Mientras otros gritan, nosotros silbamos con el turbo. En Wolf Motors JDM, no medimos la potencia solo en caballos de fuerza, 
-                sino en la capacidad de dominar cada curva con un equilibrio absoluto.</p>
-            </div>
-        </section>
+    if (btnStart && heroSection) {
+        console.log("✅ Sistema de transición Wolf detectado y listo.");
 
-        <section class="History-Car-JDM">
-            <div class="Div-History-Text-JDM">
-                <h2>EL ARTE DE LA PRECISIÓN NOCTURNA</h2>
-                <p class="Text-History-JDM">Desde las calles iluminadas por neón de Tokio hasta los circuitos de Hakone, 
-                estas máquinas nacieron de una obsesión diferente: la búsqueda de la perfección técnica y el equilibrio absoluto. 
-                Bienvenido al legado que domina la noche con precisión quirúrgica.</p>
-            </div>
-            <div class="Div-JDM">
-                <div class="Div-History-IMG-JDM"> 
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-JDM">1908 – Los 60s - Perfección Humana: Nace la filosofía Monozukuri. Calidad obsesiva y fiabilidad antes que cantidad.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-JDM">1949 – 1967 - Revolución Rotativa: Mazda lanza el Cosmo Sport. Japón demuestra que puede inventar su propia ingeniería (Motor Wankel).</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-JDM">1964 – 1969 - El Mito Hakosuka: Nace el primer Skyline GT-R. Comienza un legado de 50 victorias consecutivas en pista.</p>
-                </div>
-                <div class="Divisor-History-JDM">
-                </div>
-                <div class="Div-History-IMG-JDM">
-                    <img src="./Assent/JDM/AE86.jpg" alt="">
-                    <p class="Text-History-2-JDM">Los 80s - Dominio del Touge: El balance supera a la potencia. Coches como el AE86 demuestran que la agilidad es la clave en las montañas.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-JDM">1989 - Pacto de Caballeros: Las marcas limitan sus coches a 276 HP. Nacen los "monstruos dormidos" subestimados por los ingenieros.</p>
-                    <img src="./Assent/JDM/NSX.jpg" alt="">
-                    <p class="Text-History-2-JDM">1990 - El "Ferrari Killer": Honda lanza el NSX. Aluminio, motor central y el ADN de Ayrton Senna humillan a los deportivos europeos.</p>
-                </div>
-                <div class="Divisor-History-JDM">
-                </div>
-                <div class="Div-History-IMG-JDM">
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-JDM">Los 90s - Motores Inmortales: Época dorada del tuning. El 2JZ (Supra) y el RB26 (Skyline) se vuelven los motores más potentes del mundo.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-JDM">Wangan Midnight - Alta Velocidad: Las autopistas de Tokio se vuelven pistas a +300 km/h. La aerodinámica y el turbo lo son todo.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-JDM">4WD - Tracción Total: El sistema ATTESA del GTR y el Lancer Evolution enseñan que el poder no sirve sin control absoluto.</p>
-                </div>
-            </div>
-        </div>
-        </section>
+        btnStart.addEventListener('click', () => {
+            console.log("🚀 Iniciando despegue JDM...");
 
-        <section class="container-cars-JDM">
-            <div class="div-container-cars-JDM">
-                <h2 class="Title-Container-Car-JDM">Nuestros Autos</h2>
-                <div class="container-cars-filters-JDM">
-                    <button class="btn-filter-brand" data-value="*">Todos</button>
-                    <button class="btn-filter-brand" data-value="Nissan">Nissan</button>
-                    <button class="btn-filter-brand" data-value="Toyota">Toyota</button>
-                    <button class="btn-filter-brand" data-value="Honda">Honda</button>
-                    <button class="btn-filter-brand" data-value="Mazda">Mazda</button>
-                    <button class="btn-filter-brand" data-value="Subaru">Subaru</button>
-                    <button class="btn-filter-brand" data-value="Mitsubishi">Mitsubishi</button>
-                    <button class="btn-filter-brand" data-value="Acura">Acura</button>
-                    <button class="btn-filter-brand" data-value="Lexus">Lexus</button>
-                    <button class="btn-filter-brand" data-value="Suzuki">Suzuki</button>
-                </div>
-                <div class="container-cars-filters-buttons">
-                    <a class="btn-filter-category" data-value="Sedan">Sedan</a>
-                    <a class="btn-filter-category" data-value="SUV">SUV</a>
-                    <a class="btn-filter-category" data-value="Supercar">Supercar</a>
-                    <a class="btn-filter-category" data-value="Deportivo">Deportivo</a>
-                </div>
-            </div>
-            <div class="Divisor-JDM"></div>
-            <div class="container-cars-cards" id="contenedor-cards-jdm"></div>
-        </section>       
-
-        <section class="Footer-JDM">
-            <div class="Footer-Content">
-                <h2 class="text-Footer-JDM"><em>WOLF MOTOR HUB</em>: DONDE CADA CABALLO DE FUERZA TIENE UNA HISTORIA.</h2>
-            </div>
-            <div class="Divisor-Footer-JDM"></div>
-            <div class="Footer-Content-JDM">
-                <h2 class="text-Footer-JDM"><em>CONTACTO</em></h2>
-                <ul>
-                    <li class="Text-Footer-JDM">Tokyo Studio</li>
-                    <li class="Text-Footer-JDM">+81 (555) WOLF-AUTO</li>
-                    <li class="Text-Footer-JDM">info@wolf-motor-hub.com</li>
-                </ul>
-            </div>
-        </section>
-    </section>
-    `;
-
-    // 5. INICIALIZACIÓN DE EVENTOS 
-    SetupFiltrosJDM();
-    PintarTarjetasJDM(autos.japoneses);
-
-    const btnBack = document.getElementById("btn-back-home-jdm");
-    if (btnBack) {
-        btnBack.onclick = () => window.location.reload();
+            heroSection.classList.add('subir');
+            if (historiaSection) {
+                historiaSection.classList.add('visible');
+            }
+        });
+    } else {
+        // Esto solo saldrá si realmente no hay rastro del botón en el HTML
+        console.warn("⚠️ Wolf Info: El botón de inicio no está presente en esta página.");
     }
 }
 
+// =========================================================
+// 5. EXPORTACIONES (APIs PÚBLICAS DEL MÓDULO)
+// =========================================================
 export default AbrirJDM;

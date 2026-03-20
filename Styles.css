@@ -22,6 +22,226 @@
     --wolf-eu-quaternary: #00CEC9;
 }
 
+/* New Hub Home */
+
+body {
+    background-color: var(--wolf-black);
+}
+
+.container-main {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.Header-Hub {
+    display: flex;
+    flex-direction: column;
+    width: 4rem;
+    height: 960px;
+    background-color: var(--wolf-gray);
+    border-radius: 10px;
+    gap: 1rem;
+    animation: fadeInSlide 1.5s ease-out forwards;
+}
+
+.Div-Text-Header {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    color: var(--wolf-black);
+    display: flex;
+    align-items: center;
+    margin-top: 5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.Nav-Button-Login {
+    display: flex;
+    gap: 0.5rem;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--wolf-gray);
+    position: absolute;
+    bottom: 3vh;
+    width: 4rem;
+    justify-content: center;
+}
+
+.IMG-Main {
+    width: 1750px;
+    height: 957px;
+    border-radius: 10px;
+    animation: fadeInSlide 1.5s ease-out forwards;
+}
+
+.Bienvenida-Container {
+    display: flex;
+    flex-direction: column;
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 1rem;
+    position: absolute;
+    top: 7rem;
+    left: 27rem;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--wolf-gray);
+}
+
+.Bienvenida-Text {
+    color: var(--wolf-gray);
+    font-weight: 700;
+}
+
+.container-buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.container-buttons button {
+    color: var(--wolf-gray);
+    border: 1px solid var(--wolf-gray);
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 7rem;
+    background-color: transparent;
+}
+
+.container-buttons button:hover {
+    background-color: var(--wolf-gray);
+    color: var(--wolf-black);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+}
+
+/*              */
+/*     JDM         */
+
+.Header-JDM {
+    transition: transform 0.8s ease-in-out, opacity 0.6s ease-in-out;
+    z-index: 2;
+    /* Mantenerla arriba al principio */
+}
+
+/* Clase que aplicaremos con JavaScript para activar el despegue */
+.Header-JDM.subir {
+    transform: translateY(-100vh);
+    /* Se desplaza hacia arriba el alto de la pantalla */
+    opacity: 0;
+    pointer-events: none;
+    /* Para que no interfiera con los clicks abajo */
+}
+
+
+.Container-Header-JDM {
+    position: absolute;
+    z-index: 2;
+}
+
+.Button-Nav1:hover {
+    background-color: var(--wolf-gray);
+    color: var(--wolf-black);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+}
+
+.Button-Nav2:hover {
+    background-color: var(--wolf-gray);
+    color: var(--wolf-black);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+}
+
+.Button-Start-JDM:hover {
+    background-color: var(--wolf-gray);
+    color: var(--wolf-black);
+    box-shadow: 0 0 15px var(--wolf-gray);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+    transition: box-shadow 0.7s ease;
+}
+
+.Button-Nav1 {
+    position: absolute;
+    left: 39rem;
+    top: 1.5rem;
+    color: var(--wolf-gray);
+    border: 1px solid var(--wolf-gray);
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 9rem;
+    background-color: transparent;
+}
+
+.Button-Nav2 {
+    position: absolute;
+    left: 72rem;
+    top: 1.5rem;
+    color: var(--wolf-gray);
+    border: 1px solid var(--wolf-gray);
+    padding: 0.5rem;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 9rem;
+    background-color: transparent;
+}
+
+.Button-Start-JDM {
+    position: absolute;
+    left: 57rem;
+    top: 25.5rem;
+    border-radius: 100px;
+    width: 7rem;
+    height: 7rem;
+    color: var(--wolf-gray);
+    border: 1px solid var(--wolf-gray);
+    padding: 0.5rem;
+    cursor: pointer;
+    background-color: transparent;
+}
+
+
+
+.IMG-Container-JDM {
+    width: 1885px;
+    height: 957px;
+    border-radius: 10px;
+    animation: fadeInSlide 1.5s ease-out forwards;
+}
+
+.Container-Text-JDM {
+    position: absolute;
+    z-index: 1000;
+    top: 5rem;
+    left: 26rem;
+}
+
+.Container-Text-JDM h1 {
+    font-size: 8rem;
+    color: rgba(0, 0, 0, 0.7)
+}
+
+.Main-JDM {
+    background-color: #FFCC00;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s ease-in-out 0.3s, transform 0.8s ease-in-out 0.3s;
+}
+
+.Main-JDM.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+/*                 */
+
 @keyframes fadeInSlide {
     from {
         opacity: 0;
@@ -68,19 +288,6 @@
 
 .fade-JDM {
     animation: slideFromBottom 1.5s ease-out forwards;
-}
-
-body {
-    background-color: var(--wolf-black);
-}
-
-header {
-    display: flex;
-    padding: 1rem;
-    background-color: var(--wolf-gray);
-    border-radius: 10px;
-    flex-direction: column;
-    align-items: center;
 }
 
 .Div-Text {
@@ -221,7 +428,6 @@ header {
     grid-template-columns: repeat(3, 1fr);
     gap: 7vh;
     padding: 2vh;
-    scrollbar-width: thin;
     scrollbar-color: var(--wolf-black) var(--wolf-gray);
     overflow-y: scroll;
     overflow-x: hidden;
