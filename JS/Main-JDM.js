@@ -168,18 +168,33 @@ function AbrirJDM() {
 }
 
 // Función para pintar las tarjetas en el DOM
+// 1. Función para pintar la rejilla de coches (El Catálogo)
 function PintarTarjetasJDM(lista) {
     const contenedor = document.getElementById("contenedor-cards-jdm");
-
-    contenedor.style.display = "grid";
 
     if (!contenedor) {
         console.error("No encontré el contenedor 'contenedor-cards-jdm'");
         return;
     }
 
+    // Limpiar y mostrar el catálogo
+    contenedor.style.display = "grid";
     contenedor.innerHTML = "";
 
+    // CREAR BOTÓN DE CIERRE (X) DEL CATÁLOGO
+    const btnCerrarCatalogo = document.createElement('button');
+    btnCerrarCatalogo.classList.add('btn-cerrar-catalogo');
+    btnCerrarCatalogo.innerHTML = "&times;";
+
+    btnCerrarCatalogo.addEventListener('click', () => {
+        contenedor.style.display = "none";
+        document.body.style.overflow = 'auto'; // Devuelve el scroll
+        contenedor.innerHTML = "";
+    });
+
+    contenedor.appendChild(btnCerrarCatalogo);
+
+    // Renderizar cada tarjeta de coche
     lista.forEach(auto => {
         const card = document.createElement('div');
         card.classList.add('card-auto');
@@ -200,18 +215,22 @@ function PintarTarjetasJDM(lista) {
 
         contenedor.appendChild(card);
     });
+
+    // Bloquear scroll mientras el catálogo esté abierto
+    document.body.style.overflow = 'hidden';
 }
 
-// Función para renderizar el Modal Completo
+// 2. Función para renderizar el Modal de Detalles (La Ficha Técnica)
 function abrirDetallesWolfJDM(coche) {
-    let modalContainer = document.getElementById('wolf-modal-container-jdm');
+    // Si ya existe un modal previo, lo eliminamos para evitar duplicados
+    const modalPrevio = document.getElementById('wolf-modal-container-jdm');
+    if (modalPrevio) modalPrevio.remove();
 
-    if (!modalContainer) {
-        modalContainer = document.createElement('div');
-        modalContainer.id = 'wolf-modal-container-jdm';
-        document.body.appendChild(modalContainer);
-    }
+    const modalContainer = document.createElement('div');
+    modalContainer.id = 'wolf-modal-container-jdm';
+    document.body.appendChild(modalContainer);
 
+    // Inyectamos el HTML del detalle
     modalContainer.innerHTML = `
         <div id="wolf-modal-jdm" class="modal-overlay">
             <div class="modal-content">
@@ -228,58 +247,19 @@ function abrirDetallesWolfJDM(coche) {
                     
                     <div class="modal-specs">
                         <div class="specs-list">
-                            <div class="spec-item">
-                                <span class="spec-label">Motor:</span>
-                                <span class="spec-value">${coche.specs}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Tipo de motor:</span>
-                                <span class="spec-value">${coche.detail.tipo_motor}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Aceleración:</span>
-                                <span class="spec-value">${coche.detail.aceleracion}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Torque:</span>
-                                <span class="spec-value">${coche.detail.torque}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Transmisión:</span>
-                                <span class="spec-value">${coche.detail.transmision}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Tipo de transmisión:</span>
-                                <span class="spec-value">${coche.detail.tipo_transmision}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Frenos:</span>
-                                <span class="spec-value">${coche.detail.frenos}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Consumo:</span>
-                                <span class="spec-value">${coche.detail.consumo}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Medidas:</span>
-                                <span class="spec-value">${coche.detail.medidas}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Seguridad:</span>
-                                <span class="spec-value">${coche.detail.seguridad}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Airbags:</span>
-                                <span class="spec-value">${coche.detail.airbags}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Extra:</span>
-                                <span class="spec-value">${coche.detail.extra}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Categoría:</span>
-                                <span class="spec-value">${coche.categoria}</span>
-                            </div>
+                            ${generarSpecItem("Motor", coche.specs)}
+                            ${generarSpecItem("Tipo de motor", coche.detail?.tipo_motor)}
+                            ${generarSpecItem("Aceleración", coche.detail?.aceleracion)}
+                            ${generarSpecItem("Torque", coche.detail?.torque)}
+                            ${generarSpecItem("Transmisión", coche.detail?.transmision)}
+                            ${generarSpecItem("Tipo de transmisión", coche.detail?.tipo_transmision)}
+                            ${generarSpecItem("Frenos", coche.detail?.frenos)}
+                            ${generarSpecItem("Consumo", coche.detail?.consumo)}
+                            ${generarSpecItem("Medidas", coche.detail?.medidas)}
+                            ${generarSpecItem("Seguridad", coche.detail?.seguridad)}
+                            ${generarSpecItem("Airbags", coche.detail?.airbags)}
+                            ${generarSpecItem("Extra", coche.detail?.extra)}
+                            ${generarSpecItem("Categoría", coche.categoria)}
                         </div>
                     </div>
                 </div>
@@ -287,13 +267,29 @@ function abrirDetallesWolfJDM(coche) {
         </div>
     `;
 
+    // LÓGICA DE CIERRE DEL MODAL
     const btnCerrar = document.getElementById('close-modal-jdm');
     const fondoModal = document.getElementById('wolf-modal-jdm');
 
-    btnCerrar.onclick = () => modalContainer.innerHTML = '';
+    // Al cerrar, eliminamos el nodo del DOM (más limpio que ocultarlo)
+    btnCerrar.onclick = () => modalContainer.remove();
+
     fondoModal.onclick = (e) => {
-        if (e.target.id === 'wolf-modal-jdm') modalContainer.innerHTML = '';
+        if (e.target.id === 'wolf-modal-jdm') {
+            modalContainer.remove();
+        }
     };
+}
+
+// Función auxiliar para evitar errores si falta algún dato en el JSON
+function generarSpecItem(label, value) {
+    if (!value || value === "undefined") return ""; // Si no hay dato, no imprime la fila
+    return `
+        <div class="spec-item">
+            <span class="spec-label">${label}:</span>
+            <span class="spec-value">${value}</span>
+        </div>
+    `;
 }
 
 // =========================================================
