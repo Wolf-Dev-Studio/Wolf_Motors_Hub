@@ -20,6 +20,32 @@
     --wolf-eu-secondary: #0984E3;
     --wolf-eu-tertiary: #F5F6FA;
     --wolf-eu-quaternary: #00CEC9;
+
+    /* --- Tipografias --- */
+
+    /* --- Home --- */
+    --Font-Home-Title: 'Montserrat', sans-serif;
+    --Weight-Home-Title: 700;
+    --Font-Home-Subtitle: 'Montserrat', sans-serif;
+    --Weight-Home-Subtitle: 500;
+
+    /* --- USA --- */
+    --Font-USA-Title: 'Bebas Neue', sans-serif;
+    --Weight-USA-Title: 800;
+    --Font-USA-Subtitle: 'Bebas Neue', sans-serif;
+    --Weight-USA-Subtitle: 600;
+
+    /* --- JDM (Japoneses) --- */
+    --Font-JDM-Title: 'Exo 2', sans-serif;
+    --Weight-JDM-Title: 800;
+    --Font-JDM-Subtitle: 'Exo 2', sans-serif;
+    --Weight-JDM-Subtitle: 600;
+
+    /* --- Euro (Europeos) --- */
+    --Font-Euro-Title: 'Syncopate', sans-serif;
+    --Weight-Euro-Title: 800;
+    --Font-Euro-Subtitle: 'Syncopate', sans-serif;
+    --Weight-Euro-Subtitle: 600;
 }
 
 /*  --- Animaciones --- */
@@ -90,10 +116,176 @@ body {
     background-color: var(--wolf-black);
 }
 
+.Modal-Bienvenida {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(20px);
+    animation: scaleUp 1.5s ease-out forwards;
+}
+
+.Modal-Bienvenida-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--wolf-gray);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--wolf-gray);
+}
+
+.Modal-Bienvenida-Container h2 {
+    font-family: var(--Font-Home-Title);
+    font-weight: var(--Weight-Home-Title);
+}
+
+.Modal-Bienvenida-Container p {
+    font-family: var(--Font-Home-Subtitle);
+    font-weight: var(--Weight-Home-Subtitle);
+}
+
+.Modal-Bienvenida-Container button {
+    background-color: var(--wolf-black);
+    color: var(--wolf-gray);
+    border: 1px solid var(--wolf-gray);
+    padding: 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 7rem;
+    font-family: var(--Font-Home-Subtitle);
+    font-weight: var(--Weight-Home-Subtitle);
+}
+
+.Modal-Bienvenida-Container button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px var(--wolf-black);
+    transition: transform 2s ease;
+    transition: box-shadow 0.7s ease;
+}
+
+.Modal-Login {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    backdrop-filter: blur(20px);
+    animation: scaleUp 1.5s ease-out forwards;
+}
+
+.Modal-Login-Container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--wolf-gray);
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--wolf-gray);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30rem;
+}
+
+.Modal-Login-Container h2 {
+    font-family: var(--Font-Home-Title);
+    font-weight: var(--Weight-Home-Title);
+}
+
+.Modal-Login-Container p {
+    font-family: var(--Font-Home-Subtitle);
+    font-weight: var(--Weight-Home-Subtitle);
+}
+
+.btn-iniciar-sesion {
+    background-color: var(--wolf-black);
+    color: var(--wolf-gray);
+    border: 1px solid var(--wolf-gray);
+    padding: 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 20rem;
+    font-family: var(--Font-Home-Subtitle);
+    font-weight: var(--Weight-Home-Subtitle);
+}
+
+.btn-iniciar-sesion:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px var(--wolf-black);
+    transition: transform 2s ease;
+    transition: box-shadow 0.7s ease;
+}
+
+.Modal-Login-Container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.Modal-Login-Container input {
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 20px;
+    border: 1px solid var(--wolf-gray);
+}
+
+input:focus {
+    outline: none;
+    border: 2px solid var(--wolf-black);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: 0.3s ease;
+}
+
+.btn-registrarse {
+    color: var(--wolf-black);
+    padding: 0.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-family: var(--Font-Home-Subtitle);
+    font-weight: var(--Weight-Home-Subtitle);
+    text-decoration: none;
+}
+
+.btn-cerrar-login {
+    display: flex;
+    background-color: var(--wolf-black);
+    color: var(--wolf-gray);
+    border: 1px solid var(--wolf-gray);
+    padding: 0.5rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-family: var(--Font-Home-Subtitle);
+    font-weight: var(--Weight-Home-Subtitle);
+    position: absolute;
+    bottom: 25vh;
+    left: 87%;
+}
+
+.btn-cerrar-login:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px var(--wolf-black);
+    transition: transform 2s ease;
+    transition: box-shadow 0.7s ease;
+}
+
 .container-main {
     display: flex;
     flex-direction: row;
     gap: 2rem;
+    width: clamp(700px, 100%, 1920px);
 }
 
 .Header-Hub {
@@ -104,7 +296,6 @@ body {
     background-color: var(--wolf-gray);
     border-radius: 10px;
     gap: 1rem;
-    animation: fadeInSlide 1.5s ease-out forwards;
 }
 
 .Div-Text-Header {
@@ -114,7 +305,8 @@ body {
     display: flex;
     align-items: center;
     margin-top: 5rem;
-    font-weight: bold;
+    font-family: var(--Font-Home-Title);
+    font-weight: var(--Weight-Home-Title);
     text-transform: uppercase;
 }
 
@@ -136,7 +328,6 @@ body {
     width: 1750px;
     height: 957px;
     border-radius: 10px;
-    animation: fadeInSlide 1.5s ease-out forwards;
 }
 
 .Bienvenida-Container {
@@ -154,7 +345,8 @@ body {
 
 .Bienvenida-Text {
     color: var(--wolf-gray);
-    font-weight: 700;
+    font-family: var(--Font-Home-Subtitle);
+    font-weight: var(--Weight-Home-Subtitle);
 }
 
 .container-buttons {
@@ -201,32 +393,9 @@ body {
     z-index: 2;
 }
 
-.Button-Nav1:hover {
-    background-color: var(--wolf-gray);
-    color: var(--wolf-black);
-    transition: color 0.7s ease;
-    transition: background-color 0.7s ease;
-}
-
-.Button-Nav2:hover {
-    background-color: var(--wolf-gray);
-    color: var(--wolf-black);
-    transition: color 0.7s ease;
-    transition: background-color 0.7s ease;
-}
-
-.Button-Start-JDM:hover {
-    background-color: var(--wolf-gray);
-    color: var(--wolf-black);
-    box-shadow: 0 0 15px var(--wolf-gray);
-    transition: color 0.7s ease;
-    transition: background-color 0.7s ease;
-    transition: box-shadow 0.7s ease;
-}
-
-.Button-Nav1 {
+.Button-Nav1-JDM {
     position: absolute;
-    left: 39rem;
+    left: 38rem;
     top: 1.5rem;
     color: var(--wolf-gray);
     border: 1px solid var(--wolf-gray);
@@ -237,7 +406,14 @@ body {
     background-color: transparent;
 }
 
-.Button-Nav2 {
+.Button-Nav1-JDM:hover {
+    background-color: var(--wolf-gray);
+    color: var(--wolf-black);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+}
+
+.Button-Nav2-JDM {
     position: absolute;
     left: 72rem;
     top: 1.5rem;
@@ -248,6 +424,16 @@ body {
     cursor: pointer;
     width: 9rem;
     background-color: transparent;
+    display: flex;
+    justify-content: center;
+}
+
+
+.Button-Nav2-JDM:hover {
+    background-color: var(--wolf-gray);
+    color: var(--wolf-black);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
 }
 
 .Button-Start-JDM {
@@ -264,6 +450,15 @@ body {
     background-color: transparent;
 }
 
+.Button-Start-JDM:hover {
+    background-color: var(--wolf-gray);
+    color: var(--wolf-black);
+    box-shadow: 0 0 15px var(--wolf-gray);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+    transition: box-shadow 0.7s ease;
+}
+
 .IMG-Container-JDM {
     width: 1885px;
     height: 957px;
@@ -274,12 +469,14 @@ body {
 .Container-Text-JDM {
     position: absolute;
     z-index: 1000;
-    top: 5rem;
-    left: 26rem;
+    top: 9rem;
+    left: 33rem;
 }
 
 .Container-Text-JDM h1 {
-    font-size: 8rem;
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
+    font-size: 6rem;
     color: rgba(0, 0, 0, 0.7)
 }
 
@@ -314,7 +511,7 @@ body {
     border-bottom: 2px solid var(--wolf-jdm-quaternary);
 }
 
-.Button-Nav {
+.Button-Nav-JDM {
     color: var(--wolf-gray);
     border: 1px solid var(--wolf-gray);
     padding: 0.5rem;
@@ -326,7 +523,7 @@ body {
     justify-content: center;
 }
 
-.Button-Nav:hover {
+.Button-Nav-JDM:hover {
     background-color: var(--wolf-jdm-quaternary);
     color: var(--wolf-jdm-primary);
     border: none;
@@ -350,7 +547,8 @@ body {
 }
 
 .Container-Title-JDM h1 {
-    font-size: 4rem;
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
     color: var(--wolf-jdm-quaternary);
 }
 
@@ -358,9 +556,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: 1.2rem;
-    font-weight: 500;
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
     color: black;
+    font-size: 1.2rem;
 }
 
 
@@ -392,7 +591,6 @@ body {
     height: 20rem;
     position: relative;
     overflow: hidden;
-    cursor: pointer;
     transition: transform 0.3s ease;
 }
 
@@ -409,6 +607,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+    gap: 1rem;
     width: 100%;
     height: 100%;
     display: flex;
@@ -441,7 +640,7 @@ body {
     transition: box-shadow 0.3s ease;
 }
 
-.img-tarjeta {
+.img-tarjeta-JDM {
     width: 480px;
     height: 320px;
     border-radius: 20px;
@@ -480,6 +679,16 @@ body {
     width: 20rem;
 }
 
+.Container-Footer-JDM-1-1 h2 {
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
+}
+
+.Container-Footer-JDM-1-1 p {
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
+}
+
 .Container-Footer-JDM-1-2 {
     display: flex;
     flex-direction: column;
@@ -500,6 +709,11 @@ body {
     cursor: pointer;
 }
 
+.Container-Footer-JDM-1-2 ul li a {
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
+}
+
 .Container-Footer-JDM-1-3 {
     display: flex;
     flex-direction: column;
@@ -514,6 +728,8 @@ body {
     gap: 0.5rem;
     display: flex;
     align-items: center;
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
 }
 
 .Container-Footer-JDM-1-3 a:hover {
@@ -529,7 +745,12 @@ body {
     align-items: center;
 }
 
-.ContainerCar {
+.Container-Footer-JDM-2 p {
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
+}
+
+.ContainerCar-JDM {
     display: none;
     z-index: 1000;
     position: fixed;
@@ -550,7 +771,7 @@ body {
     justify-items: center;
 }
 
-.card-auto {
+.card-auto-JDM {
     width: 20rem;
     height: 17.5rem;
     border-radius: 20px;
@@ -560,31 +781,53 @@ body {
     justify-content: center;
 }
 
-.img-card-auto {
+.card-auto-JDM h3 {
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
+}
+
+.card-auto-JDM p {
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
+}
+
+.img-card-auto-JDM {
     width: 240px;
-    height: 150px;
+    height: 135px;
     border-radius: 20px;
 }
 
-.info-car {
+.info-car-JDM {
     display: flex;
     flex-direction: column;
     padding-left: 10px;
-    color: var(--wolf-gray);
+    color: var(--wolf-jdm-secondary);
 }
 
-.btn-ver-detalles {
-    color: var(--wolf-gray);
-    border: 1px solid var(--wolf-gray);
+.info-car-JDM h3 {
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
+}
+
+.info-car-JDM p {
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
+}
+
+.btn-ver-detalles-JDM {
+    color: var(--wolf-jdm-secondary);
+    border: 1px solid var(--wolf-jdm-secondary);
     border-radius: 10px;
     cursor: pointer;
     width: 9rem;
     background-color: transparent;
     display: flex;
     justify-content: center;
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
 }
 
-.btn-ver-detalles:hover {
+.btn-ver-detalles-JDM:hover {
     background-color: var(--wolf-jdm-quaternary);
     color: var(--wolf-jdm-primary);
     border: none;
@@ -594,129 +837,118 @@ body {
     transition: box-shadow 0.3s ease;
 }
 
-.btn-cerrar-catalogo {
+.btn-cerrar-catalogo-JDM {
     position: absolute;
     top: 20px;
     right: 30px;
     background: transparent;
-    color: #ffffff;
+    color: var(--wolf-jdm-tertiary);
     font-size: 2.5rem;
-    /* Tamaño grande y legible */
     border: none;
     cursor: pointer;
     transition: color 0.3s ease, transform 0.3s ease;
     z-index: 100;
-    /* Lo mantiene por encima de cualquier foto */
 }
 
-/* El toque de lujo al pasar el mouse */
-.btn-cerrar-catalogo:hover {
-    color: #d4af37;
-    /* El dorado de tu marca */
+.btn-cerrar-catalogo-JDM:hover {
+    color: var(--wolf-jdm-quaternary);
     transform: scale(1.1);
 }
 
-.modal-overlay {
+.modal-overlay-JDM {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
-    /* Fondo oscuro semitransparente */
     backdrop-filter: blur(5px);
-    /* Efecto de desenfoque detrás del modal */
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 2000;
-    /* Asegura que esté por encima de todo */
     animation: fadeIn 0.3s ease-out;
 }
 
-.modal-content {
+.modal-content-JDM {
     background-color: var(--wolf-jdm-primary);
-    /* Usa el color de fondo de tu marca */
     border-radius: 20px;
     padding: 30px;
     max-width: 900px;
     width: 90%;
     max-height: 90vh;
     overflow-y: auto;
-    /* Scroll si el contenido es muy largo */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     position: relative;
     animation: scaleUp 0.3s ease-out;
     color: var(--wolf-jdm-quaternary);
 }
 
-.close-btn {
+.close-btn-JDM {
     position: absolute;
     top: 20px;
     right: 30px;
     background: transparent;
     color: #ffffff;
     font-size: 2.5rem;
-    /* Tamaño grande y legible */
     border: none;
     cursor: pointer;
     transition: color 0.3s ease, transform 0.3s ease;
     z-index: 100;
-    /* Lo mantiene por encima de cualquier foto */
 }
 
-.close-btn:hover {
-    color: #d4af37;
-    /* El dorado de tu marca */
+.close-btn-JDM:hover {
+    color: var(--wolf-jdm-quaternary);
     transform: scale(1.1);
 }
 
-.modal-grid {
+.modal-grid-JDM {
     display: flex;
     flex-direction: column;
     gap: 20px;
     margin-top: 20px;
 }
 
-.modal-image-container {
+.modal-image-container-JDM {
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
 }
 
-.modal-image-container img {
+.modal-image-container-JDM img {
     width: 50%;
     height: auto;
     border-radius: 15px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.info-car {
+.info-car-JDM {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.wolf-title {
+.wolf-title-JDM {
     color: var(--wolf-jdm-secondary);
     margin: 0;
-    font-size: 2rem;
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
 }
 
-.wolf-price {
-    font-size: 1.8rem;
+.wolf-price-JDM {
     color: var(--wolf-jdm-quaternary);
-    font-weight: bold;
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
     margin-top: 10px;
 }
 
-.modal-specs {
+.modal-specs-JDM {
     display: flex;
     justify-content: center;
 }
 
-.specs-list {
+.specs-list-JDM {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     color: var(--wolf-jdm-tertiary);
@@ -724,12 +956,23 @@ body {
     row-gap: 1.5rem;
 }
 
-.specs-list li {
+.specs-list-JDM li {
     margin: 5px 0;
     line-height: 1.6;
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
 }
 
-.specs-list strong {
+.specs-list-JDM strong {
     color: var(--wolf-jdm-quaternary);
-    font-weight: bold;
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
 }
+
+.btn-filter-brand-JDM {
+    width: 7rem;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+/* --- Fin JDM --- */

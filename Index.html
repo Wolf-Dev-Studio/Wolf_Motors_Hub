@@ -4,46 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wolf Motors Hub</title>
+    <title>Wolf Motors Hub | Elevating the Drive</title>
     <link rel="stylesheet" href="Styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Exo+2:ital,wght@0,100..900;1,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Syncopate:wght@400;700&display=swap"
+        rel="stylesheet">
 </head>
 
 <body>
+
     <div id="Page-Home" class="container-main">
         <header class="Header-Hub">
             <div class="Div-Text-Header">
                 <h1><em>Wolf Motors Hub</em></h1>
             </div>
             <div>
-                <button class="Nav-Button-Login"><svg xmlns="http://www.w3.org/2000/svg" width="22" height="22"
-                        fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                <button class="Nav-Button-Login" id="btn-home-login">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor"
+                        class="bi bi-person" viewBox="0 0 16 16">
                         <path
                             d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-                    </svg></button>
+                    </svg>
+                </button>
             </div>
         </header>
+
         <main>
-            <div>
-                <img class="IMG-Main" src="./Assent/Home/Hub.jpg" alt="">
+            <div class="Container-IMG-Home">
+                <img class="IMG-Main" src="./Assent/Home/Hub.jpg" alt="Wolf Motors Banner">
             </div>
+
             <div class="Bienvenida-Container">
                 <h2 class="Bienvenida-Text">Bienvenido a Wolf Motors Hub</h2>
                 <h4 class="Bienvenida-Text">Donde cada motor cuenta una historia y cada curva desafía los límites.</h4>
+
                 <div class="container-buttons">
-                    <button id="usa">Americanos</button>
-                    <button id="jdm">Japoneses</button>
-                    <button id="euro">Europeos</button>
+                    <button id="usa" class="btn-main-nav">Americanos</button>
+                    <button id="jdm" class="btn-main-nav">Japoneses</button>
+                    <button id="euro" class="btn-main-nav">Europeos</button>
                 </div>
             </div>
         </main>
     </div>
-    <section id="Page-USA">
+
+    <section id="Page-USA" style="display: none;"></section>
+    <section id="Page-JDM" style="display: none;"></section>
+    <section id="Page-EURO" style="display: none;"></section>
+
+    <section class="Modal-Bienvenida">
+        <div class="Modal-Bienvenida-Container">
+            <h2>Aviso de Proyecto Personal</h2>
+            <p>Bienvenido a Wolf Motor Hub. Esta plataforma es un entorno de desarrollo creado exclusivamente como parte
+                de mi portafolio personal de software.</p>
+            <p>Las funciones de compra y transacciones son simuladas; no se realizan ventas reales a través de este
+                dominio técnico.</p>
+            <button id="btn-aceptar">Aceptar</button>
+        </div>
     </section>
-    <section id="Page-JDM">
+
+    <section id="Modal-Login" class="Modal-Login">
+        <div class="Modal-Login-Container">
+            <button class="btn-cerrar-login" id="btn-cerrar-login">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-x"
+                    viewBox="0 0 16 16">
+                    <path
+                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
+                </svg>
+            </button>
+
+            <h2>Iniciar Sesión</h2>
+            <form id="form-login" onsubmit="event.preventDefault()">
+                <input type="text" id="login-user" placeholder="Usuario" required>
+                <input type="password" id="login-pass" placeholder="Contraseña" required>
+                <button class="btn-iniciar-sesion" type="submit">Iniciar Sesión</button>
+            </form>
+
+            <div class="login-footer">
+                <a class="btn-registrarse" id="btn-ir-registro" href="#">¿No tienes cuenta? Regístrate</a>
+            </div>
+        </div>
     </section>
-    <section id="Page-EURO">
-    </section>
+
+    <script type="module" src="./JS/Main.js"></script>
+
 </body>
-<script type="module" src="./JS/Main.js"></script>
 
 </html>

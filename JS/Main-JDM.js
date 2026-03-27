@@ -3,6 +3,8 @@
 // =========================================================
 import MostrarAutos from "./Filters.js";
 import { autos } from "./Data.js";
+import { AbrirLogin, CerrarLogin } from "./Main.js"; // Agrupados en una línea
+import { VolverAlHome } from "./Main.js";
 
 // Estado de la vista actual (Filtros activos)
 let filtrosActivosJDM = { brand: "*", category: "*" };
@@ -27,15 +29,17 @@ function AbrirJDM() {
     if (PageHome) PageHome.style.display = "none";
     if (content) content.style.display = "block";
 
-    // Inyección de la UI Premium exacta que diseñaste
+    // Inyección de la UI: IDs cambiados a clases únicas (btn-jdm-home, btn-jdm-login)
     content.innerHTML = `
         <section class="Header-JDM" id="Header-JDM">
             <div class="Container-Header-JDM">
-                <button class="Button-Nav1" id="btn-back-home-jdm">Home</button>
-                <button class="Button-Start-JDM" id="btn-start-jdm"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
-                    <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/></svg></button>
-                <button class="Button-Nav2" id="btn-login-jdm">Login<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-                </svg></button>
+                <button class="Button-Nav1-JDM btn-jdm-home">Home</button>
+                <button class="Button-Nav2-JDM btn-jdm-login">Login</button>
+                <button class="Button-Start-JDM" id="btn-start-jdm">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                        <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                    </svg>
+                </button>
             </div>
             <div class="Container-Text-JDM">
                 <h1><em>Welcome To JAPAN</em></h1>
@@ -44,10 +48,9 @@ function AbrirJDM() {
         </section>
         <section class="Main-JDM" id="Main-JDM">
              <div class="Container-Nav-JDM">
-                <button class="Button-Nav" id="btn-back-home-jdm">Home</button>
+                <button class="Button-Nav-JDM btn-jdm-home">Home</button>
                 <h1>Wolf Motors Japon</h1>
-                <button class="Button-Nav" id="btn-login-jdm">Login<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16"><path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z" />
-                </svg></button>
+                <button class="Button-Nav-JDM btn-jdm-login">Login</button>
              </div>
              <div class="Container-Main-JDM">
                 <div class="Container-Title-JDM">
@@ -62,69 +65,15 @@ function AbrirJDM() {
                 <h2>Conoce a las leyendas</h2>
              </div>
              <section class="Container-Cards-JDM">
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Nissan.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Nissan</span>
-                        <button class="btn-filter-brand" data-value="Nissan">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Toyota.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Toyota</span>
-                        <button class="btn-filter-brand" data-value="Toyota">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Honda.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Honda</span>
-                        <button class="btn-filter-brand" data-value="Honda">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Mazda.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Mazda</span>
-                        <button class="btn-filter-brand" data-value="Mazda">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Subaru.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Subaru</span>
-                        <button class="btn-filter-brand" data-value="Subaru">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Mitsubishi.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Mitsubishi</span>
-                        <button class="btn-filter-brand" data-value="Mitsubishi">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/lexus.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Lexus</span>
-                        <button class="btn-filter-brand" data-value="Lexus">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Acura.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Acura</span>
-                        <button class="btn-filter-brand" data-value="Acura">Ver</button>
-                    </div>                    
-                </div>
-                <div class="Container-Tarjetas-JDM">
-                    <img class="img-tarjeta" src="./Assent/JDM/Suzuki.jpg" alt="">
-                    <div class="Container-Tarjetas-JDM-Hover">
-                        <span>Suzuki</span>
-                        <button class="btn-filter-brand" data-value="Suzuki">Ver</button>
-                    </div>                    
-                </div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Nissan.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Nissan</span><button class="btn-filter-brand-JDM" data-value="Nissan">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Toyota.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Toyota</span><button class="btn-filter-brand-JDM" data-value="Toyota">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Honda.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Honda</span><button class="btn-filter-brand-JDM" data-value="Honda">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Mazda.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Mazda</span><button class="btn-filter-brand-JDM" data-value="Mazda">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Subaru.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Subaru</span><button class="btn-filter-brand-JDM" data-value="Subaru">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Mitsubishi.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Mitsubishi</span><button class="btn-filter-brand-JDM" data-value="Mitsubishi">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/lexus.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Lexus</span><button class="btn-filter-brand-JDM" data-value="Lexus">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Acura.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Acura</span><button class="btn-filter-brand-JDM" data-value="Acura">Ver</button></div></div>
+                <div class="Container-Tarjetas-JDM"><img class="img-tarjeta-JDM" src="./Assent/JDM/Suzuki.jpg" alt=""><div class="Container-Tarjetas-JDM-Hover"><span>Suzuki</span><button class="btn-filter-brand-JDM" data-value="Suzuki">Ver</button></div></div>
              </section>
              <section class="Container-Footer-JDM">
              <div class="Container-Footer-JDM-1">
@@ -157,58 +106,50 @@ function AbrirJDM() {
              </div>
              </section>
         </section>
-        <section class="ContainerCar" id="contenedor-cards-jdm">
-        </section>
+        <section class="ContainerCar-JDM" id="contenedor-cards-jdm"></section>
     `;
 
-    // Inicialización de eventos y renderizado
+    // Inicialización de eventos y renderizado (Sin ejecutar AbrirLogin automáticamente)
     SetupFiltrosJDM();
     SetupEventosLocalesJDM();
-    SearchButton()
+    SearchButton();
 }
 
-// Función para pintar las tarjetas en el DOM
 // 1. Función para pintar la rejilla de coches (El Catálogo)
 function PintarTarjetasJDM(lista) {
     const contenedor = document.getElementById("contenedor-cards-jdm");
 
-    if (!contenedor) {
-        console.error("No encontré el contenedor 'contenedor-cards-jdm'");
-        return;
-    }
+    if (!contenedor) return;
 
-    // Limpiar y mostrar el catálogo
     contenedor.style.display = "grid";
     contenedor.innerHTML = "";
 
-    // CREAR BOTÓN DE CIERRE (X) DEL CATÁLOGO
     const btnCerrarCatalogo = document.createElement('button');
-    btnCerrarCatalogo.classList.add('btn-cerrar-catalogo');
+    btnCerrarCatalogo.classList.add('btn-cerrar-catalogo-JDM');
     btnCerrarCatalogo.innerHTML = "&times;";
 
     btnCerrarCatalogo.addEventListener('click', () => {
         contenedor.style.display = "none";
-        document.body.style.overflow = 'auto'; // Devuelve el scroll
+        document.body.style.overflow = 'auto';
         contenedor.innerHTML = "";
     });
 
     contenedor.appendChild(btnCerrarCatalogo);
 
-    // Renderizar cada tarjeta de coche
     lista.forEach(auto => {
         const card = document.createElement('div');
-        card.classList.add('card-auto');
+        card.classList.add('card-auto-JDM');
 
         card.innerHTML = `
-            <img class="img-card-auto" src="${auto.img}" alt="${auto.modelo}">
-            <div class="info-car">
+            <img class="img-card-auto-JDM" src="${auto.img}" alt="${auto.modelo}">
+            <div class="info-car-JDM">
                 <h3>${auto.marca} ${auto.modelo}</h3>
-                <p class="precio">${auto.precio}</p>
-                <button class="btn-ver-detalles">Ver Detalles</button>
+                <p class="precio-JDM">${auto.precio}</p>
+                <button class="btn-ver-detalles-JDM">Ver Detalles</button>
             </div>
         `;
 
-        const btnDetalles = card.querySelector('.btn-ver-detalles');
+        const btnDetalles = card.querySelector('.btn-ver-detalles-JDM');
         btnDetalles.addEventListener('click', () => {
             abrirDetallesWolfJDM(auto);
         });
@@ -216,13 +157,11 @@ function PintarTarjetasJDM(lista) {
         contenedor.appendChild(card);
     });
 
-    // Bloquear scroll mientras el catálogo esté abierto
     document.body.style.overflow = 'hidden';
 }
 
 // 2. Función para renderizar el Modal de Detalles (La Ficha Técnica)
 function abrirDetallesWolfJDM(coche) {
-    // Si ya existe un modal previo, lo eliminamos para evitar duplicados
     const modalPrevio = document.getElementById('wolf-modal-container-jdm');
     if (modalPrevio) modalPrevio.remove();
 
@@ -230,23 +169,20 @@ function abrirDetallesWolfJDM(coche) {
     modalContainer.id = 'wolf-modal-container-jdm';
     document.body.appendChild(modalContainer);
 
-    // Inyectamos el HTML del detalle
     modalContainer.innerHTML = `
-        <div id="wolf-modal-jdm" class="modal-overlay">
-            <div class="modal-content">
-                <button id="close-modal-jdm" class="close-btn">&times;</button>
-                
-                <div class="modal-grid">
-                    <div class="modal-image-container">
+        <div id="wolf-modal-jdm" class="modal-overlay-JDM">
+            <div class="modal-content-JDM">
+                <button id="close-modal-jdm" class="close-btn-JDM">&times;</button>
+                <div class="modal-grid-JDM">
+                    <div class="modal-image-container-JDM">
                         <img src="${coche.img}" alt="${coche.marca} ${coche.modelo}">
-                        <div class="info-car">
-                            <h2 class="wolf-title">${coche.marca} ${coche.modelo}</h2>
-                            <p class="wolf-price">${coche.precio}</p>
+                        <div class="info-car-JDM">
+                            <h2 class="wolf-title-JDM">${coche.marca} ${coche.modelo}</h2>
+                            <p class="wolf-price-JDM">${coche.precio}</p>
                         </div>
                     </div>
-                    
-                    <div class="modal-specs">
-                        <div class="specs-list">
+                    <div class="modal-specs-JDM">
+                        <div class="specs-list-JDM">
                             ${generarSpecItem("Motor", coche.specs)}
                             ${generarSpecItem("Tipo de motor", coche.detail?.tipo_motor)}
                             ${generarSpecItem("Aceleración", coche.detail?.aceleracion)}
@@ -267,11 +203,9 @@ function abrirDetallesWolfJDM(coche) {
         </div>
     `;
 
-    // LÓGICA DE CIERRE DEL MODAL
     const btnCerrar = document.getElementById('close-modal-jdm');
     const fondoModal = document.getElementById('wolf-modal-jdm');
 
-    // Al cerrar, eliminamos el nodo del DOM (más limpio que ocultarlo)
     btnCerrar.onclick = () => modalContainer.remove();
 
     fondoModal.onclick = (e) => {
@@ -281,13 +215,12 @@ function abrirDetallesWolfJDM(coche) {
     };
 }
 
-// Función auxiliar para evitar errores si falta algún dato en el JSON
 function generarSpecItem(label, value) {
-    if (!value || value === "undefined") return ""; // Si no hay dato, no imprime la fila
+    if (!value || value === "undefined") return "";
     return `
-        <div class="spec-item">
-            <span class="spec-label">${label}:</span>
-            <span class="spec-value">${value}</span>
+        <div class="spec-item-JDM">
+            <span class="spec-label-JDM">${label}:</span>
+            <span class="spec-value-JDM">${value}</span>
         </div>
     `;
 }
@@ -297,7 +230,7 @@ function generarSpecItem(label, value) {
 // =========================================================
 
 function SetupFiltrosJDM() {
-    const botonesMarca = document.querySelectorAll("#Page-JDM .btn-filter-brand");
+    const botonesMarca = document.querySelectorAll("#Page-JDM .btn-filter-brand-JDM");
     botonesMarca.forEach(boton => {
         boton.addEventListener("click", (e) => {
             filtrosActivosJDM.brand = e.target.dataset.value;
@@ -305,7 +238,7 @@ function SetupFiltrosJDM() {
         });
     });
 
-    const botonesCat = document.querySelectorAll("#Page-JDM .btn-filter-category");
+    const botonesCat = document.querySelectorAll("#Page-JDM .btn-filter-category-JDM");
     botonesCat.forEach(boton => {
         boton.addEventListener("click", (e) => {
             filtrosActivosJDM.category = e.target.dataset.value;
@@ -314,12 +247,50 @@ function SetupFiltrosJDM() {
     });
 }
 
-function SetupEventosLocalesJDM() {
-    // Usamos querySelectorAll por si hay múltiples botones "Home" con el mismo ID en el HTML inyectado
-    const botonesBack = document.querySelectorAll("#btn-back-home-jdm");
-    botonesBack.forEach(btn => {
-        btn.addEventListener('click', () => window.location.reload());
+export function SetupEventosLocalesJDM() {
+    // 1. Configuración de los botones para volver al HOME
+    const botonesHome = document.querySelectorAll(".btn-jdm-home");
+
+    botonesHome.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Ejecutamos la limpieza maestra definida en Main.js
+            VolverAlHome();
+
+            // Opcional: Asegurarnos de que el catálogo se limpie al salir
+            const catalogo = document.getElementById("contenedor-cards-jdm");
+            if (catalogo) {
+                catalogo.style.display = "none";
+                catalogo.innerHTML = "";
+            }
+
+            // Devolvemos el scroll al estado normal
+            document.body.style.overflow = 'auto';
+        });
     });
+
+    // 2. Configuración de los botones de LOGIN dentro de JDM
+    const botonesLogin = document.querySelectorAll(".btn-jdm-login");
+
+    botonesLogin.forEach(btn => {
+        btn.addEventListener('click', () => {
+            AbrirLogin();
+        });
+    });
+
+    console.log("🛠️ Eventos de JDM cargados (Home & Login).");
+}
+
+function SearchButton() {
+    let btnStart = document.querySelector('.Button-Start-JDM');
+    const heroSection = document.querySelector('.Header-JDM');
+    const historiaSection = document.querySelector('.Main-JDM');
+
+    if (btnStart && heroSection) {
+        btnStart.addEventListener('click', () => {
+            heroSection.classList.add('subir');
+            if (historiaSection) historiaSection.classList.add('visible');
+        });
+    }
 }
 
 // Disparador principal (Navegación Home -> JDM)
@@ -330,34 +301,8 @@ if (btnJDM) {
     });
 }
 
-function SearchButton() {
-    let btnStart = document.getElementById('btn-start-jdm');
-
-    if (!btnStart) {
-        btnStart = document.querySelector('.Button-Start-JDM');
-    }
-
-    const heroSection = document.querySelector('.Header-JDM');
-    const historiaSection = document.querySelector('.Main-JDM');
-
-    if (btnStart && heroSection) {
-        console.log("✅ Sistema de transición Wolf detectado y listo.");
-
-        btnStart.addEventListener('click', () => {
-            console.log("🚀 Iniciando despegue JDM...");
-
-            heroSection.classList.add('subir');
-            if (historiaSection) {
-                historiaSection.classList.add('visible');
-            }
-        });
-    } else {
-        // Esto solo saldrá si realmente no hay rastro del botón en el HTML
-        console.warn("⚠️ Wolf Info: El botón de inicio no está presente en esta página.");
-    }
-}
-
 // =========================================================
 // 5. EXPORTACIONES (APIs PÚBLICAS DEL MÓDULO)
 // =========================================================
 export default AbrirJDM;
+
