@@ -2,23 +2,17 @@ import AbrirUSA from "./Main-USA.js";
 import AbrirJDM from "./Main-JDM.js";
 import AbrirEURO from "./Main-EURO.js";
 
-// =========================================================
-// 1. GESTIÓN DEL MODAL DE BIENVENIDA
-// =========================================================
+/* --- Modal Bienvenida --- */
 const modalBienvenida = document.querySelector(".Modal-Bienvenida");
 const btnAceptarBienvenida = document.getElementById("btn-aceptar");
 
 if (btnAceptarBienvenida) {
     btnAceptarBienvenida.addEventListener("click", () => {
         modalBienvenida.style.display = "none";
-        // Opcional: Guardar en localStorage para que no salga siempre
-        // localStorage.setItem('bienvenidaVista', 'true');
     });
 }
 
-// =========================================================
-// 2. LÓGICA DEL LOGIN (Exportada para usar en JDM/USA/EURO)
-// =========================================================
+/* --- Modal Login (Exportada para usar en JDM/USA/EURO) --- */
 export function AbrirLogin() {
     const modal = document.getElementById("Modal-Login");
     if (modal) modal.style.display = "block";
@@ -29,46 +23,113 @@ export function CerrarLogin() {
     if (modal) modal.style.display = "none";
 }
 
-// Asignar evento al botón de Login del HOME (el del ID nuevo que sugerimos)
 const btnHomeLogin = document.getElementById("btn-home-login");
 if (btnHomeLogin) {
     btnHomeLogin.addEventListener("click", AbrirLogin);
 }
 
-// Asignar evento al botón de cerrar del Modal Login
 const btnCerrarLogin = document.getElementById("btn-cerrar-login");
 if (btnCerrarLogin) {
     btnCerrarLogin.addEventListener("click", CerrarLogin);
 }
 
-// =========================================================
-// 3. NAVEGACIÓN SPA (Cambio de Secciones)
-// =========================================================
+export function AbrirRegistro() {
+    const modal = document.getElementById("Modal-Registro");
+    if (modal) modal.style.display = "block";
+    CerrarLogin();
+}
 
-// --- Navegación SPA en Main.js ---
+export function CerrarRegistro() {
+    const modal = document.getElementById("Modal-Registro");
+    if (modal) modal.style.display = "none";
+}
+
+const btnHomeRegistro = document.getElementById("btn-ir-registro");
+if (btnHomeRegistro) {
+    btnHomeRegistro.addEventListener("click", AbrirRegistro);
+}
+
+const btnCerrarRegistro = document.getElementById("btn-cerrar-registro");
+if (btnCerrarRegistro) {
+    btnCerrarRegistro.addEventListener("click", CerrarRegistro);
+}
+
+
+/* --- Firebase --- */
+
+// 1. Un solo import para la configuración y las funciones de Firebase
+import { auth } from '../src/firebase-config.js';
+import {
+    signInWithEmailAndPassword,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged
+} from "firebase/auth";
+
+// --- Lógica de Login ---
+const formLogin = document.getElementById("form-login");
+if (formLogin) {
+    formLogin.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("login-email").value;
+        const pass = document.getElementById("login-pass").value;
+
+        signInWithEmailAndPassword(auth, email, pass)
+            .then((userCredential) => {
+                alert(`¡Bienvenido de vuelta, ${userCredential.user.email}!`);
+                CerrarLogin();
+                console.log("Sesión iniciada correctamente.");
+            })
+            .catch((error) => {
+                const mensaje = error.code === 'auth/invalid-credential'
+                    ? "Correo o contraseña incorrectos, chamo."
+                    : "Error: " + error.message;
+                alert(mensaje);
+            });
+    });
+}
+
+// --- Lógica de Registro ---
+const formRegistro = document.getElementById("form-registro");
+if (formRegistro) {
+    formRegistro.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = document.getElementById("registro-email").value;
+        const pass = document.getElementById("registro-pass").value;
+        const passConfirm = document.getElementById("registro-pass-confirm").value;
+
+        if (pass !== passConfirm) {
+            alert("Las contraseñas no coinciden, chamo.");
+            return;
+        }
+
+        createUserWithEmailAndPassword(auth, email, pass)
+            .then(() => {
+                alert("¡Cuenta creada exitosamente en Wolf Motors!");
+                CerrarRegistro();
+            })
+            .catch((error) => {
+                alert("Error al registrar: " + error.message);
+            });
+    });
+}
+
+/* --- Navegación SPA (Cambio de Secciones) --- */
 
 const btnJDM = document.getElementById("jdm");
 if (btnJDM) {
     btnJDM.addEventListener("click", () => {
-        // Ocultamos Home y abrimos JDM
         document.getElementById("Page-Home").style.display = "none";
         AbrirJDM();
     });
 }
 
-// Función para VOLVER AL HOME (Agrégala o actualiza la que tienes)
 export function VolverAlHome() {
-    // 1. Ocultar todas las páginas secundarias
     document.getElementById("Page-JDM").style.display = "none";
     document.getElementById("Page-USA").style.display = "none";
     document.getElementById("Page-EURO").style.display = "none";
-
-    // 2. Mostrar el Home
     const home = document.getElementById("Page-Home");
     home.style.display = "flex";
 
-    // 3. LIMPIEZA TÉCNICA: Quitamos las clases de animación de JDM
-    // Esto evita que el layout se rompa como en tu captura
     const headerJDM = document.querySelector('.Header-JDM');
     if (headerJDM) {
         headerJDM.classList.remove('subir');
@@ -78,14 +139,34 @@ export function VolverAlHome() {
     if (mainJDM) {
         mainJDM.classList.remove('visible');
     }
-
-    console.log("🏠 Home restaurado correctamente.");
 }
 
-// Cerrar modal de login si se hace clic fuera del contenido
 window.onclick = function (event) {
     const modal = document.getElementById("Modal-Login");
     if (event.target == modal) {
         CerrarLogin();
     }
 }
+
+window.onclick = function (event) {
+    const modal = document.getElementById("Modal-Registro");
+    if (event.target == modal) {
+        CerrarRegistro();
+    }
+}
+
+import { onAuthStateChanged } from "firebase/auth";
+
+onAuthStateChanged(auth, (user) => {
+    const btnLoginNavbar = document.getElementById("btn-nav-login"); // El botón de tu menú
+
+    if (user) {
+        // Si el usuario está conectado
+        console.log("Usuario activo:", user.email);
+        if (btnLoginNavbar) btnLoginNavbar.textContent = "Perfil";
+    } else {
+        // Si no hay nadie
+        console.log("No hay sesión activa.");
+        if (btnLoginNavbar) btnLoginNavbar.textContent = "Iniciar Sesión";
+    }
+});

@@ -1,0 +1,25 @@
+{
+  "name": "wolf_motors_hub",
+  "version": "1.0.0",
+  "description": "Wolf Motors Hub Single Page Dealership Experience unificando Americanos 🇺🇸 - Japoneses 🇯🇵 - Europeos 🇪🇺 en una sola SPA brutal.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoboYorbis/Wolf_Motors_Hub.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LoboYorbis/Wolf_Motors_Hub/issues"
+  },
+  "homepage": "https://github.com/LoboYorbis/Wolf_Motors_Hub#readme",
+  "dependencies": {
+    "firebase": "^12.11.0",
+    "vite": "^8.0.3"
+  }
+}

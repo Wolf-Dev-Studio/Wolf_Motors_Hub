@@ -1,27 +1,21 @@
-// =========================================================
-// 1. IMPORTACIONES Y ESTADO GLOBAL (CONFIGURACIÓN DE MOTOR)
-// =========================================================
+/* --- Importaciones --- */
 import MostrarAutos from "./Filters.js";
 import { autos } from "./Data.js";
-import { AbrirLogin, CerrarLogin } from "./Main.js"; // Agrupados en una línea
+import { AbrirLogin, CerrarLogin } from "./Main.js";
 import { VolverAlHome } from "./Main.js";
 
-// Estado de la vista actual (Filtros activos)
+/* --- Estado de la vista actual (Filtros activos) --- */
 let filtrosActivosJDM = { brand: "*", category: "*" };
 
-// =========================================================
-// 2. LÓGICA DE NEGOCIO (EL "CORE")
-// =========================================================
+/* --- Lógica de negocio (EL "CORE") --- */
 function ActualizarCatalogoJDM() {
     const resultados = MostrarAutos("japoneses", filtrosActivosJDM.brand, filtrosActivosJDM.category);
     PintarTarjetasJDM(resultados);
 }
 
-// =========================================================
-// 3. INTERFAZ DE USUARIO (RENDERIZADO Y DOM)
-// =========================================================
+/* --- Interfaz de usuario (RENDERIZADO Y DOM) --- */
 
-// Función principal para cargar la página JDM
+/* Función principal para cargar la página JDM */
 function AbrirJDM() {
     const content = document.getElementById("Page-JDM");
     const PageHome = document.getElementById("Page-Home");
@@ -29,7 +23,6 @@ function AbrirJDM() {
     if (PageHome) PageHome.style.display = "none";
     if (content) content.style.display = "block";
 
-    // Inyección de la UI: IDs cambiados a clases únicas (btn-jdm-home, btn-jdm-login)
     content.innerHTML = `
         <section class="Header-JDM" id="Header-JDM">
             <div class="Container-Header-JDM">
@@ -225,9 +218,7 @@ function generarSpecItem(label, value) {
     `;
 }
 
-// =========================================================
-// 4. CONTROLADORES DE EVENTOS (LISTENERS)
-// =========================================================
+/* --- Controladores de eventos (LISTENERS) --- */
 
 function SetupFiltrosJDM() {
     const botonesMarca = document.querySelectorAll("#Page-JDM .btn-filter-brand-JDM");
@@ -248,27 +239,25 @@ function SetupFiltrosJDM() {
 }
 
 export function SetupEventosLocalesJDM() {
-    // 1. Configuración de los botones para volver al HOME
+    /* --- Configuración de los botones para volver al HOME --- */
     const botonesHome = document.querySelectorAll(".btn-jdm-home");
 
     botonesHome.forEach(btn => {
         btn.addEventListener('click', () => {
-            // Ejecutamos la limpieza maestra definida en Main.js
             VolverAlHome();
 
-            // Opcional: Asegurarnos de que el catálogo se limpie al salir
             const catalogo = document.getElementById("contenedor-cards-jdm");
             if (catalogo) {
                 catalogo.style.display = "none";
                 catalogo.innerHTML = "";
             }
 
-            // Devolvemos el scroll al estado normal
+            /* --- Devolvemos el scroll al estado normal --- */
             document.body.style.overflow = 'auto';
         });
     });
 
-    // 2. Configuración de los botones de LOGIN dentro de JDM
+    /* --- Configuración de los botones de LOGIN dentro de JDM --- */
     const botonesLogin = document.querySelectorAll(".btn-jdm-login");
 
     botonesLogin.forEach(btn => {
@@ -277,7 +266,6 @@ export function SetupEventosLocalesJDM() {
         });
     });
 
-    console.log("🛠️ Eventos de JDM cargados (Home & Login).");
 }
 
 function SearchButton() {
@@ -293,7 +281,7 @@ function SearchButton() {
     }
 }
 
-// Disparador principal (Navegación Home -> JDM)
+/* --- Disparador principal (Navegación Home -> JDM) --- */
 const btnJDM = document.getElementById("jdm");
 if (btnJDM) {
     btnJDM.addEventListener('click', () => {
@@ -301,8 +289,7 @@ if (btnJDM) {
     });
 }
 
-// =========================================================
-// 5. EXPORTACIONES (APIs PÚBLICAS DEL MÓDULO)
-// =========================================================
+/* --- Exportaciones (APIs públicas del módulo) --- */
+
 export default AbrirJDM;
 
