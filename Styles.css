@@ -489,6 +489,24 @@ input:focus {
     transition: background-color 0.7s ease;
 }
 
+.btn-logout {
+    border: 1px solid #28a745 !important;
+    color: #28a745 !important;
+    position: relative;
+}
+
+.btn-logout::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 10px;
+    height: 10px;
+    background-color: #28a745;
+    border-radius: 50%;
+    box-shadow: 0 0 5px #28a745;
+}
+
 /* --- Fin New Hub Home --- */
 
 /* --- JDM --- */
@@ -954,6 +972,29 @@ input:focus {
     transition: box-shadow 0.3s ease;
 }
 
+.btn-comprar-JDM {
+    color: var(--wolf-jdm-secondary);
+    border: 1px solid var(--wolf-jdm-secondary);
+    border-radius: 10px;
+    cursor: pointer;
+    width: 9rem;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
+}
+
+.btn-comprar-JDM:hover {
+    background-color: var(--wolf-jdm-quaternary);
+    color: var(--wolf-jdm-primary);
+    border: none;
+    box-shadow: 0 0 15px var(--wolf-jdm-quaternary);
+    transition: color 0.7s ease;
+    transition: background-color 0.7s ease;
+    transition: box-shadow 0.3s ease;
+}
+
 .btn-cerrar-catalogo-JDM {
     position: absolute;
     top: 20px;
@@ -970,6 +1011,11 @@ input:focus {
 .btn-cerrar-catalogo-JDM:hover {
     color: var(--wolf-jdm-quaternary);
     transform: scale(1.1);
+}
+
+.card-auto-btn-JDM {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .modal-overlay-JDM {
@@ -1090,6 +1136,77 @@ input:focus {
     width: 7rem;
     border-radius: 20px;
     cursor: pointer;
+}
+
+.modal-Compra-JDM {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.Modal-Compra-JDM-content {
+    background-color: var(--wolf-jdm-primary);
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 700px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: scaleUp 0.3s ease-out;
+    color: var(--wolf-jdm-quaternary);
+}
+
+.Modal-Compra-JDM-title {
+    color: var(--wolf-jdm-secondary);
+    margin: 0 0 20px 0;
+    font-family: var(--Font-JDM-Title);
+    font-weight: var(--Weight-JDM-Title);
+    text-align: center;
+}
+
+.Modal-Compra-JDM-body {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.Modal-Compra-JDM-body p {
+    font-family: var(--Font-JDM-Subtitle);
+    font-weight: var(--Weight-JDM-Subtitle);
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+
+.Modal-Compra-JDM-footer {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.Modal-Compra-JDM-image {
+    display: flex;
+    flex-direction: column;
+}
+
+.Modal-Compra-JDM-image img {
+    width: auto;
+    max-height: 24rem;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.Modal-Compra-JDM-image-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 /* --- Fin JDM --- */
