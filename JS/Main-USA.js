@@ -1,305 +1,348 @@
+/* --- Importaciones --- */
 import MostrarAutos from "./Filters.js";
 import { autos } from "./Data.js";
+import { AbrirLogin, CerrarLogin, VolverAlHome } from "./Main.js";
+import Swal from "sweetalert2";
+import { auth } from '../src/firebase-config.js';
+import { ActualizarInterfaz } from './Main.js';
 
-// 1. FUNCIÓN PARA PINTAR LAS TARJETAS (REDISEÑADA PARA EVENTOS)
-export function PintarTarjetas(lista) {
-    const contenedor = document.getElementById("contenedor-cards-usa");
+/* --- Estado de la vista actual (Filtros activos) --- */
+let filtrosActivosUSA = { brand: "*", category: "*" };
 
-    if (!contenedor) {
-        console.error("No encontré el contenedor 'contenedor-cards-usa'");
-        return;
-    }
-
-    contenedor.innerHTML = ""; // Limpiamos el contenedor antes de pintar
-
-    lista.forEach(auto => {
-        // Creamos el elemento div de la tarjeta
-        const card = document.createElement('div');
-        card.classList.add('card-auto');
-
-        // Inyectamos el contenido base
-        card.innerHTML = `
-            <img class="img-card-auto" src="${auto.img}" alt="${auto.modelo}">
-            <div class="info-car">
-                <h3>${auto.marca} ${auto.modelo}</h3>
-                <p class="precio">${auto.precio}</p>
-                <button class="btn-ver-detalles">Ver Detalles</button>
-            </div>
-        `;
-
-        // ASIGNAR EVENTO AL BOTÓN DE CADA TARJETA
-        const btnDetalles = card.querySelector('.btn-ver-detalles');
-        btnDetalles.addEventListener('click', () => {
-            abrirDetallesWolf(auto); // Abrimos el modal con la info del auto
-        });
-
-        contenedor.appendChild(card);
-    });
+/* --- Lógica de negocio (EL "CORE") --- */
+function ActualizarCatalogoUSA() {
+    const resultados = MostrarAutos("americanos", filtrosActivosUSA.brand, filtrosActivosUSA.category);
+    PintarTarjetasUSA(resultados);
 }
 
-// 2. FUNCIÓN PARA EL MODAL (INFO PROFUNDA) - TODO POR JS
-function abrirDetallesWolf(coche) {
-    let modalContainer = document.getElementById('wolf-modal-container');
-
-    if (!modalContainer) {
-        modalContainer = document.createElement('div');
-        modalContainer.id = 'wolf-modal-container';
-        document.body.appendChild(modalContainer);
-    }
-
-    // Inyectamos el diseño del modal
-    modalContainer.innerHTML = `
-        <div id="wolf-modal" class="modal-overlay">
-            <div class="modal-content">
-                <button id="close-modal" class="close-btn">&times;</button>
-                
-                <div class="modal-grid">
-                    <div class="modal-image-container">
-                        <img src="${coche.img}" alt="${coche.marca} ${coche.modelo}">
-                        <div class="info-car">
-                            <h2 class="wolf-title">${coche.marca} ${coche.modelo}</h2>
-                            <p class="wolf-price">${coche.precio}</p>
-                        </div>
-                    </div>
-                    
-                    <div class="modal-specs">
-                        <div class="specs-list">
-                            <div class="spec-item">
-                                <span class="spec-label">Motor:</span>
-                                <span class="spec-value">${coche.specs}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Tipo de motor:</span>
-                                <span class="spec-value">${coche.detail.tipo_motor}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Aceleración:</span>
-                                <span class="spec-value">${coche.detail.aceleracion}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Torque:</span>
-                                <span class="spec-value">${coche.detail.torque}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Transmisión:</span>
-                                <span class="spec-value">${coche.detail.transmision}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Tipo de transmisión:</span>
-                                <span class="spec-value">${coche.detail.tipo_transmision}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Frenos:</span>
-                                <span class="spec-value">${coche.detail.frenos}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Consumo:</span>
-                                <span class="spec-value">${coche.detail.consumo}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Medidas:</span>
-                                <span class="spec-value">${coche.detail.medidas}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Seguridad:</span>
-                                <span class="spec-value">${coche.detail.seguridad}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Airbags:</span>
-                                <span class="spec-value">${coche.detail.airbags}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Extra:</span>
-                                <span class="spec-value">${coche.detail.extra}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Categoría:</span>
-                                <span class="spec-value">${coche.categoria}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-
-    // Lógica para cerrar el modal
-    const btnCerrar = document.getElementById('close-modal');
-    const fondoModal = document.getElementById('wolf-modal');
-
-    btnCerrar.onclick = () => modalContainer.innerHTML = '';
-    fondoModal.onclick = (e) => {
-        if (e.target.id === 'wolf-modal') modalContainer.innerHTML = '';
-    };
-}
-
-// 3. GESTIÓN DE FILTROS
-let filtrosActivos = {
-    brand: "*",
-    category: "*"
-};
-
-function SetupFiltros() {
-    // Manejar botones de MARCA
-    const botonesMarca = document.querySelectorAll(".btn-filter-brand");
-    botonesMarca.forEach(boton => {
-        boton.addEventListener("click", (e) => {
-            filtrosActivos.brand = e.target.dataset.value;
-            ActualizarCatalogo();
-        });
-    });
-
-    // Manejar botones de CATEGORÍA
-    const botonesCat = document.querySelectorAll(".btn-filter-category");
-    botonesCat.forEach(boton => {
-        boton.addEventListener("click", (e) => {
-            filtrosActivos.category = e.target.dataset.value;
-            ActualizarCatalogo();
-        });
-    });
-}
-
-function ActualizarCatalogo() {
-    // Filtramos usando tu lógica de Filters.js
-    const resultados = MostrarAutos("americanos", filtrosActivos.brand, filtrosActivos.category);
-    // Pintamos de nuevo
-    PintarTarjetas(resultados);
-}
-
-// 4. LÓGICA DE NAVEGACIÓN Y PÁGINA USA
-const btnUSA = document.getElementById("usa");
-if (btnUSA) {
-    btnUSA.addEventListener('click', () => {
-        AbrirUSA();
-    });
-}
-
-function AbrirUSA() {
+/* --- Interfaz de usuario (RENDERIZADO Y DOM) --- */
+export default function AbrirUSA() {
     const content = document.getElementById("Page-USA");
     const PageHome = document.getElementById("Page-Home");
 
     if (PageHome) PageHome.style.display = "none";
-    if (content) content.style.display = "block";
+    if (!content) return;
+
+    content.style.display = "block";
 
     content.innerHTML = `
-    <section class="Body-USA">
-        <section class="header-USA">
-            <div class="header-USA-content">
-                <h1 class="Title-Header-USA">Wolf Automobiles</h1>
-                <div class="header-USA-content-buttons">
-                    <button id="btn-back-home-usa">Home</button>
-                </div>
+        <section class="Header-USA" id="Header-USA">
+            <div class="Container-Header-USA">
+                <button class="Button-Nav1-USA btn-usa-home">Home</button>
+                <button class="Button-Nav2-USA btn-usa-login">Login</button>
+                <button class="Button-Start-USA" id="btn-start-usa">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                        <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                    </svg>
+                </button>
             </div>
+            <div class="Container-Text-USA">
+                <h1><em>Welcome To THE USA</em></h1>
+            </div>
+            <img class="IMG-Container-USA" src="./Assent/USA/" alt="USA Hub">
         </section>
-
-        <section class="Bienvenida-USA">
-            <div class="IMG-Bienvenida">
-                <img class="img-principal" src="./Assent/US/Dodge-Home.jpg" alt="Supra Home">
-            </div>
-            <div class="Text-Bienvenida">
-                <h2 class="Title-Container-Car-USA">Wolf Motors USA</h2>
-                <p class="Parraf-Container-Car-USA">Bienvenido a Wolf Automobile, el santuario donde el músculo americano se encuentra con la ingeniería de vanguardia. 
-                Aquí no vendemos solo transporte; entregamos el rugido de Detroit, la fuerza bruta de los bloques V8 y la libertad indomable de la carretera abierta. 
-                Desde los legendarios drag strips hasta las rutas transcontinentales, nuestra selección representa el pico de la potencia estadounidense. 
-                Si buscas torque que mueva la tierra, estás en el lugar correcto.</p>
-            </div>
+        
+        <section class="Main-USA" id="Main-USA">
+             <div class="Container-Nav-USA">
+                <button class="Button-Nav-USA btn-usa-home">Home</button>
+                <h1>Wolf Automobile</h1>
+                <button class="Button-Nav-USA btn-usa-login">Login</button>
+             </div>
+             <div class="Container-Main-USA">
+                <div class="Container-Title-USA">
+                    <h1><em>MÚSCULO Y POTENCIA PURA</em></h1>
+                    <p class="Container-Parrafo-USA">Estados Unidos no solo ensambla autos; forja carácter sobre ruedas. Desde los V8 rugiendo en las rectas de Detroit hasta los clásicos que definieron una era de rebeldía y libertad. Aquí no hay sutilezas, solo caballos de fuerza brutos, tracción trasera y el sonido inconfundible del poder americano. Bienvenidos a la cuna del Muscle Car.</p>
+                </div>
+                <div class="Container-IMG-USA">
+                    <img src="./Assent/USA/Dodge-Home.jpg" alt="Historia USA">
+                </div>
+             </div>
+             <div class="Container-Text-Tarjetas-USA">
+                <h2>Conoce a las leyendas</h2>
+             </div>
+             
+             <section class="Container-Cards-USA">
+                ${generarBotonFiltro("Ford")}
+                ${generarBotonFiltro("Chevrolet")}
+                ${generarBotonFiltro("Dodge")}
+                ${generarBotonFiltro("Jeep")}
+                ${generarBotonFiltro("Cadillac")}
+                ${generarBotonFiltro("Pontiac")}
+                ${generarBotonFiltro("GMC")}
+                ${generarBotonFiltro("Chrysler")}
+             </section>
+             
+             <section class="Container-Footer-USA">
+                <div class="Container-Footer-USA-1">
+                    <div class="Container-Footer-USA-1-1">
+                        <h1>Wolf Motors Hub</h1>
+                        <p>El mundo del motor en un solo lugar</p>
+                    </div>
+                    <div class="Container-Footer-USA-1-2">
+                        <ul>
+                            <li>Inicio</li>
+                            <li>Wolf Motor Japan</li>
+                            <li>Wolf Automobile</li>
+                            <li>Wolf Dealer</li>
+                        </ul>
+                    </div>
+                    <div class="Container-Footer-USA-1-3">
+                        <h3>Contacto</h3>
+                        <a href="#">Instagram</a>
+                        <a href="#">Linkedin</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">Correo</a>
+                    </div>
+                 </div>
+                 <div class="Container-Footer-USA-2">
+                    <p>© 2026 Wolf Motor Hub. Desarrollado por Yorbis Lobo.</p>
+                 </div>
+             </section>
         </section>
+        <section class="ContainerCar-USA" id="contenedor-cards-usa" style="display: none;"></section>
+    `;
 
-        <section class="History-Car-USA">
-            <div class="Div-History-Text-USA">
-                <h2>La Forja de un Imperio: Del Hierro al Asfalto</h2>
-                <p class="Text-History-USA">La historia de Wolf Automobile nace de la obsesión por el torque y la velocidad pura en su estado más visceral. 
-                En una era donde el acero dominaba las calles y la cilindrada lo era todo, nos propusimos curar los ejemplares más feroces de la industria norteamericana. 
-                Nuestra trayectoria está marcada por el respeto a los clásicos que definieron a una generación de rebeldes y el hambre por las nuevas leyendas que hoy desafían los límites de la física con tecnología de competición. 
-                No solo importamos coches; preservamos un legado de potencia que se siente en el pecho cada vez que giras la llave.</p>
+    SetupFiltrosUSA();
+    SetupEventosLocalesUSA();
+    SearchButton();
+    ObservadorUsuario();
+    ActualizarInterfaz(auth.currentUser);
+}
+
+function generarBotonFiltro(marca) {
+    return `
+        <div class="Container-Tarjetas-USA">
+            <img class="img-tarjeta-USA" src="./Assent/USA/${marca}.jpg" alt="${marca}">
+            <div class="Container-Tarjetas-USA-Hover">
+                <span>${marca}</span>
+                <button class="btn-filter-brand-USA" data-value="${marca}">Ver</button>
             </div>
-            <div class="Div-USA">
-                <div class="Div-History-IMG-USA"> 
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-USA">1964: El Nacimiento del Pony Car. Ford presenta el Mustang, creando la categoría "Pony Car": vehículos deportivos, compactos y asequibles que democratizaron el rendimiento y definieron la cultura juvenil de toda una generación.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-USA">1966: La Conquista de Le Mans. El Ford GT40 logra el histórico 1-2-3 en las 24 Horas de Le Mans, demostrando al mundo que la ingeniería americana podía vencer a la élite europea en su propio terreno.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-USA">1970: El Apogeo del Big Block. La era del músculo alcanza su pico con leyendas como el Chevelle SS 454, máquinas de cilindrada masiva diseñadas para dominar las calles con un torque brutal y presencia imponente.</p>
+        </div>
+    `;
+}
+
+function PintarTarjetasUSA(lista) {
+    const contenedor = document.getElementById("contenedor-cards-usa");
+    if (!contenedor) return;
+
+    contenedor.style.display = "grid";
+    contenedor.innerHTML = "";
+
+    const btnCerrarCatalogo = document.createElement('button');
+    btnCerrarCatalogo.classList.add('btn-cerrar-catalogo-USA');
+    btnCerrarCatalogo.innerHTML = "&times;";
+
+    btnCerrarCatalogo.addEventListener('click', () => {
+        contenedor.style.display = "none";
+        document.body.style.overflow = 'auto';
+        contenedor.innerHTML = "";
+    });
+
+    contenedor.appendChild(btnCerrarCatalogo);
+
+    lista.forEach(auto => {
+        const card = document.createElement('div');
+        card.classList.add('card-auto-USA');
+
+        card.innerHTML = `
+            <img class="img-card-auto-USA" src="${auto.img}" alt="${auto.modelo}">
+            <div class="info-car-USA">
+                <h3>${auto.marca} ${auto.modelo}</h3>
+                <p class="precio-USA">${auto.precio}</p>
+                <div class="card-auto-btn-USA">
+                    <button class="btn-ver-detalles-USA">Ver Detalles</button>
+                    <button class="btn-comprar-USA">Comprar</button>
                 </div>
-                <div class="Divisor-History-USA">
-                </div>
-                <div class="Div-History-IMG-USA">
-                    <img src="./Assent/JDM/AE86.jpg" alt="">
-                    <p class="Text-History-2-USA">1987: El Regreso del Músculo Negro. Buick lanza el GNX, un V6 Turbo apodado "el coche de Darth Vader" que demostró que el ingenio tecnológico podía humillar a los exóticos italianos en el cuarto de milla.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-USA">1992: El Veneno Crudo de Detroit. Nace el Dodge Viper RT/10, un monstruo con motor V10 y sin ayudas electrónicas que se convirtió en la interpretación más visceral, pura y peligrosa del sueño americano.</p>
-                    <img src="./Assent/JDM/NSX.jpg" alt="">
-                    <p class="Text-History-2-USA">2005: La Revolución Retro-Futurista. Ford revive el diseño clásico con el Mustang de quinta generación, disparando una nueva guerra de caballos de fuerza entre Detroit y reavivando la pasión por los Muscle Cars modernos.</p>
-                </div>
-                <div class="Divisor-History-USA">
-                </div>
-                <div class="Div-History-IMG-USA">
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-USA">2015: La Invasión Hellcat. Dodge sacude la industria con el motor Hellcat de 707 HP, poniendo cifras de potencia de hiperdeportivos al alcance del público general y redefiniendo los límites de la producción masiva.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-USA">2020: La Revolución del Motor Central. El Corvette C8 rompe 60 años de tradición al adoptar una configuración de motor central, transformándose en un "asesino de gigantes" capaz de competir con la élite europea.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-USA">2024: El Último Grito del V8. El Dodge Demon 170 se despide con 1,025 HP de fábrica, marcando el final legendario de la era de combustión interna pura con el coche de aceleración más rápido del mundo.</p>
+            </div>
+        `;
+
+        const btnDetalles = card.querySelector('.btn-ver-detalles-USA');
+        const btnComprar = card.querySelector('.btn-comprar-USA');
+
+        btnDetalles.addEventListener('click', () => abrirDetallesWolfUSA(auto));
+        btnComprar.addEventListener('click', () => AbrirCompraUSA(auto));
+
+        contenedor.appendChild(card);
+    });
+
+    document.body.style.overflow = 'hidden';
+}
+
+function abrirDetallesWolfUSA(coche) {
+    const modalPrevio = document.getElementById('wolf-modal-container-usa');
+    if (modalPrevio) modalPrevio.remove();
+
+    const modalContainer = document.createElement('div');
+    modalContainer.id = 'wolf-modal-container-usa';
+    document.body.appendChild(modalContainer);
+
+    modalContainer.innerHTML = `
+        <div id="wolf-modal-usa" class="modal-overlay-USA">
+            <div class="modal-content-USA">
+                <button id="close-modal-usa" class="close-btn-USA">&times;</button>
+                <div class="modal-grid-USA">
+                    <div class="modal-image-container-USA">
+                        <img src="${coche.img}" alt="${coche.marca} ${coche.modelo}">
+                        <div class="info-car-USA">
+                            <h2 class="wolf-title-USA">${coche.marca} ${coche.modelo}</h2>
+                            <p class="wolf-price-USA">${coche.precio}</p>
+                        </div>
+                    </div>
+                    <div class="modal-specs-USA">
+                        <div class="specs-list-USA">
+                            ${generarSpecItem("Motor", coche.specs)}
+                            ${generarSpecItem("Tipo de motor", coche.detail?.tipo_motor)}
+                            ${generarSpecItem("Aceleración", coche.detail?.aceleracion)}
+                            ${generarSpecItem("Torque", coche.detail?.torque)}
+                            ${generarSpecItem("Transmisión", coche.detail?.transmision)}
+                            ${generarSpecItem("Tipo de transmisión", coche.detail?.tipo_transmision)}
+                            ${generarSpecItem("Frenos", coche.detail?.frenos)}
+                            ${generarSpecItem("Consumo", coche.detail?.consumo)}
+                            ${generarSpecItem("Medidas", coche.detail?.medidas)}
+                            ${generarSpecItem("Seguridad", coche.detail?.seguridad)}
+                            ${generarSpecItem("Airbags", coche.detail?.airbags)}
+                            ${generarSpecItem("Extra", coche.detail?.extra)}
+                            ${generarSpecItem("Categoría", coche.categoria)}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        </section>
-
-        <section class="container-cars-USA">
-            <div class="div-container-cars-USA">
-                <h2 class="Title-Container-Car-USA">Nuestros Autos</h2>
-                <div class="container-cars-filters-USA">
-                    <button class="btn-filter-brand" data-value="*">Todos</button>
-                    <button class="btn-filter-brand" data-value="Jeep">Jeep</button>
-                    <button class="btn-filter-brand" data-value="Ford">Ford</button>
-                    <button class="btn-filter-brand" data-value="Chevrolet">Chevrolet</button>
-                    <button class="btn-filter-brand" data-value="Dodge">Dodge</button>
-                    <button class="btn-filter-brand" data-value="Ram">Ram</button>
-                    <button class="btn-filter-brand" data-value="Hummer">Hummer</button>
-                    <button class="btn-filter-brand" data-value="Shelby">Shelby</button>
-                    <button class="btn-filter-brand" data-value="Cadillac">Cadillac</button>
-                    <button class="btn-filter-brand" data-value="Corvette">Corvette</button>
-                </div>
-                <div class="container-cars-filters-buttons">
-                    <a class="btn-filter-category" data-value="Sedan">Sedan</a>
-                    <a class="btn-filter-category" data-value="SUV">SUV</a>
-                    <a class="btn-filter-category" data-value="Pickup">Pickup</a>
-                    <a class="btn-filter-category" data-value="Muscle Car">Muscle Car</a>
-                    <a class="btn-filter-category" data-value="SuperCar">SuperCar</a>
-                </div>
-            </div>
-            <div class="Divisor-USA"></div>
-            <div class="container-cars-cards" id="contenedor-cards-usa"></div>
-        </section>       
-
-        <section class="Footer-USA">
-            <div class="Footer-Content">
-                <h2 class="text-Footer-USA"><em>WOLF MOTOR HUB</em>: DONDE CADA CABALLO DE FUERZA TIENE UNA HISTORIA.</h2>
-            </div>
-            <div class="Divisor-Footer-USA"></div>
-            <div class="Footer-Content-USA">
-                <h2 class="text-Footer-USA"><em>CONTACTO</em></h2>
-                <ul>
-                    <li class="Text-Footer-USA">Detroit Studio</li>
-                    <li class="Text-Footer-USA">+1 (555) WOLF-AUTO</li>
-                    <li class="Text-Footer-USA">info@wolf-motor-hub.com</li>
-                </ul>
-            </div>
-        </section>
-    </section>
     `;
 
-    // 5. INICIALIZACIÓN DE EVENTOS TRAS CARGAR EL HTML
-    SetupFiltros();
-    PintarTarjetas(autos.americanos);
+    const btnCerrar = modalContainer.querySelector('#close-modal-usa');
+    const fondoModal = modalContainer.querySelector('#wolf-modal-usa');
+    const cerrarModal = () => modalContainer.remove();
 
-    // Evento para volver al Home (si tienes la función AbrirHome definida globalmente)
-    const btnBack = document.getElementById("btn-back-home-usa");
-    if (btnBack) {
-        btnBack.onclick = () => window.location.reload(); // O tu función AbrirHome()
+    btnCerrar.addEventListener('click', cerrarModal);
+    fondoModal.addEventListener('click', (e) => {
+        if (e.target === fondoModal) cerrarModal();
+    });
+}
+
+function AbrirCompraUSA(auto) {
+    let modalExistente = document.getElementById("Container-compra-USA");
+    if (modalExistente) modalExistente.remove();
+
+    const numeroLimpio = auto.precio.replace(/[^0-9.-]+/g, "");
+    const precioBase = parseFloat(numeroLimpio);
+    const precioConImpuestos = precioBase * 1.30;
+    const formatoMoneda = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    const precioFinalFormateado = formatoMoneda.format(precioConImpuestos);
+
+    const modalContainer = document.createElement('div');
+    modalContainer.id = 'Container-compra-USA';
+    modalContainer.className = 'modal-Compra-USA';
+    document.body.appendChild(modalContainer);
+
+    modalContainer.innerHTML = `
+        <div class="Modal-Compra-USA-content">
+            <button id="btn-cerrar-usa-x" class="close-btn-USA">&times;</button>
+            <div class="Modal-Compra-USA-image">
+                <img src="${auto.img}" alt="${auto.marca} ${auto.modelo}">
+                <div class="Modal-Compra-USA-image-info">
+                    <h2 class="Modal-Compra-USA-title">${auto.marca} ${auto.modelo}</h2>
+                    <p class="Modal-Compra-USA-price-base">Precio FOB: ${auto.precio}</p>
+                    <p class="Modal-Compra-USA-tax">+ 30% Impuestos y Envíos</p>
+                    <p class="Modal-Compra-USA-total">Total: ${precioFinalFormateado}</p>
+                </div>
+            </div>
+            <div class="Modal-Compra-USA-header">
+                <h2 class="Modal-Compra-USA-title">Confirmar Compra USA</h2>
+            </div>
+            <div class="Modal-Compra-USA-body">
+                <p>¿Confirma que desea procesar la adquisición del <strong>${auto.marca} ${auto.modelo}</strong>?</p>
+                <p class="text-small">Al proceder, aceptas las políticas de importación de Wolf Automobile.</p>
+            </div>
+            <div class="Modal-Compra-USA-footer">
+                <button id="btn-confirmar-usa" class="btn-comprar-USA">Procesar Compra</button>
+            </div>
+        </div>
+    `;
+
+    const btnCerrarX = modalContainer.querySelector('#btn-cerrar-usa-x');
+    const btnConfirmar = modalContainer.querySelector('#btn-confirmar-usa');
+    const cerrarModal = () => modalContainer.remove();
+
+    btnCerrarX.addEventListener('click', cerrarModal);
+    btnConfirmar.addEventListener('click', () => {
+        cerrarModal();
+        Swal.fire({
+            title: '¡Compra procesada!',
+            text: 'Su compra ha sido exitosa.',
+            icon: 'success',
+            confirmButtonColor: '#28a745',
+            background: '#1e1e1e',
+            color: '#fff',
+        });
+    });
+    modalContainer.addEventListener('click', (e) => {
+        if (e.target === modalContainer) cerrarModal();
+    });
+}
+
+function generarSpecItem(label, value) {
+    if (!value || value === "undefined") return "";
+    return `
+        <div class="spec-item-USA">
+            <span class="spec-label-USA">${label}:</span>
+            <span class="spec-value-USA">${value}</span>
+        </div>
+    `;
+}
+
+function SetupFiltrosUSA() {
+    const contenedor = document.getElementById("Page-USA");
+    if (!contenedor) return;
+
+    const botonesMarca = contenedor.querySelectorAll(".btn-filter-brand-USA");
+    botonesMarca.forEach(boton => {
+        boton.addEventListener("click", (e) => {
+            filtrosActivosUSA.brand = e.target.dataset.value;
+            ActualizarCatalogoUSA();
+        });
+    });
+
+    const botonesCat = contenedor.querySelectorAll(".btn-filter-category-USA");
+    botonesCat.forEach(boton => {
+        boton.addEventListener("click", (e) => {
+            filtrosActivosUSA.category = e.target.dataset.value;
+            ActualizarCatalogoUSA();
+        });
+    });
+}
+
+export function SetupEventosLocalesUSA() {
+    const botonesHome = document.querySelectorAll(".btn-usa-home");
+    botonesHome.forEach(btn => {
+        btn.addEventListener('click', () => {
+            VolverAlHome();
+            const catalogo = document.getElementById("contenedor-cards-usa");
+            if (catalogo) {
+                catalogo.style.display = "none";
+                catalogo.innerHTML = "";
+            }
+            document.body.style.overflow = 'auto';
+        });
+    });
+
+    const botonesLogin = document.querySelectorAll(".btn-usa-login");
+    botonesLogin.forEach(btn => btn.addEventListener('click', AbrirLogin));
+}
+
+function SearchButton() {
+    const btnStart = document.querySelector('.Button-Start-USA');
+    const heroSection = document.querySelector('.Header-USA');
+    const historiaSection = document.querySelector('.Main-USA');
+
+    if (btnStart && heroSection) {
+        btnStart.addEventListener('click', () => {
+            heroSection.classList.add('subir');
+            if (historiaSection) historiaSection.classList.add('visible');
+        });
     }
 }
 
-export default AbrirUSA;
+const btnUSA = document.getElementById("usa");
+if (btnUSA) btnUSA.addEventListener('click', AbrirUSA);
 

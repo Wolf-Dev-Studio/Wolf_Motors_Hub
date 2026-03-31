@@ -1,117 +1,208 @@
+/* --- Importaciones --- */
 import MostrarAutos from "./Filters.js";
 import { autos } from "./Data.js";
+import { AbrirLogin, CerrarLogin, VolverAlHome } from "./Main.js";
+import Swal from "sweetalert2";
+import { auth } from '../src/firebase-config.js';
+import { ActualizarInterfaz } from './Main.js';
 
-// 1. FUNCIÓN PARA PINTAR LAS TARJETAS 
-export function PintarTarjetasEURO(lista) { // <-- Le cambiamos el nombre para que no choque con USA
+/* --- Estado de la vista actual (Filtros activos) --- */
+let filtrosActivosEURO = { brand: "*", category: "*" };
+
+/* --- Lógica de negocio (EL "CORE") --- */
+function ActualizarCatalogoEURO() {
+    const resultados = MostrarAutos("europeos", filtrosActivosEURO.brand, filtrosActivosEURO.category);
+    PintarTarjetasEURO(resultados);
+}
+
+/* --- Interfaz de usuario (RENDERIZADO Y DOM) --- */
+export default function AbrirEURO() {
+    const content = document.getElementById("Page-EURO");
+    const PageHome = document.getElementById("Page-Home");
+
+    if (PageHome) PageHome.style.display = "none";
+    if (!content) return;
+
+    content.style.display = "block";
+
+    content.innerHTML = `
+        <section class="Header-EURO" id="Header-EURO">
+            <div class="Container-Header-EURO">
+                <button class="Button-Nav1-EURO btn-euro-home">Home</button>
+                <button class="Button-Nav2-EURO btn-euro-login">Login</button>
+                <button class="Button-Start-EURO" id="btn-start-euro">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-play" viewBox="0 0 16 16">
+                        <path d="M10.804 8 5 4.633v6.734zm.792-.696a.802.802 0 0 1 0 1.392l-6.363 3.692C4.713 12.69 4 12.345 4 11.692V4.308c0-.653.713-.998 1.233-.696z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="Container-Text-EURO">
+                <h1><em>Welcome To EUROPE</em></h1>
+            </div>
+            <img class="IMG-Container-EURO" src="./Assent/EURO/Hub.jpg" alt="EURO Hub">
+        </section>
+        
+        <section class="Main-EURO" id="Main-EURO">
+             <div class="Container-Nav-EURO">
+                <button class="Button-Nav-EURO btn-euro-home">Home</button>
+                <h1>Wolf Dealer</h1>
+                <button class="Button-Nav-EURO btn-euro-login">Login</button>
+             </div>
+             <div class="Container-Main-EURO">
+                <div class="Container-Title-EURO">
+                    <h1><em>PRECISIÓN, LUJO Y VELOCIDAD</em></h1>
+                    <p class="Container-Parrafo-EURO">Europa es la cuna del automovilismo deportivo y de lujo. Desde la ingeniería milimétrica alemana en la Autobahn, hasta la pasión desbordante del diseño italiano. En Wolf Dealer, cada vehículo representa el pináculo de la aerodinámica y el estatus. Prepárate para conducir obras de arte diseñadas para desafiar los límites de la física.</p>
+                </div>
+                <div class="Container-IMG-EURO">
+                    <img src="./Assent/EURO/EURO-Bienvenida.jpg" alt="Historia EURO">
+                </div>
+             </div>
+             <div class="Container-Text-Tarjetas-EURO">
+                <h2>Conoce a las leyendas</h2>
+             </div>
+             
+             <section class="Container-Cards-EURO">
+                ${generarBotonFiltro("BMW")}
+                ${generarBotonFiltro("Mercedes-Benz")}
+                ${generarBotonFiltro("Audi")}
+                ${generarBotonFiltro("Porsche")}
+                ${generarBotonFiltro("Volkswagen")}
+                ${generarBotonFiltro("Ferrari")}
+                ${generarBotonFiltro("Lamborghini")}
+                ${generarBotonFiltro("Aston Martin")}
+             </section>
+             
+             <section class="Container-Footer-EURO">
+                <div class="Container-Footer-EURO-1">
+                    <div class="Container-Footer-EURO-1-1">
+                        <h1>Wolf Motors Hub</h1>
+                        <p>El mundo del motor en un solo lugar</p>
+                    </div>
+                    <div class="Container-Footer-EURO-1-2">
+                        <ul>
+                            <li>Inicio</li>
+                            <li>Wolf Motor Japan</li>
+                            <li>Wolf Automobile</li>
+                            <li>Wolf Dealer</li>
+                        </ul>
+                    </div>
+                    <div class="Container-Footer-EURO-1-3">
+                        <h3>Contacto</h3>
+                        <a href="#">Instagram</a>
+                        <a href="#">Linkedin</a>
+                        <a href="#">GitHub</a>
+                        <a href="#">Correo</a>
+                    </div>
+                 </div>
+                 <div class="Container-Footer-EURO-2">
+                    <p>© 2026 Wolf Motor Hub. Desarrollado por Yorbis Lobo.</p>
+                 </div>
+             </section>
+        </section>
+        <section class="ContainerCar-EURO" id="contenedor-cards-euro" style="display: none;"></section>
+    `;
+
+    SetupFiltrosEURO();
+    SetupEventosLocalesEURO();
+    SearchButton();
+    ObservadorUsuario();
+    ActualizarInterfaz(auth.currentUser);
+}
+
+function generarBotonFiltro(marca) {
+    return `
+        <div class="Container-Tarjetas-EURO">
+            <img class="img-tarjeta-EURO" src="./Assent/EURO/${marca}.jpg" alt="${marca}">
+            <div class="Container-Tarjetas-EURO-Hover">
+                <span>${marca}</span>
+                <button class="btn-filter-brand-EURO" data-value="${marca}">Ver</button>
+            </div>
+        </div>
+    `;
+}
+
+function PintarTarjetasEURO(lista) {
     const contenedor = document.getElementById("contenedor-cards-euro");
+    if (!contenedor) return;
 
-    if (!contenedor) {
-        console.error("No encontré el contenedor 'contenedor-cards-euro'");
-        return;
-    }
-
+    contenedor.style.display = "grid";
     contenedor.innerHTML = "";
+
+    const btnCerrarCatalogo = document.createElement('button');
+    btnCerrarCatalogo.classList.add('btn-cerrar-catalogo-EURO');
+    btnCerrarCatalogo.innerHTML = "&times;";
+
+    btnCerrarCatalogo.addEventListener('click', () => {
+        contenedor.style.display = "none";
+        document.body.style.overflow = 'auto';
+        contenedor.innerHTML = "";
+    });
+
+    contenedor.appendChild(btnCerrarCatalogo);
 
     lista.forEach(auto => {
         const card = document.createElement('div');
-        card.classList.add('card-auto');
+        card.classList.add('card-auto-EURO');
 
         card.innerHTML = `
-            <img class="img-card-auto" src="${auto.img}" alt="${auto.modelo}">
-            <div class="info-car">
+            <img class="img-card-auto-EURO" src="${auto.img}" alt="${auto.modelo}">
+            <div class="info-car-EURO">
                 <h3>${auto.marca} ${auto.modelo}</h3>
-                <p class="precio">${auto.precio}</p>
-                <button class="btn-ver-detalles">Ver Detalles</button>
+                <p class="precio-EURO">${auto.precio}</p>
+                <div class="card-auto-btn-EURO">
+                    <button class="btn-ver-detalles-EURO">Ver Detalles</button>
+                    <button class="btn-comprar-EURO">Comprar</button>
+                </div>
             </div>
         `;
 
-        const btnDetalles = card.querySelector('.btn-ver-detalles');
-        btnDetalles.addEventListener('click', () => {
-            abrirDetallesWolfEURO(auto);
-        });
+        const btnDetalles = card.querySelector('.btn-ver-detalles-EURO');
+        const btnComprar = card.querySelector('.btn-comprar-EURO');
+
+        btnDetalles.addEventListener('click', () => abrirDetallesWolfEURO(auto));
+        btnComprar.addEventListener('click', () => AbrirCompraEURO(auto));
 
         contenedor.appendChild(card);
     });
+
+    document.body.style.overflow = 'hidden';
 }
 
-// 2. FUNCIÓN PARA EL MODAL 
-function abrirDetallesWolfEURO(coche) { // <-- Nombre único
-    let modalContainer = document.getElementById('wolf-modal-container-euro');
+function abrirDetallesWolfEURO(coche) {
+    const modalPrevio = document.getElementById('wolf-modal-container-euro');
+    if (modalPrevio) modalPrevio.remove();
 
-    if (!modalContainer) {
-        modalContainer = document.createElement('div');
-        modalContainer.id = 'wolf-modal-container-euro'; // <-- ID único
-        document.body.appendChild(modalContainer);
-    }
+    const modalContainer = document.createElement('div');
+    modalContainer.id = 'wolf-modal-container-euro';
+    document.body.appendChild(modalContainer);
 
     modalContainer.innerHTML = `
-        <div id="wolf-modal-euro" class="modal-overlay">
-            <div class="modal-content">
-                <button id="close-modal-euro" class="close-btn">&times;</button>
-                
-                <div class="modal-grid">
-                    <div class="modal-image-container">
+        <div id="wolf-modal-euro" class="modal-overlay-EURO">
+            <div class="modal-content-EURO">
+                <button id="close-modal-euro" class="close-btn-EURO">&times;</button>
+                <div class="modal-grid-EURO">
+                    <div class="modal-image-container-EURO">
                         <img src="${coche.img}" alt="${coche.marca} ${coche.modelo}">
-                        <div class="info-car">
-                            <h2 class="wolf-title">${coche.marca} ${coche.modelo}</h2>
-                            <p class="wolf-price">${coche.precio}</p>
+                        <div class="info-car-EURO">
+                            <h2 class="wolf-title-EURO">${coche.marca} ${coche.modelo}</h2>
+                            <p class="wolf-price-EURO">${coche.precio}</p>
                         </div>
                     </div>
-                    
-                    <div class="modal-specs">
-                        <div class="specs-list">
-                            <div class="spec-item">
-                                <span class="spec-label">Motor:</span>
-                                <span class="spec-value">${coche.specs}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Tipo de motor:</span>
-                                <span class="spec-value">${coche.detail.tipo_motor}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Aceleración:</span>
-                                <span class="spec-value">${coche.detail.aceleracion}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Torque:</span>
-                                <span class="spec-value">${coche.detail.torque}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Transmisión:</span>
-                                <span class="spec-value">${coche.detail.transmision}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Tipo de transmisión:</span>
-                                <span class="spec-value">${coche.detail.tipo_transmision}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Frenos:</span>
-                                <span class="spec-value">${coche.detail.frenos}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Consumo:</span>
-                                <span class="spec-value">${coche.detail.consumo}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Medidas:</span>
-                                <span class="spec-value">${coche.detail.medidas}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Seguridad:</span>
-                                <span class="spec-value">${coche.detail.seguridad}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Airbags:</span>
-                                <span class="spec-value">${coche.detail.airbags}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Extra:</span>
-                                <span class="spec-value">${coche.detail.extra}</span>
-                            </div>
-                            <div class="spec-item">
-                                <span class="spec-label">Categoría:</span>
-                                <span class="spec-value">${coche.categoria}</span>
-                            </div>
+                    <div class="modal-specs-EURO">
+                        <div class="specs-list-EURO">
+                            ${generarSpecItem("Motor", coche.specs)}
+                            ${generarSpecItem("Tipo de motor", coche.detail?.tipo_motor)}
+                            ${generarSpecItem("Aceleración", coche.detail?.aceleracion)}
+                            ${generarSpecItem("Torque", coche.detail?.torque)}
+                            ${generarSpecItem("Transmisión", coche.detail?.transmision)}
+                            ${generarSpecItem("Tipo de transmisión", coche.detail?.tipo_transmision)}
+                            ${generarSpecItem("Frenos", coche.detail?.frenos)}
+                            ${generarSpecItem("Consumo", coche.detail?.consumo)}
+                            ${generarSpecItem("Medidas", coche.detail?.medidas)}
+                            ${generarSpecItem("Seguridad", coche.detail?.seguridad)}
+                            ${generarSpecItem("Airbags", coche.detail?.airbags)}
+                            ${generarSpecItem("Extra", coche.detail?.extra)}
+                            ${generarSpecItem("Categoría", coche.categoria)}
                         </div>
                     </div>
                 </div>
@@ -119,28 +210,101 @@ function abrirDetallesWolfEURO(coche) { // <-- Nombre único
         </div>
     `;
 
-    const btnCerrar = document.getElementById('close-modal-euro');
-    const fondoModal = document.getElementById('wolf-modal-euro');
+    const btnCerrar = modalContainer.querySelector('#close-modal-euro');
+    const fondoModal = modalContainer.querySelector('#wolf-modal-euro');
+    const cerrarModal = () => modalContainer.remove();
 
-    btnCerrar.onclick = () => modalContainer.innerHTML = '';
-    fondoModal.onclick = (e) => {
-        if (e.target.id === 'wolf-modal-euro') modalContainer.innerHTML = '';
-    };
+    btnCerrar.addEventListener('click', cerrarModal);
+    fondoModal.addEventListener('click', (e) => {
+        if (e.target === fondoModal) cerrarModal();
+    });
 }
 
-// 3. GESTIÓN DE FILTROS JDM
-let filtrosActivosEURO = { brand: "*", category: "*" };
+function AbrirCompraEURO(auto) {
+    let modalExistente = document.getElementById("Container-compra-EURO");
+    if (modalExistente) modalExistente.remove();
 
-function SetupFiltrosEURO() {
-    const botonesMarca = document.querySelectorAll("#Page-EURO .btn-filter-brand");
-    botonesMarca.forEach(boton => {
-        boton.addEventListener("click", (e) => {
-            filtrosActivosEURO.brand = e.target.dataset.value;
-            ActualizarCatalogoJDM();
+    const numeroLimpio = auto.precio.replace(/[^0-9.-]+/g, "");
+    const precioBase = parseFloat(numeroLimpio);
+    const precioConImpuestos = precioBase * 1.30;
+    const formatoMoneda = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    const precioFinalFormateado = formatoMoneda.format(precioConImpuestos);
+
+    const modalContainer = document.createElement('div');
+    modalContainer.id = 'Container-compra-EURO';
+    modalContainer.className = 'modal-Compra-EURO';
+    document.body.appendChild(modalContainer);
+
+    modalContainer.innerHTML = `
+        <div class="Modal-Compra-EURO-content">
+            <button id="btn-cerrar-euro-x" class="close-btn-EURO">&times;</button>
+            <div class="Modal-Compra-EURO-image">
+                <img src="${auto.img}" alt="${auto.marca} ${auto.modelo}">
+                <div class="Modal-Compra-EURO-image-info">
+                    <h2 class="Modal-Compra-EURO-title">${auto.marca} ${auto.modelo}</h2>
+                    <p class="Modal-Compra-EURO-price-base">Precio FOB: ${auto.precio}</p>
+                    <p class="Modal-Compra-EURO-tax">+ 30% Impuestos y Envíos</p>
+                    <p class="Modal-Compra-EURO-total">Total: ${precioFinalFormateado}</p>
+                </div>
+            </div>
+            <div class="Modal-Compra-EURO-header">
+                <h2 class="Modal-Compra-EURO-title">Confirmar Compra EURO</h2>
+            </div>
+            <div class="Modal-Compra-EURO-body">
+                <p>¿Confirma que desea procesar la adquisición del <strong>${auto.marca} ${auto.modelo}</strong>?</p>
+                <p class="text-small">Al proceder, aceptas las políticas de importación de Wolf Dealer.</p>
+            </div>
+            <div class="Modal-Compra-EURO-footer">
+                <button id="btn-confirmar-euro" class="btn-comprar-EURO">Procesar Compra</button>
+            </div>
+        </div>
+    `;
+
+    const btnCerrarX = modalContainer.querySelector('#btn-cerrar-euro-x');
+    const btnConfirmar = modalContainer.querySelector('#btn-confirmar-euro');
+    const cerrarModal = () => modalContainer.remove();
+
+    btnCerrarX.addEventListener('click', cerrarModal);
+    btnConfirmar.addEventListener('click', () => {
+        cerrarModal();
+        Swal.fire({
+            title: '¡Compra procesada!',
+            text: 'Su compra ha sido exitosa.',
+            icon: 'success',
+            confirmButtonColor: '#28a745',
+            background: '#1e1e1e',
+            color: '#fff',
         });
     });
 
-    const botonesCat = document.querySelectorAll("#Page-EURO .btn-filter-category");
+    modalContainer.addEventListener('click', (e) => {
+        if (e.target === modalContainer) cerrarModal();
+    });
+}
+
+function generarSpecItem(label, value) {
+    if (!value || value === "undefined") return "";
+    return `
+        <div class="spec-item-EURO">
+            <span class="spec-label-EURO">${label}:</span>
+            <span class="spec-value-EURO">${value}</span>
+        </div>
+    `;
+}
+
+function SetupFiltrosEURO() {
+    const contenedor = document.getElementById("Page-EURO");
+    if (!contenedor) return;
+
+    const botonesMarca = contenedor.querySelectorAll(".btn-filter-brand-EURO");
+    botonesMarca.forEach(boton => {
+        boton.addEventListener("click", (e) => {
+            filtrosActivosEURO.brand = e.target.dataset.value;
+            ActualizarCatalogoEURO();
+        });
+    });
+
+    const botonesCat = contenedor.querySelectorAll(".btn-filter-category-EURO");
     botonesCat.forEach(boton => {
         boton.addEventListener("click", (e) => {
             filtrosActivosEURO.category = e.target.dataset.value;
@@ -149,145 +313,36 @@ function SetupFiltrosEURO() {
     });
 }
 
-function ActualizarCatalogoEURO() {
-    const resultados = MostrarAutos("europeos", filtrosActivosEURO.brand, filtrosActivosEURO.category);
-    PintarTarjetasEURO(resultados);
-}
-
-// 4. LÓGICA DE NAVEGACIÓN
-const btnEURO = document.getElementById("euro");
-if (btnEURO) {
-    btnEURO.addEventListener('click', () => {
-        AbrirEURO();
+export function SetupEventosLocalesEURO() {
+    const botonesHome = document.querySelectorAll(".btn-euro-home");
+    botonesHome.forEach(btn => {
+        btn.addEventListener('click', () => {
+            VolverAlHome();
+            const catalogo = document.getElementById("contenedor-cards-euro");
+            if (catalogo) {
+                catalogo.style.display = "none";
+                catalogo.innerHTML = "";
+            }
+            document.body.style.overflow = 'auto';
+        });
     });
+
+    const botonesLogin = document.querySelectorAll(".btn-euro-login");
+    botonesLogin.forEach(btn => btn.addEventListener('click', AbrirLogin));
 }
 
-function AbrirEURO() {
-    const content = document.getElementById("Page-EURO");
-    const PageHome = document.getElementById("Page-Home");
+function SearchButton() {
+    const btnStart = document.querySelector('.Button-Start-EURO');
+    const heroSection = document.querySelector('.Header-EURO');
+    const historiaSection = document.querySelector('.Main-EURO');
 
-    if (PageHome) PageHome.style.display = "none";
-    if (content) content.style.display = "block";
-
-    content.innerHTML = `
-    <section class="Body-EURO">
-        <section class="header-EURO">
-            <div class="header-EURO-content">
-                <h1 class="Title-Header-EURO">Wolf Dealers</h1>
-                <div class="header-EURO-content-buttons">
-                    <button id="btn-back-home-euro">Home</button>
-                </div>
-            </div>
-        </section>
-
-        <section class="Bienvenida-EURO">
-            <div class="IMG-Bienvenida">
-                <img class="img-principal" src="./Assent/EU/EURO-Bienvenida.jpg" alt="Supra Home">
-            </div>
-            <div class="Text-Bienvenida">
-                <h2 class="Title-Container-Car-EURO">Wolf Motors EURO</h2>
-                <p class="Parraf-Container-Car-EURO">Bienvenido a Wolf Dealer, el epicentro de la excelencia automotriz europea. 
-                Aquí, la ingeniería alemana se encuentra con el diseño italiano y la sofisticación británica. Desde el rugido de un motor atmosférico 
-                en Stuttgart hasta la precisión aerodinámica de las pistas de Nürburgring, nuestra selección representa la cumbre del rendimiento y el lujo. 
-                No vendemos máquinas; ofrecemos el legado de décadas de dominio en el asfalto. Siente la precisión, vive la herencia.</p>
-            </div>
-        </section>
-
-        <section class="History-Car-EURO">
-            <div class="Div-History-Text-EURO">
-                <h2>Crónicas del Asfalto: El Legado de la Ingeniería Europea</h2>
-                <p class="Text-History-EURO">Detrás de cada volante y bajo cada capó de ingeniería europea, reside una narrativa de ambición y triunfo. 
-                Esta sección no es solo un registro de fechas, sino un tributo a los visionarios que desafiaron los límites de la física y la estética. 
-                Desde los talleres artesanales de principios del siglo XX hasta los laboratorios de alta tecnología de la actualidad, te invitamos a recorrer los 
-                hitos que transformaron simples máquinas de metal en auténticas leyendas del asfalto. Bienvenidos al origen de la perfección.</p>
-            </div>
-            <div class="Div-EURO">
-                <div class="Div-History-IMG-EURO"> 
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-EURO">Benz (1886): Karl Benz patenta el primer auto de la historia; el Big Bang de la movilidad nació en Alemania.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-EURO">Flechas de Plata: Los Mercedes imbatibles de los años 30 que forjaron la leyenda del dominio plateado en las pistas.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-3-EURO">El Legado 911: En 1963 Porsche creó un diseño "imposible" que se convirtió en el estándar de todo deportivo moderno.</p>
-                </div>
-                <div class="Divisor-History-EURO">
-                </div>
-                <div class="Div-History-IMG-EURO">
-                    <img src="./Assent/JDM/AE86.jpg" alt="">
-                    <p class="Text-History-2-EURO">División M: BMW funda su brazo Motorsport en el '72, inyectando ADN de competición pura a los coches de calle.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-EURO">Domino en Le Mans: La obsesión de marcas como Ferrari y Porsche por ganar la carrera de resistencia más dura del mundo.</p>
-                    <img src="./Assent/JDM/NSX.jpg" alt="">
-                    <p class="Text-History-2-EURO">Revolución Quattro: Audi cambió las reglas del Rally en los 80 con su tracción total, redefiniendo el control absoluto.</p>
-                </div>
-                <div class="Divisor-History-EURO">
-                </div>
-                <div class="Div-History-IMG-EURO">
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-EURO">McLaren F1: El primer hypercar real de 1992; fibra de carbono y motor V12 para alcanzar la perfección mecánica.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-EURO">La Santísima Trinidad: Ferrari, Porsche y McLaren lanzan sus hypercars híbridos en 2013, definiendo la velocidad del siglo XXI.</p>
-                    <img src="./Assent/JDM/JDM-History-1.jpg" alt="">
-                    <p class="Text-History-2-EURO">Nürburgring: El "Infierno Verde" como juez final; si un coche europeo no reina aquí, no es una leyenda.</p>
-                </div>
-            </div>
-        </div>
-        </section>
-
-        <section class="container-cars-EURO">
-            <div class="div-container-cars-EURO">
-                <h2 class="Title-Container-Car-EURO">Nuestros Autos</h2>
-                <div class="container-cars-filters-EURO">
-                    <button class="btn-filter-brand" data-value="*">Todos</button>
-                    <button class="btn-filter-brand" data-value="Bugatti">Bugatti</button>
-                    <button class="btn-filter-brand" data-value="Lamborghini">Lamborghini</button>
-                    <button class="btn-filter-brand" data-value="Ferrari">Ferrari</button>
-                    <button class="btn-filter-brand" data-value="Koenigsegg">Koenigsegg</button>
-                    <button class="btn-filter-brand" data-value="Mercedes-AMG">Mercedes-AMG</button>
-                    <button class="btn-filter-brand" data-value="Audi">Audi</button>
-                    <button class="btn-filter-brand" data-value="BMW">BMW</button>
-                    <button class="btn-filter-brand" data-value="Porsche">Porsche</button>
-                    <button class="btn-filter-brand" data-value="McLaren">McLaren</button>
-                    <button class="btn-filter-brand" data-value="Aston-Martin">Aston-Martin</button>
-                    <button class="btn-filter-brand" data-value="Pagani">Pagani</button>
-                </div>
-                <div class="container-cars-filters-buttons">
-                    <a class="btn-filter-category" data-value="Sedan">Sedan</a>
-                    <a class="btn-filter-category" data-value="SUV">SUV</a>
-                    <a class="btn-filter-category" data-value="Wagon">Wagon</a>
-                    <a class="btn-filter-category" data-value="Supercar">Supercar</a>
-                    <a class="btn-filter-category" data-value="Hypercar">Hypercar</a>
-                </div>
-            </div>
-            <div class="Divisor-EURO"></div>
-            <div class="container-cars-cards" id="contenedor-cards-euro"></div>
-        </section>       
-
-        <section class="Footer-EURO">
-            <div class="Footer-Content">
-                <h2 class="text-Footer-EURO"><em>WOLF MOTOR HUB</em>: DONDE CADA CABALLO DE FUERZA TIENE UNA HISTORIA.</h2>
-            </div>
-            <div class="Divisor-Footer-EURO"></div>
-            <div class="Footer-Content-EURO">
-                <h2 class="text-Footer-EURO"><em>CONTACTO</em></h2>
-                <ul>
-                    <li class="Text-Footer-EURO">Stuttgart Studio</li>
-                    <li class="Text-Footer-EURO">+49 (555) WOLF-AUTO</li>
-                    <li class="Text-Footer-EURO">info@wolf-motor-hub.com</li>
-                </ul>
-            </div>
-        </section>
-    </section>
-    `;
-
-    // 5. INICIALIZACIÓN DE EVENTOS 
-    SetupFiltrosEURO();
-    PintarTarjetasEURO(autos.europeos);
-
-    const btnBack = document.getElementById("btn-back-home-euro");
-    if (btnBack) {
-        btnBack.onclick = () => window.location.reload();
+    if (btnStart && heroSection) {
+        btnStart.addEventListener('click', () => {
+            heroSection.classList.add('subir');
+            if (historiaSection) historiaSection.classList.add('visible');
+        });
     }
 }
 
-export default AbrirEURO;
+const btnEURO = document.getElementById("euro");
+if (btnEURO) btnEURO.addEventListener('click', AbrirEURO);
