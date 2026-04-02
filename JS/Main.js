@@ -163,15 +163,6 @@ export function EjecutarLogout() {
 
 let usuarioLogueado = null;
 
-/* --- 1. EL VIGILANTE (ObservadorUsuario) --- */
-// Esta función se ejecuta una sola vez al cargar la app
-export function ObservadorUsuario() {
-    onAuthStateChanged(auth, (user) => {
-        usuarioLogueado = user; // Guardamos el estado globalmente
-        console.log("Estado de autenticación cambiado:", user ? user.email : "Sin sesión");
-        ActualizarInterfaz(user);
-    });
-}
 
 /* --- 2. EL MOTOR VISUAL (ActualizarInterfaz) --- */
 // Esta función la puedes llamar manualmente desde Main-JDM.js cada vez que inyectes HTML
@@ -214,7 +205,6 @@ export function ActualizarInterfaz(user) {
     }
 }
 // Iniciamos el vigilante inmediatamente
-ObservadorUsuario();
 
 /* --- 4. NAVEGACIÓN SPA (CAMBIO DE SECCIONES) --- */
 

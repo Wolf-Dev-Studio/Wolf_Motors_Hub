@@ -112,7 +112,6 @@ export default function AbrirJDM() {
     SetupFiltrosJDM();
     SetupEventosLocalesJDM();
     SearchButton();
-    ObservadorUsuario();
     ActualizarInterfaz(auth.currentUser);
 }
 
