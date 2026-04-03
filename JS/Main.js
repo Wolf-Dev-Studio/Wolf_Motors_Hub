@@ -9,7 +9,7 @@ import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
     signOut
-} from "firebase/auth";
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 /* --- 1. GESTIÓN DE MODALES (LOGIN / REGISTRO / BIENVENIDA) --- */
 
