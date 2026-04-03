@@ -109,7 +109,6 @@ export default function AbrirUSA() {
     SetupFiltrosUSA();
     SetupEventosLocalesUSA();
     SearchButton();
-    ObservadorUsuario();
     ActualizarInterfaz(auth.currentUser);
 }
 

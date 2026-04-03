@@ -109,7 +109,6 @@ export default function AbrirEURO() {
     SetupFiltrosEURO();
     SetupEventosLocalesEURO();
     SearchButton();
-    ObservadorUsuario();
     ActualizarInterfaz(auth.currentUser);
 }
 
