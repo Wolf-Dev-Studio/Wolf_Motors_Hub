@@ -2,7 +2,6 @@
 import AbrirUSA from "./Main-USA.js";
 import AbrirJDM from "./Main-JDM.js";
 import AbrirEURO from "./Main-EURO.js";
-import Swal from 'sweetalert2';
 // Importación única de Firebase (Evita el SyntaxError)
 import { auth } from '../src/firebase-config.js';
 import {
