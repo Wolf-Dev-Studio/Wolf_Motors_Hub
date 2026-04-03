@@ -18,4 +18,5 @@ const app = initializeApp(firebaseConfig);
 
 // Exportamos 'auth' para usarlo en el registro y login
 import { getAuth } from "firebase/auth";
+
 export const auth = getAuth(app);
