@@ -2,7 +2,7 @@
 import MostrarAutos from "./Filters.js";
 import { autos } from "./Data.js";
 import { AbrirLogin, CerrarLogin, VolverAlHome } from "./Main.js";
-import Swal from 'https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js'
+//
 import { auth } from '../src/firebase-config.js';
 import { ActualizarInterfaz } from './Main.js';
 
