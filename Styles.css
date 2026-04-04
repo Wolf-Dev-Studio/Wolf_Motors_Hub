@@ -1420,7 +1420,7 @@ input:focus {
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 30rem;
+    width: 26rem;
     height: 20rem;
     position: relative;
     overflow: hidden;
@@ -1472,7 +1472,7 @@ input:focus {
 }
 
 .img-tarjeta-USA {
-    width: 480px;
+    width: 410px;
     height: 320px;
     border-radius: 20px;
     object-fit: cover;
@@ -1484,6 +1484,7 @@ input:focus {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
+    color: var(--wolf-usa-primary);
 }
 
 .Container-Footer-USA {

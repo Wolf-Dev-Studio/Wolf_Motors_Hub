@@ -39,7 +39,7 @@ export default function AbrirUSA() {
             <div class="Container-Text-USA">
                 <h1><em>Welcome To THE USA</em></h1>
             </div>
-            <img class="IMG-Container-USA" src="./Assent/USA/" alt="USA Hub">
+            <img class="IMG-Container-USA" src="./Assent/USA/Hub-USA.jpg" alt="USA Hub">
         </section>
         
         <section class="Main-USA" id="Main-USA">
@@ -64,12 +64,13 @@ export default function AbrirUSA() {
              <section class="Container-Cards-USA">
                 ${generarBotonFiltro("Ford")}
                 ${generarBotonFiltro("Chevrolet")}
+                ${generarBotonFiltro("Corvette")}
                 ${generarBotonFiltro("Dodge")}
+                ${generarBotonFiltro("Shelby")}
+                ${generarBotonFiltro("Ram")}
+                ${generarBotonFiltro("Hummer")}
                 ${generarBotonFiltro("Jeep")}
                 ${generarBotonFiltro("Cadillac")}
-                ${generarBotonFiltro("Pontiac")}
-                ${generarBotonFiltro("GMC")}
-                ${generarBotonFiltro("Chrysler")}
              </section>
              
              <section class="Container-Footer-USA">

@@ -63,13 +63,16 @@ export default function AbrirEURO() {
              
              <section class="Container-Cards-EURO">
                 ${generarBotonFiltro("BMW")}
-                ${generarBotonFiltro("Mercedes-Benz")}
+                ${generarBotonFiltro("Mercedes-AMG")}
                 ${generarBotonFiltro("Audi")}
                 ${generarBotonFiltro("Porsche")}
-                ${generarBotonFiltro("Volkswagen")}
                 ${generarBotonFiltro("Ferrari")}
                 ${generarBotonFiltro("Lamborghini")}
                 ${generarBotonFiltro("Aston Martin")}
+                ${generarBotonFiltro("Bugatti")}
+                ${generarBotonFiltro("McLaren")}
+                ${generarBotonFiltro("Koenigsegg")}
+                ${generarBotonFiltro("Pagani")}
              </section>
              
              <section class="Container-Footer-EURO">
