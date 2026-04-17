@@ -1,32 +1,16 @@
-Wolf Motors Hub
-Single Page Dealership Experience unificando Americanos 🇺🇸 - Japoneses 🇯🇵 - Europeos 🇪🇺 en una sola SPA brutal.
+# React + Vite
 
-✨ Live Demo
-yorbis-lobo.github.io/Wolf_Motors_Hub
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-🎯 Features Épicas
-SPA Fluida: 0 recargas, transiciones inkblot entre divisiones
+Currently, two official plugins are available:
 
-3 Temas Wolf: Blanco/Naranja (USA) | Gris/Negro/Rojo (JP) | Metal/Azul (Eu)
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-Filtros Dinámicos: HP, 0-60mph, carga max, torque por categoría
+## React Compiler
 
-Hero 3D: Video fondo + cards divisiones con glow effects
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-Modal Specs: Detalles 360° + calculadora financiamiento real
+## Expanding the ESLint configuration
 
-Mobile-First: Perfecto tablet/phone dealership browsing
-
-🛠️ Tech Stack
-text
-Frontend: HTML5 • CSS3 • Vanilla JavaScript
-UX: Responsive SPA • CSS Grid • Animaciones Wolf Theme
-Data: 45+ vehículos con specs reales
-Deploy: GitHub Pages (live)
-🎮 Experiencia Usuario
-text
-Hero Wolf Universe → Click División → 
-Grid filtra dinámicamente → 
-Card Hover 3D → Modal completo
-Desarrollado por LoboYorbis, Frontend Dev de Caracas 🇻🇪
-Especializado en automotive UX + experiencias inmersivas
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
