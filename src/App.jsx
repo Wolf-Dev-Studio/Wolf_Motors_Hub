@@ -3,8 +3,9 @@ import './index.css'
 import Home from './View/Home'
 import SobreNosotros from './View/SobreNosotros'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-//import Nosotros from './View/Nosotros'
-//import Contacto from './View/Contacto'
+import Americanos from './View/Amercianos';
+//import Europeos from './View/Europeos';
+//import Asiaticos from './View/Asiaticos';
 
 function App() {
   return (
@@ -13,7 +14,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre-nosotros" element={<SobreNosotros />} />
-        {/*<Route path="/contacto" element={<Contacto />} />*/}
+        <Route path="/americanos" element={<Americanos />} />
+        {/*<Route path="/europeos" element={<Europeos />} />*/}
+        {/*<Route path="/asiaticos" element={<Asiaticos />} />*/}
       </Routes>
     </BrowserRouter>
 
