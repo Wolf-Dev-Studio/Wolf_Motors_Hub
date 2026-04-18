@@ -1,12 +1,22 @@
-import { useState } from 'react'
+import React from 'react';
 import './index.css'
-import NavbarHome from './Component/Navbar-Home'
+import Home from './View/Home'
+import SobreNosotros from './View/SobreNosotros'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+//import Nosotros from './View/Nosotros'
+//import Contacto from './View/Contacto'
 
 function App() {
   return (
-    <>
-      <NavbarHome />
-    </>
+
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/sobre-nosotros" element={<SobreNosotros />} />
+        {/*<Route path="/contacto" element={<Contacto />} />*/}
+      </Routes>
+    </BrowserRouter>
+
   )
 }
 
