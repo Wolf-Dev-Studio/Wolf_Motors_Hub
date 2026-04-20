@@ -3,44 +3,93 @@ import Navbar from '../Component/Navbar';
 
 function SobreNosotros() {
     return (
-        <section className='w-full h-screen bg-[#1a1a1a] overflow-y-auto flex'>
+        <section className='w-full min-h-screen bg-[#1a1a1a] overflow-x-hidden'>
             <Navbar variant="home" />
 
-            <div className='flex-1 ml-25 mt-5 p-10 lg:p-16 flex flex-col justify-center items-start '>
+            {/* CONTENEDOR PRINCIPAL - Ajustado el margen por la Navbar lateral si existe */}
+            <div className='flex flex-col gap-20 p-6 lg:p-20 max-w-7xl mx-auto'>
+                <h1 className='text-4xl font-bold uppercase tracking-widest text-center text-[#85d5c8]'>El origen de Wolf Motors Hub</h1>
 
-                <div className='flex flex-col gap-6 shadow shadow-[#85d5c8] hover:shadow-[#85d5c8] hover:shadow-lg hover:scale-102 transition-all duration-300 rounded-xl p-8 mt-20 mb-5 w-[100%]'>
-                    <h1 className='font-bold text-xl tracking-widest text-[#85d5c8]'>DONDE LA INGENIERÍA COBRA VIDA</h1>
-                    <p className='text-[#c2cbd4]'>Wolf Motors Hub nació en la intersección entre la pasión por la ingeniería mecánica y la disciplina del alto rendimiento. No somos un centro automotriz convencional; somos un ecosistema diseñado para quienes entienden que un vehículo no es solo transporte, sino una extensión de su propia ambición.</p>
-                    <p className='text-[#c2cbd4]'>Nuestra estructura se divide en tres pilares fundamentales que definen la cultura automotriz global:</p>
-                    <ul className='space-y-5 ml-2'>
-                        <li className='list-none flex flex-col'>
-                            <strong className='text-[#85d5c8] font-extrabold text-lg tracking-wide'>WOLF RAW MUSCLE:</strong>
-                            <p className='ml-1 text-[#c2cbd4]'>El culto a la fuerza bruta. Nos especializamos en el torque, el carácter indomable y la durabilidad de los motores americanos. Aquí, el hierro se transforma en potencia pura.</p>
-                        </li>
-                        <li className='list-none flex flex-col'>
-                            <strong className='text-[#85d5c8] font-extrabold text-lg tracking-wide'>WOLF PERFORMANCE:</strong>
-                            <p className='ml-1 text-[#c2cbd4]'>La cúspide de la precisión. Dedicado a la ingeniería alemana, donde cada ajuste es quirúrgico y cada componente está diseñado para dominar la Autobahn con sofisticación y velocidad.</p>
-                        </li>
-                        <li className='list-none flex flex-col'>
-                            <strong className='text-[#85d5c8] font-extrabold text-lg tracking-wide'>WOLF REDLINE:</strong>
-                            <p className='ml-1 text-[#c2cbd4]'>La mística del asfalto. Enfocado en la cultura JDM y la ingeniería japonesa, donde la agilidad y el potencial infinito de modificación llevan a las máquinas hasta su límite de revoluciones.</p>
-                        </li>
-                    </ul>
+                {/* --- SECCIÓN 1: INGENIERÍA & RAW MUSCLE (IMAGEN IZQUIERDA) --- */}
+                <div className='flex flex-col md:flex-row items-center gap-10 group'>
+                    <div className='w-full md:w-1/2 overflow-hidden rounded-xl shadow-lg shadow-[#85d5c8]/20'>
+                        <img
+                            src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=800"
+                            alt="American Muscle"
+                            className='w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700'
+                        />
+                    </div>
+                    <div className='w-full md:w-1/2 space-y-6'>
+                        <h1 className='font-bold text-3xl tracking-widest text-[#85d5c8] uppercase'>Donde la ingeniería cobra vida</h1>
+                        <p className='text-[#c2cbd4] leading-relaxed'>Wolf Motors Hub nació en la intersección entre la pasión por la ingeniería mecánica y la disciplina del alto rendimiento.</p>
+                        <div className='p-6 border-l-2 border-[#85d5c8] bg-black/20'>
+                            <strong className='text-[#85d5c8] font-extrabold text-xl tracking-wide uppercase'>WOLF RAW MUSCLE</strong>
+                            <p className='mt-2 text-[#c2cbd4] italic'>El culto a la fuerza bruta. Aquí el hierro se transforma en potencia pura, especializándonos en el torque y carácter americano.</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div className='flex flex-col gap-6 shadow shadow-[#85d5c8] hover:shadow-[#85d5c8] hover:shadow-lg hover:scale-102 transition-all duration-300 rounded-xl p-8 mt-5 mb-10 w-[100%]'>
-                    <h2 className='text-2xl font-bold uppercase tracking-wide text-[#85d5c8]'>El Objetivo de la Marca</h2>
-                    <p className='text-[#c2cbd4]'>En Wolf Motors Hub, nuestro sistema de trabajo se rige por la mejora continua y la excelencia técnica:</p>
-                    <ul className='list-decimal space-y-3 ml-6 text-[#c2cbd4]'>
-                        <li><strong className='text-[#85d5c8] font-extrabold text-lg tracking-wide'>Especialización de Élite:</strong> Garantizar que cada máquina reciba un tratamiento específico según su ADN, respetando los estándares más exigentes de cada continente.</li>
-                        <li><strong className='text-[#85d5c8] font-extrabold text-lg tracking-wide'>Integración Digital:</strong> Utilizar la tecnología más avanzada para que la gestión de mantenimiento y optimización de tu vehículo sea tan precisa como un código limpio y eficiente.</li>
-                        <li><strong className='text-[#85d5c8] font-extrabold text-lg tracking-wide'>Comunidad de Alto Impacto:</strong> Formar un convoy de propietarios que no se conforman con lo estándar y buscan siempre romper sus propios límites.</li>
-                        <li><strong className='text-[#85d5c8] font-extrabold text-lg tracking-wide'>Optimización Total:</strong> Desde el ajuste de suspensiones de alto rango hasta el tuning electrónico de precisión, nuestra meta es llevar cada vehículo a su estado óptimo de rendimiento.</li>
-                    </ul>
+                {/* --- SECCIÓN 2: PERFORMANCE (IMAGEN DERECHA) --- */}
+                <div className='flex flex-col md:flex-row-reverse items-center gap-10 group'>
+                    <div className='w-full md:w-1/2 overflow-hidden rounded-xl shadow-lg shadow-[#85d5c8]/20'>
+                        <img
+                            src="https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=800"
+                            alt="European Performance"
+                            className='w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700'
+                        />
+                    </div>
+                    <div className='w-full md:w-1/2 space-y-6'>
+                        <div className='p-6 border-r-2 border-[#85d5c8] bg-black/20 text-right'>
+                            <strong className='text-[#85d5c8] font-extrabold text-xl tracking-wide uppercase'>WOLF PERFORMANCE</strong>
+                            <p className='mt-2 text-[#c2cbd4] italic'>La cúspide de la precisión quirúrgica alemana. Componentes diseñados para dominar la Autobahn con sofisticación.</p>
+                        </div>
+                        <p className='text-[#c2cbd4] leading-relaxed text-right'>Entendemos que un vehículo no es solo transporte, sino una extensión de tu propia ambición y precisión técnica.</p>
+                    </div>
                 </div>
 
-                <div className='w-full mb-20 max-w-4xl bg-[#c2cbd4] hover:scale-102 transition-all duration-500 rounded-xl p-8 mx-auto'>
-                    <p className='text-center text-xl font-black text-[#1a1a1a] italic leading-tight'>"Fuerza Cruda, Precisión Absoluta, Límite Infinito. En Wolf Motors Hub, no solo cuidamos máquinas; potenciamos legados".</p>
+                {/* --- SECCIÓN 3: REDLINE (IMAGEN ARRIBA) --- */}
+                <div className='flex flex-col gap-8 group'>
+                    <div className='w-full h-[300px] md:h-[500px] overflow-hidden rounded-xl shadow-lg shadow-[#85d5c8]/20'>
+                        <img
+                            src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1200"
+                            alt="JDM Redline"
+                            className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000'
+                        />
+                    </div>
+                    <div className='max-w-3xl mx-auto text-center space-y-4'>
+                        <strong className='text-[#85d5c8] font-extrabold text-2xl tracking-widest uppercase'>WOLF REDLINE</strong>
+                        <p className='text-[#c2cbd4] text-lg'>La mística del asfalto y cultura JDM. Ingeniería japonesa donde la agilidad y el potencial infinito de modificación llevan a las máquinas hasta su límite.</p>
+                    </div>
+                </div>
+
+                {/* --- SECCIÓN 4: OBJETIVOS & QUOTE (SIN IMAGEN) --- */}
+                <div className='grid md:grid-cols-2 gap-10 py-20 border-t border-[#85d5c8]/20'>
+                    <div className='space-y-8'>
+                        <h2 className='text-3xl font-bold uppercase tracking-widest text-[#85d5c8]'>Objetivos de la Marca</h2>
+                        <ul className='space-y-6 text-[#c2cbd4]'>
+                            <li className='flex gap-4'>
+                                <span className='text-[#85d5c8] font-black'>01</span>
+                                <p><strong className='text-white uppercase'>Especialización de Élite:</strong> Tratamiento específico según el ADN de cada máquina.</p>
+                            </li>
+                            <li className='flex gap-4'>
+                                <span className='text-[#85d5c8] font-black'>02</span>
+                                <p><strong className='text-white uppercase'>Integración Digital:</strong> Gestión de mantenimiento mediante tecnología de vanguardia.</p>
+                            </li>
+                            <li className='flex gap-4'>
+                                <span className='text-[#85d5c8] font-black'>03</span>
+                                <p><strong className='text-white uppercase'>Comunidad:</strong> Un convoy de propietarios que rompen sus propios límites.</p>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div className='flex items-center justify-center'>
+                        <div className='bg-[#c2cbd4] p-10 rounded-xl rotate-1 group hover:rotate-0 transition-transform duration-500'>
+                            <p className='text-center text-2xl font-black text-[#1a1a1a] italic leading-tight uppercase'>
+                                "Fuerza Cruda, Precisión Absoluta, Límite Infinito. <br />
+                                <span className='text-sm font-bold opacity-75'>Potenciamos legados.</span>"
+                            </p>
+                        </div>
+                    </div>
                 </div>
 
             </div>

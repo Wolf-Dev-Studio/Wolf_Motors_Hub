@@ -7,7 +7,6 @@ const Navbar = ({ variant = "home" }) => {
         americanos: {
             navBg: "bg-[#F5F5F5]",
             Fondo: "bg-[#B22222]",
-            border: "border-b-4 border-red-600",
             textColor: "text-[#121212]",
             fontFamily: "font-sans",
             logoPilar: "RAW MUSCLE",
@@ -15,29 +14,29 @@ const Navbar = ({ variant = "home" }) => {
             linksHover: "hover:text-[#B22222]"
         },
         europeos: {
-            navBg: "bg-zinc-900",
-            border: "border-b-4 border-blue-600",
-            textColor: "text-white",
-            fontFamily: "font-serif", // O la fuente premium que uses
+            navBg: "bg-[#1E272E]",
+            Fondo: "bg-[#0984E3]",
+            textColor: "text-[#00CEC9]",
+            fontFamily: "font-sans",
             logoPilar: "PERFORMANCE",
-            logoColor: "text-blue-500",
-            linksHover: "hover:text-blue-500"
+            logoColor: "text-[#F5F6FA]",
+            linksHover: "hover:text-[#F5F6FA]"
         },
         asiaticos: {
-            navBg: "bg-black",
-            border: "border-b-4 border-white",
-            textColor: "text-white",
-            fontFamily: "font-mono", // O una fuente más tecnológica
+            navBg: "bg-[#D3B037]",
+            Fondo: "bg-[#2D3436]",
+            textColor: "text-[#2D3436]",
+            fontFamily: "font-sans",
             logoPilar: "REDLINE",
-            logoColor: "text-red-500",
-            linksHover: "hover:text-red-500"
+            logoColor: "text-[#FFFFFF]",
+            linksHover: "hover:text-[#FFFFFF]"
         }
     };
 
     // 2. CASO ESPECIAL: Si es el Home (porque tu Home tiene un navbar lateral distinto)
     if (variant === "home") {
         return (
-            <aside className="fixed left-0 top-0 h-screen w-20 bg-[#1a1a1a] p-3 z-50 ">
+            <aside className="fixed  left-0 top-0 h-screen w-20 bg-[#1a1a1a] p-3 z-50 ">
                 <div className="w-full h-full bg-[#c2cbd4] rounded-xl flex flex-col justify-between items-center py-6 ">
                     <div className="flex-1 flex items-start justify-center">
                         <a href="/">
@@ -63,9 +62,9 @@ const Navbar = ({ variant = "home" }) => {
     return (
 
         <aside className={`fixed left-0 top-0 h-20 w-full ${currentStyle.Fondo} p-3 z-50 `}>
-            <div className={`w-full h-full ${currentStyle.navBg}  rounded-xl flex justify-between items-center py-6 `}>
+            <div className={`w-full h-full ${currentStyle.navBg} rounded-xl flex justify-between items-center py-6 `}>
                 <div className='ml-30'>
-                    <a href="/" className={`${currentStyle.logoColor} text-2xl tracking-widest`}><strong className={`${currentStyle.textColor} font-extrabold`}>WOLF</strong> RAW MUSCLE</a>
+                    <a href="/" className={`${currentStyle.logoColor} text-2xl tracking-widest`}><strong className={`${currentStyle.textColor} font-extrabold`}>WOLF</strong> {currentStyle.logoPilar}</a>
                 </div>
                 <div className='mr-30 flex gap-15'>
                     <a href="/" className={`${currentStyle.textColor} ${currentStyle.linksHover} transition-colors duration-300 font-bold text-base tracking-widest`}>Vehiculos</a>
