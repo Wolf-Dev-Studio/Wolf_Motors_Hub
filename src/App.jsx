@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Americanos from './View/Americanos';
 import Europeos from './View/Europeos';
 import Asiaticos from './View/Asiaticos';
+import Catalogo from './Component/Catalogo';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
         <Route path="/americanos" element={<Americanos />} />
         <Route path="/europeos" element={<Europeos />} />
         <Route path="/asiaticos" element={<Asiaticos />} />
+        <Route path="/catalogo/americanos" element={<Catalogo variant="americanos" />} />
+        <Route path="/catalogo/europeo" element={<Catalogo variant="europeos" />} />
+        <Route path="/catalogo/asiatico" element={<Catalogo variant="asiaticos" />} />
       </Routes>
     </BrowserRouter>
 

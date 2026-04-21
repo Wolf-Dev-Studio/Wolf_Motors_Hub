@@ -2,6 +2,7 @@ import ImgDodge from "../assets/USA/DodgeBento.webp";
 import ImgFord from "../assets/USA/FordBento.webp";
 import ImgChevrolet from "../assets/USA/ChevroletBento.webp";
 import ImgCorvette from "../assets/USA/CorvetteBento.webp";
+import Catalogo from "./Catalogo";
 
 export default function BentoGridCar(props) {
 
@@ -12,6 +13,7 @@ export default function BentoGridCar(props) {
             Fondo: "bg-[#121212]",
             textColor: "text-[#F5F5F5]",
             textColor2: "hover:text-[#B22222] hover:bg-[#F5F5F5]",
+            Catalog: "/catalogo/americanos",
             Img1: ImgDodge,
             Img2: ImgFord,
             Img3: ImgChevrolet,
@@ -21,6 +23,7 @@ export default function BentoGridCar(props) {
             Fondo: "bg-[#F5F6FA]",
             textColor: "text-[#00CEC9]",
             textColor2: "hover:text-[#1E272E] hover:bg-[#0984E3]",
+            Catalog: "/catalogo/europeo",
             Img1: "",
             Img2: "",
             Img3: "",
@@ -30,6 +33,7 @@ export default function BentoGridCar(props) {
             Fondo: "bg-[#DFE6E9]",
             textColor: "text-[#2D3436]",
             textColor2: "hover:text-[#D3B037] hover:bg-[#2D3436]",
+            Catalog: "/catalogo/asiatico",
             Img1: "",
             Img2: "",
             Img3: "",
@@ -100,7 +104,7 @@ export default function BentoGridCar(props) {
                 </div>
             </div>
             <div className='flex flex-end items-center justify-end mr-70 mt-10'>
-                <a href="/Catalogo" className={`${currentStyle.textColor} font-bold text-base uppercase tracking-widest ${currentStyle.textColor2} hover:rounded-full p-2 cursor-pointer transition-colors`}>Ver Catalogo</a>
+                <a href={currentStyle.Catalog} className={`${currentStyle.textColor} font-bold text-base uppercase tracking-widest ${currentStyle.textColor2} hover:rounded-full p-2 cursor-pointer transition-colors`}>Ver Catalogo</a>
             </div>
         </div>
     )

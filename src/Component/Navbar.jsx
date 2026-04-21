@@ -11,7 +11,13 @@ const Navbar = ({ variant = "home" }) => {
             fontFamily: "font-sans",
             logoPilar: "RAW MUSCLE",
             logoColor: "text-[#B22222]",
-            linksHover: "hover:text-[#B22222]"
+            linksHover: "hover:text-[#B22222]",
+            Link1: "/catalogo/americanos",
+            Link2: "/servicios",
+            Link3: "/sobre-nosotros",
+            textLink1: "Vehiculos",
+            textLink2: "Servicios",
+            textLink3: "Sobre Nosotros",
         },
         europeos: {
             navBg: "bg-[#1E272E]",
@@ -20,7 +26,13 @@ const Navbar = ({ variant = "home" }) => {
             fontFamily: "font-sans",
             logoPilar: "PERFORMANCE",
             logoColor: "text-[#F5F6FA]",
-            linksHover: "hover:text-[#F5F6FA]"
+            linksHover: "hover:text-[#F5F6FA]",
+            Link1: "/catalogo/europeos",
+            Link2: "/servicios",
+            Link3: "/sobre-nosotros",
+            textLink1: "Vehiculos",
+            textLink2: "Servicios",
+            textLink3: "Sobre Nosotros",
         },
         asiaticos: {
             navBg: "bg-[#D3B037]",
@@ -29,7 +41,59 @@ const Navbar = ({ variant = "home" }) => {
             fontFamily: "font-sans",
             logoPilar: "REDLINE",
             logoColor: "text-[#FFFFFF]",
-            linksHover: "hover:text-[#FFFFFF]"
+            linksHover: "hover:text-[#FFFFFF]",
+            Link1: "/catalogo/asiaticos",
+            Link2: "/servicios",
+            Link3: "/sobre-nosotros",
+            textLink1: "Vehiculos",
+            textLink2: "Servicios",
+            textLink3: "Sobre Nosotros",
+        },
+
+        catalogamericanos: {
+            navBg: "bg-[#F5F5F5]",
+            Fondo: "bg-[#B22222]",
+            textColor: "text-[#121212]",
+            fontFamily: "font-sans",
+            logoPilar: "RAW MUSCLE",
+            logoColor: "text-[#B22222]",
+            linksHover: "hover:text-[#B22222]",
+            Link1: "/americanos",
+            Link2: "/servicios",
+            Link3: "/sobre-nosotros",
+            textLink1: "Inicio",
+            textLink2: "Servicios",
+            textLink3: "Sobre Nosotros",
+        },
+        catalogeuropeo: {
+            navBg: "bg-[#1E272E]",
+            Fondo: "bg-[#0984E3]",
+            textColor: "text-[#00CEC9]",
+            fontFamily: "font-sans",
+            logoPilar: "PERFORMANCE",
+            logoColor: "text-[#F5F6FA]",
+            linksHover: "hover:text-[#F5F6FA]",
+            Link1: "/europeos",
+            Link2: "/servicios",
+            Link3: "/sobre-nosotros",
+            textLink1: "Inicio",
+            textLink2: "Servicios",
+            textLink3: "Sobre Nosotros",
+        },
+        catalogasiatico: {
+            navBg: "bg-[#1E272E]",
+            Fondo: "bg-[#0984E3]",
+            textColor: "text-[#00CEC9]",
+            fontFamily: "font-sans",
+            logoPilar: "PERFORMANCE",
+            logoColor: "text-[#F5F6FA]",
+            linksHover: "hover:text-[#F5F6FA]",
+            Link1: "/asiaticos",
+            Link2: "/servicios",
+            Link3: "/sobre-nosotros",
+            textLink1: "Inicio",
+            textLink2: "Servicios",
+            textLink3: "Sobre Nosotros",
         }
     };
 
@@ -67,9 +131,9 @@ const Navbar = ({ variant = "home" }) => {
                     <a href="/" className={`${currentStyle.logoColor} text-2xl tracking-widest`}><strong className={`${currentStyle.textColor} font-extrabold`}>WOLF</strong> {currentStyle.logoPilar}</a>
                 </div>
                 <div className='mr-30 flex gap-15'>
-                    <a href="/" className={`${currentStyle.textColor} ${currentStyle.linksHover} transition-colors duration-300 font-bold text-base tracking-widest`}>Vehiculos</a>
-                    <a href="/" className={`${currentStyle.textColor} ${currentStyle.linksHover} transition-colors duration-300 font-bold text-base tracking-widest`}>Servicios</a>
-                    <a href="/sobre-nosotros" className={`${currentStyle.textColor} ${currentStyle.linksHover} transition-colors duration-300 font-bold text-base tracking-widest`}>Sobre Nosotros</a>
+                    <a href={currentStyle.Link1} className={`${currentStyle.textColor} ${currentStyle.linksHover} transition-colors duration-300 font-bold text-base tracking-widest`}>{currentStyle.textLink1}</a>
+                    <a href={currentStyle.Link2} className={`${currentStyle.textColor} ${currentStyle.linksHover} transition-colors duration-300 font-bold text-base tracking-widest`}>{currentStyle.textLink2}</a>
+                    <a href={currentStyle.Link3} className={`${currentStyle.textColor} ${currentStyle.linksHover} transition-colors duration-300 font-bold text-base tracking-widest`}>{currentStyle.textLink3}</a>
                 </div>
             </div>
         </aside>
