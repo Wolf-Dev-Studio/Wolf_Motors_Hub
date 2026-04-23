@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ImgAmericanos from "../assets/USA/Hub-USA.webp";
 import ImgEuropeos from "../assets/EURO/Hub-Europe.webp";
 import ImgAsiaticos from "../assets/JDM/Hub-ASIA.webp";
+import ImgServicios from "../assets/Home/Service.webp";
 
 
 export default function Preloader(props) {
@@ -20,6 +21,10 @@ export default function Preloader(props) {
         asiaticos: {
             Text: "Welcome to Japan",
             Img: ImgAsiaticos,
+        },
+        servicios: {
+            Text: "Welcome To The Garage",
+            Img: ImgServicios,
         }
     };
 

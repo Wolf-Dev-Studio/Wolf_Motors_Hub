@@ -7,6 +7,7 @@ import Americanos from './View/Americanos';
 import Europeos from './View/Europeos';
 import Asiaticos from './View/Asiaticos';
 import Catalogo from './Component/Catalogo';
+import Servicios from './Component/Servicio';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/catalogo/americanos" element={<Catalogo variant="americanos" />} />
         <Route path="/catalogo/europeo" element={<Catalogo variant="europeos" />} />
         <Route path="/catalogo/asiatico" element={<Catalogo variant="asiaticos" />} />
+        <Route path="/servicios" element={<Servicios />} />
       </Routes>
     </BrowserRouter>
 
