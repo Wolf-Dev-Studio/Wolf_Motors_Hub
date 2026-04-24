@@ -156,7 +156,7 @@ const Catalogo = ({ variant }) => {
                                 <div className="flex justify-between items-center mt-4 border-t border-zinc-800 pt-3">
                                     <span className={`font-mono ${styles.Titletarget}`}>{carro.precio}</span>
                                     <Link
-                                        to={`/Detalle?id=${variant + '_' + carro.id}`}
+                                        to={`/Detalle?id=${carro.origen + '_' + carro.id}`}
                                         className={`bg-white text-black text-[9px] rounded-full px-3 cursor-pointer py-1 font-bold ${styles.HoverButton}`}
                                     >
                                         DETALLES

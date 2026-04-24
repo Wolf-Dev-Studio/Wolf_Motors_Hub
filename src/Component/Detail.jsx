@@ -27,9 +27,8 @@ const CarDetails = ({ variant }) => {
         const fetchCarData = async () => {
             if (!id) return;
             try {
-                //setLoading(true);
-                // Buscamos directamente el documento "americanos_1"
-                const docRef = doc(db, "vehiculos", id);
+
+                const docRef = doc(db, "vehiculos", car.origen + '_' + car.id);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
@@ -94,7 +93,7 @@ const CarDetails = ({ variant }) => {
                         </div>
                     </div>
                     <div>
-                        <Link to={`/Compra?id=${variant + '_' + car.id}`} className="bg-[#85d5c8] text-[#1a1a1a] font-bold px-6 py-3 rounded-lg w-full flex items-center justify-center">Comprar Vehiculo</Link>
+                        <Link to={`/Compra?id=${car.origen + '_' + car.id}`} className="bg-[#85d5c8] text-[#1a1a1a] font-bold px-6 py-3 rounded-lg w-full flex items-center justify-center">Comprar Vehiculo</Link>
                     </div>
                 </div>
             </div>

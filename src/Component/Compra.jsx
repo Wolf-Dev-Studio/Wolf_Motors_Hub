@@ -1,39 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase.js';
-import { useNavigate, useLocation } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
 
 const CarInvoice = () => {
     const searchParams = new URLSearchParams(window.location.search);
     const id = searchParams.get('id');
     const [car, setCar] = useState(null);
+    const [loading, setLoading] = useState(true); // Estado de carga
     const navigate = useNavigate();
 
-    // Cálculos ficticios basados en el precio del coche
-    // Asumiendo que car.precio es un número o string numérico
-    const basePrice = parseFloat(car?.precio) || 0;
-    const taxes = basePrice * 0.15; // 15% de impuestos
-    const shipping = 500; // Costo fijo de envío
-    const total = basePrice + taxes + shipping;
-
-    // Función para formatear moneda
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('es-ES', {
-            style: 'currency',
-            currency: 'USD',
-        }).format(amount);
-    };
-
-
     useEffect(() => {
-        console.log("hola")
         const fetchCarData = async () => {
             if (!id) return;
             try {
-                //setLoading(true);
-                // Buscamos directamente el documento "americanos_1"
-                const docRef = doc(db, "vehiculos", id);
+                setLoading(true);
+                const docRef = doc(db, "vehiculos", car.origen + '_' + car.id);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
@@ -43,10 +25,49 @@ const CarInvoice = () => {
                 }
             } catch (error) {
                 console.error("Error:", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchCarData();
-    }, []);
+    }, [id]); // Agregamos [id] como dependencia
+
+    // --- LÓGICA DE PRECIOS ---
+    // Buscamos el precio en car.precio o en car.detail.precio
+    const rawPrice = car?.precio || car?.detail?.precio || 0;
+    const basePrice = typeof rawPrice === 'string'
+        ? parseFloat(rawPrice.replace(/[^0-9.]/g, ''))
+        : parseFloat(rawPrice);
+
+    const taxes = basePrice * 0.15;
+    const shipping = 500;
+    const total = basePrice + taxes + shipping;
+
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('es-US', {
+            style: 'currency',
+            currency: 'USD',
+        }).format(amount);
+    };
+
+    // Si está cargando, mostramos un mensaje para no mostrar valores en 0
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+                <p className="text-[#85d5c8] animate-pulse font-bold">CARGANDO FACTURA...</p>
+            </div>
+        );
+    }
+
+    // Si no hay carro tras cargar
+    if (!car) {
+        return (
+            <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center text-white">
+                <p className="mb-4">No se encontró la información del vehículo.</p>
+                <button onClick={() => navigate(-1)} className="bg-[#85d5c8] text-black px-4 py-2 rounded">Volver</button>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen bg-[#121212] p-4 md:p-8 font-sans text-white">
@@ -54,33 +75,32 @@ const CarInvoice = () => {
                 {/* Encabezado */}
                 <div className="flex justify-between items-end mb-8 border-b border-[#85d5c8] pb-4">
                     <div>
-                        <h1 className="text-[#85d5c8] text-3xl font-bold tracking-tighter">FACTURA DE COMPRA</h1>
+                        <h1 className="text-[#85d5c8] text-3xl font-bold tracking-tighter uppercase">Factura de Compra</h1>
                         <p className="text-zinc-500 text-sm">Resumen de transacción</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-zinc-500 text-xs">ID Vehículo</p>
-                        <p className="font-mono text-[#85d5c8]">{car?.id || 'N/A'}</p>
+                        <p className="text-zinc-500 text-xs uppercase tracking-widest">ID Vehículo</p>
+                        <p className="font-mono text-[#85d5c8] text-xs">{car.id}</p>
                     </div>
                 </div>
 
-                {/* Contenedor Principal */}
                 <div className="bg-[#1a1a1a] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
                     <div className="p-6 md:p-8">
-                        {/* Detalles del Vehículo */}
-                        <div className="flex items-center gap-6 mb-8 p-4 bg-zinc-900/50 rounded-xl">
+                        {/* Preview del Vehículo */}
+                        <div className="flex items-center gap-6 mb-8 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800/50">
                             <img
-                                src={car?.img || car?.detail?.imagen}
-                                alt={car?.marca}
+                                src={car.img || car.detail?.imagen}
+                                alt={car.marca}
                                 className="w-24 h-24 object-cover rounded-lg border border-zinc-700"
                             />
                             <div>
-                                <h2 className="text-xl font-bold">{car?.marca}</h2>
-                                <p className="text-zinc-400">{car?.categoria}</p>
-                                <p className="text-[#85d5c8] text-sm">{car?.detail?.motor}</p>
+                                <h2 className="text-xl font-bold">{car.marca}</h2>
+                                <p className="text-zinc-400 text-sm">{car.categoria}</p>
+                                <p className="text-[#85d5c8] text-xs mt-1 font-mono uppercase">{car.detail?.motor}</p>
                             </div>
                         </div>
 
-                        {/* Desglose de Precios */}
+                        {/* Desglose */}
                         <div className="space-y-4">
                             <div className="flex justify-between items-center text-zinc-400">
                                 <span>Precio del Vehículo</span>
@@ -98,7 +118,7 @@ const CarInvoice = () => {
                             <hr className="border-zinc-800 my-6" />
 
                             <div className="flex justify-between items-center">
-                                <span className="text-lg font-bold text-[#85d5c8]">TOTAL A PAGAR</span>
+                                <span className="text-lg font-bold text-[#85d5c8] tracking-widest uppercase text-xs">Total a Pagar</span>
                                 <span className="text-3xl font-black text-white">
                                     {formatCurrency(total)}
                                 </span>
@@ -106,27 +126,21 @@ const CarInvoice = () => {
                         </div>
                     </div>
 
-                    {/* Botón de Acción */}
                     <div className="p-6 bg-zinc-900/30 border-t border-zinc-800">
                         <button
                             className="w-full bg-[#85d5c8] hover:bg-[#6ebfb2] text-[#121212] font-black py-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 uppercase tracking-widest"
-                            onClick={() => alert('Procesando pago...')}
+                            onClick={() => alert('¡Gracias por su compra!')}
                         >
                             Confirmar y Comprar
                         </button>
                         <button
                             onClick={() => navigate(-1)}
-                            className="w-full mt-4 text-zinc-500 hover:text-white text-sm transition-colors"
+                            className="w-full mt-4 text-zinc-500 hover:text-white text-xs transition-colors uppercase tracking-widest"
                         >
                             Cancelar Operación
                         </button>
                     </div>
                 </div>
-
-                {/* Footer de la factura */}
-                <p className="mt-8 text-center text-zinc-600 text-xs px-10">
-                    Al hacer clic en "Confirmar y Comprar", aceptas los términos de servicio y las políticas de importación de vehículos vigentes.
-                </p>
             </div>
         </div>
     );
