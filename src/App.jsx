@@ -8,6 +8,8 @@ import Europeos from './View/Europeos';
 import Asiaticos from './View/Asiaticos';
 import Catalogo from './Component/Catalogo';
 import Servicios from './Component/Servicio';
+import CarDetails from './Component/Detail';
+import CarInvoice from './Component/Compra';
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
         <Route path="/catalogo/europeo" element={<Catalogo variant="europeos" />} />
         <Route path="/catalogo/asiatico" element={<Catalogo variant="asiaticos" />} />
         <Route path="/servicios" element={<Servicios />} />
+        <Route path="/Detalle" element={<CarDetails />} />
+        <Route path="/Compra" element={<CarInvoice />} />
       </Routes>
     </BrowserRouter>
 
