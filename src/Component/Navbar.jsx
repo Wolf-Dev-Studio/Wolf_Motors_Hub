@@ -109,8 +109,8 @@ const Navbar = ({ variant = "home" }) => {
                             </h1>
                         </a>
                     </div>
-                    <div className="h-8 w-8 bg-black rounded-full flex items-center justify-center">
-                        <div className="w-3 h-3 bg-white rounded-full"></div>
+                    <div className="w-8 h-8 border-2 border-[#1a1a1a] rotate-45 flex items-center justify-center text-[#1a1a1a] hover:text-[#85d5c8] hover:bg-[#1a1a1a] hover:border-[#85d5c8] hover:scale-105 transition-all duration-300">
+                        <span className="font-black -rotate-45 text-xs">W</span>
                     </div>
                 </div>
             </aside>

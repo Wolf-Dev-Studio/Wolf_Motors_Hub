@@ -15,7 +15,7 @@ const CarInvoice = () => {
             if (!id) return;
             try {
                 setLoading(true);
-                const docRef = doc(db, "vehiculos", car.origen + '_' + car.id);
+                const docRef = doc(db, "vehiculos", car.origen, car.id);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {

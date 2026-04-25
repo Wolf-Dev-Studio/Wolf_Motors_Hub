@@ -59,7 +59,7 @@ export default function News(props) {
 
     const stylesConfig = {
         americanos: {
-            Fondo: "bg-gradient-to-b from-[#121212] to-[#C0C0C0]",
+            Fondo: "bg-[#121212]",
             Title: "text-[#b22222]",
             textColor: "text-[#F5F5F5]",
         },

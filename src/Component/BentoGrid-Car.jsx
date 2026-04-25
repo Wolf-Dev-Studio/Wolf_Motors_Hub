@@ -104,7 +104,7 @@ export default function BentoGridCar(props) {
                 </div>
             </div>
             <div className='flex flex-end items-center justify-end mr-70 mt-10'>
-                <a href={currentStyle.Catalog} className={`${currentStyle.textColor} font-bold text-base uppercase tracking-widest ${currentStyle.textColor2} hover:rounded-full p-2 cursor-pointer transition-colors`}>Ver Catalogo</a>
+                <a href={currentStyle.Catalog} className={`${currentStyle.textColor} font-bold text-base uppercase tracking-widest ${currentStyle.textColor2} hover:rounded-full p-2 cursor-pointer transition-colors duration-300`}>Ver Catalogo</a>
             </div>
         </div>
     )

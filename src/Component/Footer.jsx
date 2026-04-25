@@ -6,9 +6,9 @@ export default function Footer(props) {
 
     const stylesConfig = {
         americanos: {
-            Fondo: "bg-gradient-to-b from-[#C0C0C0] to-[#2D3436]",
-            Title: "text-[#B22222]",
-            text: "text-[#121212]",
+            Fondo: "bg-gradient-to-t from-[#b22222] to-[#121212]",
+            Title: "text-[#C0C0C0]",
+            text: "text-[#F5F5F5]",
             hover: "hover:text-[#B22222]",
             Logo: "bg-[#B22222]",
             border: "border-[#121212]",

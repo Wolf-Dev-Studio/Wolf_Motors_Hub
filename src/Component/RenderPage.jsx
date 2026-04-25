@@ -88,7 +88,7 @@ const Page = ({ variant = "home" }) => {
                     <p className={`${currentStyle.textColor} ${currentStyle.textfont} text-lg tracking-widest`}>{currentStyle.description}</p>
                 </div>
                 <div className='flex flex-col gap-10 items-center justify-center flex-[2] mr-10 ml-25'>
-                    <img src={currentStyle.image} alt="" />
+                    <img className='rounded-xl' src={currentStyle.image} alt="" />
                 </div>
             </div>
         </section>

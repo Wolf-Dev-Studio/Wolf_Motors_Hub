@@ -28,7 +28,7 @@ const CarDetails = ({ variant }) => {
             if (!id) return;
             try {
 
-                const docRef = doc(db, "vehiculos", car.origen + '_' + car.id);
+                const docRef = doc(db, "vehiculos", id);
                 const docSnap = await getDoc(docRef);
 
                 if (docSnap.exists()) {
