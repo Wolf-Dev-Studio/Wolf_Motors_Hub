@@ -1,99 +1,118 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../firebase.js';
-import { doc, getDoc } from 'firebase/firestore';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
-
-const CarDetails = ({ variant }) => {
+const CarDetails = () => {
     const searchParams = new URLSearchParams(window.location.search);
-    const id = searchParams.get('id');
+    const urlId = searchParams.get('id');
+    const urlOrigen = searchParams.get('origen');
+
     const navigate = useNavigate();
     const [car, setCar] = useState(null);
-
-    const [selectedCarId, setSelectedCarId] = useState(null);
-
-
-    // SI HAY UN CARRO SELECCIONADO, MUESTRA EL COMPONENTE DETAIL
-    if (selectedCarId) {
-        return <CarInvoice carId={selectedCarId} onBack={() => setSelectedCarId(null)} />;
-    }
-
-    console.log(searchParams)
-    console.log(id)
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        console.log("hola")
         const fetchCarData = async () => {
-            if (!id) return;
+            if (!urlId || !urlOrigen) return;
             try {
+                setLoading(true);
+                const numericId = parseInt(urlId, 10);
+                const vehiculosRef = collection(db, "vehiculos");
+                const q = query(
+                    vehiculosRef,
+                    where("id", "==", numericId),
+                    where("origen", "==", urlOrigen)
+                );
 
-                const docRef = doc(db, "vehiculos", id);
-                const docSnap = await getDoc(docRef);
+                const querySnapshot = await getDocs(q);
 
-                if (docSnap.exists()) {
-                    setCar({ id: docSnap.id, ...docSnap.data() });
-                } else {
-                    console.error("No se encontró el documento:", id);
+                if (!querySnapshot.empty) {
+                    const docData = querySnapshot.docs[0];
+                    setCar({ firebase_id: docData.id, ...docData.data() });
                 }
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Error en la telemetría:", error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchCarData();
-    }, [id]);
+    }, [urlId, urlOrigen]);
 
-
-    if (!car) return (
-        <div className="min-h-screen bg-zinc-950 text-white flex flex-col items-center justify-center p-6">
-            <p className="text-xl mb-4">No se pudo cargar la información.</p>
-            <button onClick={() => navigate(-1)} className="bg-emerald-600 px-6 py-2 rounded-lg font-bold">Volver</button>
+    if (loading) return (
+        <div className="min-h-screen bg-[#121212] flex items-center justify-center">
+            <p className="text-[#85d5c8] animate-pulse font-bold tracking-widest">ESCANEANDO VEHÍCULO...</p>
         </div>
     );
 
+    if (!car) return (
+        <div className="min-h-screen bg-[#121212] text-white flex flex-col items-center justify-center p-6">
+            <p className="text-xl mb-4 font-bold uppercase tracking-tighter">Máquina no encontrada</p>
+            <button onClick={() => navigate(-1)} className="border border-[#85d5c8] text-[#85d5c8] px-6 py-2 rounded-full font-bold hover:bg-[#85d5c8] hover:text-black transition-all">
+                VOLVER AL TALLER
+            </button>
+        </div>
+    );
 
     return (
-        <div className="h-screen bg-[#121212]  p-4 md:p-8 font-sans">
+        <div className="min-h-screen bg-[#121212] p-4 md:p-8 font-sans text-white">
             <div className="max-w-6xl mx-auto">
-                {/* Botón Volver usando navigate(-1) */}
-                <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-[#85d5c8] hover:text-white mb-6 transition-colors">
-                    <span>← Volver al Catálogo</span>
+                <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-[#85d5c8] hover:text-white mb-8 transition-colors font-bold text-xs tracking-widest">
+                    <span>← VOLVER AL CATÁLOGO</span>
                 </button>
 
-                <div className={` rounded-2xl overflow-hidden border border-[#85d5c8] bg-[#1a1a1a]`}>
-                    <div className="relative h-[300px] md:h-[400px]">
+                <div className="rounded-3xl overflow-hidden border border-zinc-800 bg-[#1a1a1a] shadow-2xl">
+                    {/* Imagen Principal */}
+                    <div className="relative h-[300px] md:h-[500px]">
                         <img
                             src={car.img || car.detail?.imagen}
                             alt={car.marca}
                             className="w-full h-full object-cover"
                         />
-                    </div>
-
-                    <div className="p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-12">
-                        {/* Datos mapeados según tu captura de Firebase */}
-                        <div className="space-y-4">
-                            <h3 className="text-[#85d5c8] font-bold text-xs tracking-widest uppercase border-b border-[#85d5c8] pb-2">RENDIMIENTO</h3>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Aceleración</span><span className="text-white font-bold">{car.detail?.aceleracion || 'N/A'}</span></p>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Frenos</span><span className="text-white font-bold">{car.detail?.frenos || 'N/A'}</span></p>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Consumo</span><span className="text-white font-bold">{car.detail?.consumo || 'N/A'}</span></p>
-                        </div>
-
-                        <div className="space-y-4">
-                            <h3 className="text-[#85d5c8] font-bold text-xs tracking-widest uppercase border-b border-[#85d5c8] pb-2">MOTOR</h3>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Tipo</span><span className="text-white font-bold">{car.detail?.motor || 'N/A'}</span></p>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Transmisión</span><span className="text-white font-bold">{car.detail?.transmision || 'N/A'}</span></p>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Torque</span><span className="text-white font-bold">{car.detail?.torque || 'N/A'}</span></p>
-                        </div>
-
-                        <div className="space-y-4">
-                            <h3 className="text-[#85d5c8] font-bold text-xs tracking-widest uppercase border-b border-[#85d5c8] pb-2">ESPECIFICACIONES</h3>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Categoría</span><span className="text-white font-bold">{car.categoria || 'N/A'}</span></p>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Medidas</span><span className="text-white font-bold">{car.detail?.medidas || 'N/A'}</span></p>
-                            <p className="flex flex-col"><span className="text-zinc-500 text-xs">Seguridad</span><span className="text-white font-bold">{car.detail?.seguridad || 'N/A'}</span></p>
+                        <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-[#1a1a1a] to-transparent">
+                            <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter italic">{car.marca} {car.modelo}</h1>
                         </div>
                     </div>
-                    <div>
-                        <Link to={`/Compra?id=${car.origen + '_' + car.id}`} className="bg-[#85d5c8] text-[#1a1a1a] font-bold px-6 py-3 rounded-lg w-full flex items-center justify-center">Comprar Vehiculo</Link>
+
+                    {/* Especificaciones Técnicas */}
+                    <div className="p-8 md:p-12 grid grid-cols-1 md:grid-cols-3 gap-12 border-b border-zinc-800">
+                        <div className="space-y-4">
+                            <h3 className="text-[#85d5c8] font-black text-[10px] tracking-[0.3em] uppercase border-b border-zinc-800 pb-2">RENDIMIENTO</h3>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Aceleración</span><span className="text-white font-mono text-lg">{car.detail?.aceleracion || 'N/A'}</span></p>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Frenos</span><span className="text-white font-mono text-lg">{car.detail?.frenos || 'N/A'}</span></p>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Consumo</span><span className="text-white font-mono text-lg">{car.detail?.consumo || 'N/A'}</span></p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h3 className="text-[#85d5c8] font-black text-[10px] tracking-[0.3em] uppercase border-b border-zinc-800 pb-2">MOTORIZACIÓN</h3>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Configuración</span><span className="text-white font-mono text-lg">{car.detail?.motor || 'N/A'}</span></p>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Transmisión</span><span className="text-white font-mono text-lg">{car.detail?.transmision || 'N/A'}</span></p>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Torque Max</span><span className="text-white font-mono text-lg">{car.detail?.torque || 'N/A'}</span></p>
+                        </div>
+
+                        <div className="space-y-4">
+                            <h3 className="text-[#85d5c8] font-black text-[10px] tracking-[0.3em] uppercase border-b border-zinc-800 pb-2">DIMENSIONES</h3>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Chasis</span><span className="text-white font-mono text-lg">{car.categoria || 'N/A'}</span></p>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Medidas</span><span className="text-white font-mono text-lg">{car.detail?.medidas || 'N/A'}</span></p>
+                            <p className="flex flex-col"><span className="text-zinc-500 text-[10px] uppercase font-bold">Seguridad</span><span className="text-white font-mono text-lg">{car.detail?.seguridad || 'N/A'}</span></p>
+                        </div>
+                    </div>
+
+                    {/* Footer de Acción de Compra */}
+                    <div className="p-8 bg-zinc-900/50 flex flex-col md:flex-row justify-between items-center gap-6">
+                        <div className="text-center md:text-left">
+                            <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Precio Final Wolf Motor</p>
+                            <p className="text-4xl font-black text-[#85d5c8]">{car.precio}</p>
+                        </div>
+
+                        {/* 🔥 CORRECCIÓN DEL LINK: Usamos car.id y car.origen apuntando a la Factura */}
+                        <Link
+                            to={`/Compra?id=${car.id}&origen=${car.origen}`}
+                            className="bg-[#85d5c8] text-black font-black px-12 py-5 rounded-2xl w-full md:w-auto flex items-center justify-center uppercase tracking-widest hover:bg-white transition-all duration-500 shadow-lg shadow-[#85d5c8]/20 active:scale-95"
+                        >
+                            Comprar Vehículo
+                        </Link>
                     </div>
                 </div>
             </div>

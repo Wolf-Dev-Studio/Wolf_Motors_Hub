@@ -1,40 +1,60 @@
 import React, { useState, useEffect } from 'react';
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase.js';
 import { useNavigate } from 'react-router-dom';
 
 const CarInvoice = () => {
     const searchParams = new URLSearchParams(window.location.search);
-    const id = searchParams.get('id');
+    const idParam = searchParams.get('id');
+    const origenParam = searchParams.get('origen');
+
     const [car, setCar] = useState(null);
-    const [loading, setLoading] = useState(true); // Estado de carga
+    const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCarData = async () => {
-            if (!id) return;
+            // Verificación de seguridad: si no hay parámetros, abortamos
+            if (!idParam || !origenParam) {
+                console.error("Faltan parámetros en la URL");
+                setLoading(false);
+                return;
+            }
+
             try {
                 setLoading(true);
-                const docRef = doc(db, "vehiculos", car.origen, car.id);
-                const docSnap = await getDoc(docRef);
 
-                if (docSnap.exists()) {
-                    setCar({ id: docSnap.id, ...docSnap.data() });
+                // 1. Referencia a la colección principal
+                const vehiculosRef = collection(db, "vehiculos");
+
+                // 2. Query buscando por los campos internos que definimos en el Catálogo
+                const q = query(
+                    vehiculosRef,
+                    where("id", "==", parseInt(idParam, 10)), // Convertimos a número
+                    where("origen", "==", origenParam)
+                );
+
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    const docData = querySnapshot.docs[0];
+                    setCar({ firebase_id: docData.id, ...docData.data() });
                 } else {
-                    console.error("No se encontró el documento:", id);
+                    console.error("Vehículo no encontrado en la base de datos.");
                 }
             } catch (error) {
-                console.error("Error:", error);
+                console.error("Error en la telemetría de base de datos:", error);
             } finally {
                 setLoading(false);
             }
         };
-        fetchCarData();
-    }, [id]); // Agregamos [id] como dependencia
 
-    // --- LÓGICA DE PRECIOS ---
-    // Buscamos el precio en car.precio o en car.detail.precio
-    const rawPrice = car?.precio || car?.detail?.precio || 0;
+        fetchCarData();
+    }, [idParam, origenParam]);
+
+    // --- LÓGICA DE PRECIOS OPTIMIZADA ---
+    // Usamos useMemo o simples constantes protegidas por el encadenamiento opcional (?.)
+    const rawPrice = car?.precio || car?.detail?.precio || "0";
     const basePrice = typeof rawPrice === 'string'
         ? parseFloat(rawPrice.replace(/[^0-9.]/g, ''))
         : parseFloat(rawPrice);
@@ -44,100 +64,105 @@ const CarInvoice = () => {
     const total = basePrice + taxes + shipping;
 
     const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('es-US', {
+        return new Intl.NumberFormat('en-US', { // Usamos en-US para formato $1,000.00
             style: 'currency',
             currency: 'USD',
         }).format(amount);
     };
 
-    // Si está cargando, mostramos un mensaje para no mostrar valores en 0
     if (loading) {
         return (
-            <div className="min-h-screen bg-[#121212] flex items-center justify-center">
-                <p className="text-[#85d5c8] animate-pulse font-bold">CARGANDO FACTURA...</p>
+            <div className="min-h-screen bg-[#121212] flex items-center justify-center font-black tracking-[0.2em]">
+                <p className="text-[#85d5c8] animate-pulse text-xl">SINCRONIZANDO FACTURA...</p>
             </div>
         );
     }
 
-    // Si no hay carro tras cargar
     if (!car) {
         return (
-            <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center text-white">
-                <p className="mb-4">No se encontró la información del vehículo.</p>
-                <button onClick={() => navigate(-1)} className="bg-[#85d5c8] text-black px-4 py-2 rounded">Volver</button>
+            <div className="min-h-screen bg-[#121212] flex flex-col items-center justify-center text-white p-6 text-center">
+                <div className="w-20 h-20 border-2 border-red-600 rounded-full flex items-center justify-center mb-6">
+                    <span className="text-red-600 text-4xl font-bold">!</span>
+                </div>
+                <h2 className="text-2xl font-bold mb-2 uppercase">Error de Localización</h2>
+                <p className="text-zinc-500 mb-8 max-w-xs">No pudimos encontrar la máquina en los registros de Wolf Motor Hub.</p>
+                <button onClick={() => navigate(-1)} className="border border-white/20 hover:bg-white hover:text-black transition-all px-8 py-3 rounded-full font-bold uppercase text-xs tracking-widest">
+                    Regresar al Taller
+                </button>
             </div>
         );
     }
 
     return (
-        <div className="min-h-screen bg-[#121212] p-4 md:p-8 font-sans text-white">
+        <div className="min-h-screen bg-[#121212] p-4 md:p-8 font-sans text-white selection:bg-[#85d5c8] selection:text-black">
             <div className="max-w-2xl mx-auto">
                 {/* Encabezado */}
-                <div className="flex justify-between items-end mb-8 border-b border-[#85d5c8] pb-4">
+                <div className="flex justify-between items-end mb-8 border-b border-[#85d5c8]/30 pb-6">
                     <div>
-                        <h1 className="text-[#85d5c8] text-3xl font-bold tracking-tighter uppercase">Factura de Compra</h1>
-                        <p className="text-zinc-500 text-sm">Resumen de transacción</p>
+                        <h1 className="text-[#85d5c8] text-4xl font-black tracking-tighter uppercase leading-none">Invoice</h1>
+                        <p className="text-zinc-500 text-[10px] uppercase tracking-[0.3em] mt-2">Wolf Motor Hub Group</p>
                     </div>
                     <div className="text-right">
-                        <p className="text-zinc-500 text-xs uppercase tracking-widest">ID Vehículo</p>
-                        <p className="font-mono text-[#85d5c8] text-xs">{car.id}</p>
+                        <p className="text-zinc-500 text-[9px] uppercase tracking-widest">V-Unit Code</p>
+                        <p className="font-mono text-[#85d5c8] text-sm">#{car.id}-{car.origen?.substring(0, 3).toUpperCase()}</p>
                     </div>
                 </div>
 
-                <div className="bg-[#1a1a1a] border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
-                    <div className="p-6 md:p-8">
+                <div className="bg-[#1a1a1a] border border-zinc-800 rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+                    <div className="p-6 md:p-10">
                         {/* Preview del Vehículo */}
-                        <div className="flex items-center gap-6 mb-8 p-4 bg-zinc-900/50 rounded-xl border border-zinc-800/50">
+                        <div className="flex flex-col sm:flex-row items-center gap-6 mb-10 p-5 bg-zinc-900/80 rounded-2xl border border-zinc-800">
                             <img
                                 src={car.img || car.detail?.imagen}
                                 alt={car.marca}
-                                className="w-24 h-24 object-cover rounded-lg border border-zinc-700"
+                                className="w-full sm:w-32 h-32 object-cover rounded-xl border border-zinc-700 shadow-lg"
                             />
-                            <div>
-                                <h2 className="text-xl font-bold">{car.marca}</h2>
-                                <p className="text-zinc-400 text-sm">{car.categoria}</p>
-                                <p className="text-[#85d5c8] text-xs mt-1 font-mono uppercase">{car.detail?.motor}</p>
+                            <div className="text-center sm:text-left">
+                                <span className="text-[10px] bg-[#85d5c8] text-black px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
+                                    {car.origen}
+                                </span>
+                                <h2 className="text-2xl font-black mt-2 tracking-tight">{car.marca} {car.modelo}</h2>
+                                <p className="text-zinc-500 text-xs font-mono mt-1">{car.detail?.motor} // {car.categoria}</p>
                             </div>
                         </div>
 
-                        {/* Desglose */}
-                        <div className="space-y-4">
-                            <div className="flex justify-between items-center text-zinc-400">
-                                <span>Precio del Vehículo</span>
-                                <span className="text-white font-medium">{formatCurrency(basePrice)}</span>
+                        {/* Desglose de Costos */}
+                        <div className="space-y-5 px-2">
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">Net Price</span>
+                                <span className="text-white font-mono">{formatCurrency(basePrice)}</span>
                             </div>
-                            <div className="flex justify-between items-center text-zinc-400">
-                                <span>Impuestos (15%)</span>
-                                <span className="text-white font-medium">{formatCurrency(taxes)}</span>
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">IVA / Taxes (15%)</span>
+                                <span className="text-white font-mono">{formatCurrency(taxes)}</span>
                             </div>
-                            <div className="flex justify-between items-center text-zinc-400">
-                                <span>Gastos de Envío</span>
-                                <span className="text-white font-medium">{formatCurrency(shipping)}</span>
+                            <div className="flex justify-between items-center text-sm">
+                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">Wolf Shipping Fee</span>
+                                <span className="text-white font-mono">{formatCurrency(shipping)}</span>
                             </div>
 
-                            <hr className="border-zinc-800 my-6" />
-
-                            <div className="flex justify-between items-center">
-                                <span className="text-lg font-bold text-[#85d5c8] tracking-widest uppercase text-xs">Total a Pagar</span>
-                                <span className="text-3xl font-black text-white">
+                            <div className="pt-6 mt-6 border-t border-zinc-800 flex justify-between items-center">
+                                <span className="text-[#85d5c8] font-black uppercase text-xs tracking-[0.2em]">Total Amount</span>
+                                <span className="text-4xl font-black text-white tracking-tighter">
                                     {formatCurrency(total)}
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div className="p-6 bg-zinc-900/30 border-t border-zinc-800">
+                    {/* Acciones */}
+                    <div className="p-8 bg-zinc-900/50 border-t border-zinc-800">
                         <button
-                            className="w-full bg-[#85d5c8] hover:bg-[#6ebfb2] text-[#121212] font-black py-4 rounded-xl transition-all duration-300 transform hover:scale-[1.02] active:scale-95 uppercase tracking-widest"
-                            onClick={() => alert('¡Gracias por su compra!')}
+                            className="w-full bg-[#85d5c8] hover:bg-white text-[#121212] font-black py-5 rounded-2xl transition-all duration-500 shadow-lg shadow-[#85d5c8]/10 uppercase tracking-[0.2em] text-sm"
+                            onClick={() => alert('Orden de compra procesada en Wolf Motor Hub')}
                         >
-                            Confirmar y Comprar
+                            Finalizar Orden
                         </button>
                         <button
                             onClick={() => navigate(-1)}
-                            className="w-full mt-4 text-zinc-500 hover:text-white text-xs transition-colors uppercase tracking-widest"
+                            className="w-full mt-6 text-zinc-600 hover:text-red-500 text-[10px] transition-colors uppercase tracking-[0.3em] font-bold"
                         >
-                            Cancelar Operación
+                            Abortar Transacción
                         </button>
                     </div>
                 </div>

@@ -1,7 +1,7 @@
 import React from 'react';
-import Hub from '../assets/Home/Hub.jpg';
+import Hub from '../assets/Home/Hub.webp';
 import { useState } from 'react';
-import MuscleCar from '../assets/USA/Dodge-Home.jpg';
+import MuscleCar from '../assets/USA/Dodge-Home.webp';
 
 const Page = ({ variant = "home" }) => {
     const [showBanner, setShowBanner] = useState(true);
