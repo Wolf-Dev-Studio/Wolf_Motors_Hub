@@ -99,8 +99,8 @@ const CarInvoice = () => {
                 {/* Encabezado */}
                 <div className="flex justify-between items-end mb-8 border-b border-[#85d5c8]/30 pb-6">
                     <div>
-                        <h1 className="text-[#85d5c8] text-4xl font-black tracking-tighter uppercase leading-none">Invoice</h1>
-                        <p className="text-zinc-500 text-[10px] uppercase tracking-[0.3em] mt-2">Wolf Motor Hub Group</p>
+                        <h1 className="text-[#85d5c8] text-4xl font-black tracking-tighter uppercase leading-none">Compra</h1>
+                        <p className="text-zinc-500 text-[10px] uppercase tracking-[0.3em] mt-2">Wolf Motor Hub</p>
                     </div>
                     <div className="text-right">
                         <p className="text-zinc-500 text-[9px] uppercase tracking-widest">V-Unit Code</p>
@@ -112,11 +112,7 @@ const CarInvoice = () => {
                     <div className="p-6 md:p-10">
                         {/* Preview del Vehículo */}
                         <div className="flex flex-col sm:flex-row items-center gap-6 mb-10 p-5 bg-zinc-900/80 rounded-2xl border border-zinc-800">
-                            <img
-                                src={car.img || car.detail?.imagen}
-                                alt={car.marca}
-                                className="w-full sm:w-32 h-32 object-cover rounded-xl border border-zinc-700 shadow-lg"
-                            />
+                            <img src={car.img || car.detail?.imagen} alt={car.marca} className="w-full sm:w-32 h-32 object-cover rounded-xl border border-zinc-700 shadow-lg" />
                             <div className="text-center sm:text-left">
                                 <span className="text-[10px] bg-[#85d5c8] text-black px-2 py-0.5 rounded-full font-black uppercase tracking-tighter">
                                     {car.origen}
@@ -129,20 +125,20 @@ const CarInvoice = () => {
                         {/* Desglose de Costos */}
                         <div className="space-y-5 px-2">
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">Net Price</span>
+                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">Precio Neto</span>
                                 <span className="text-white font-mono">{formatCurrency(basePrice)}</span>
                             </div>
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">IVA / Taxes (15%)</span>
+                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">IVA / Impuesto (15%)</span>
                                 <span className="text-white font-mono">{formatCurrency(taxes)}</span>
                             </div>
                             <div className="flex justify-between items-center text-sm">
-                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">Wolf Shipping Fee</span>
+                                <span className="text-zinc-500 uppercase tracking-widest text-[11px]">Tarifa de Envío Wolf</span>
                                 <span className="text-white font-mono">{formatCurrency(shipping)}</span>
                             </div>
 
                             <div className="pt-6 mt-6 border-t border-zinc-800 flex justify-between items-center">
-                                <span className="text-[#85d5c8] font-black uppercase text-xs tracking-[0.2em]">Total Amount</span>
+                                <span className="text-[#85d5c8] font-black uppercase text-xs tracking-[0.2em]">Monto Total</span>
                                 <span className="text-4xl font-black text-white tracking-tighter">
                                     {formatCurrency(total)}
                                 </span>
@@ -154,14 +150,12 @@ const CarInvoice = () => {
                     <div className="p-8 bg-zinc-900/50 border-t border-zinc-800">
                         <button
                             className="w-full bg-[#85d5c8] hover:bg-white text-[#121212] font-black py-5 rounded-2xl transition-all duration-500 shadow-lg shadow-[#85d5c8]/10 uppercase tracking-[0.2em] text-sm"
-                            onClick={() => alert('Orden de compra procesada en Wolf Motor Hub')}
-                        >
+                            onClick={() => alert('Orden de compra procesada en Wolf Motor Hub')} >
                             Finalizar Orden
                         </button>
                         <button
                             onClick={() => navigate(-1)}
-                            className="w-full mt-6 text-zinc-600 hover:text-red-500 text-[10px] transition-colors uppercase tracking-[0.3em] font-bold"
-                        >
+                            className="w-full mt-6 text-zinc-600 hover:text-red-500 text-[10px] transition-colors uppercase tracking-[0.3em] font-bold" >
                             Abortar Transacción
                         </button>
                     </div>

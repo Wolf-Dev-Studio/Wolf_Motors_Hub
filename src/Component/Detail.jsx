@@ -56,7 +56,7 @@ const CarDetails = () => {
     );
 
     return (
-        <div className="min-h-screen bg-[#121212] p-4 md:p-8 font-sans text-white">
+        <div className="min-h-screen bg-[#121212] p-2 md:p-8 font-sans text-white">
             <div className="max-w-6xl mx-auto">
                 <button onClick={() => navigate(-1)} className="flex items-center gap-2 text-[#85d5c8] hover:text-white mb-8 transition-colors font-bold text-xs tracking-widest">
                     <span>← VOLVER AL CATÁLOGO</span>
@@ -65,11 +65,7 @@ const CarDetails = () => {
                 <div className="rounded-3xl overflow-hidden border border-zinc-800 bg-[#1a1a1a] shadow-2xl">
                     {/* Imagen Principal */}
                     <div className="relative h-[300px] md:h-[500px]">
-                        <img
-                            src={car.img || car.detail?.imagen}
-                            alt={car.marca}
-                            className="w-full h-full object-cover"
-                        />
+                        <img src={car.img || car.detail?.imagen} alt={car.marca} className="w-full h-full object-cover" />
                         <div className="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-[#1a1a1a] to-transparent">
                             <h1 className="text-4xl md:text-6xl font-black uppercase tracking-tighter italic">{car.marca} {car.modelo}</h1>
                         </div>
@@ -102,15 +98,14 @@ const CarDetails = () => {
                     {/* Footer de Acción de Compra */}
                     <div className="p-8 bg-zinc-900/50 flex flex-col md:flex-row justify-between items-center gap-6">
                         <div className="text-center md:text-left">
-                            <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Precio Final Wolf Motor</p>
+                            <p className="text-zinc-500 text-[10px] uppercase tracking-widest font-bold">Precio</p>
                             <p className="text-4xl font-black text-[#85d5c8]">{car.precio}</p>
                         </div>
 
                         {/* 🔥 CORRECCIÓN DEL LINK: Usamos car.id y car.origen apuntando a la Factura */}
                         <Link
                             to={`/Compra?id=${car.id}&origen=${car.origen}`}
-                            className="bg-[#85d5c8] text-black font-black px-12 py-5 rounded-2xl w-full md:w-auto flex items-center justify-center uppercase tracking-widest hover:bg-white transition-all duration-500 shadow-lg shadow-[#85d5c8]/20 active:scale-95"
-                        >
+                            className="bg-[#85d5c8] text-black font-black px-12 py-5 rounded-2xl w-full md:w-auto flex items-center justify-center uppercase tracking-widest hover:bg-white transition-all duration-500 shadow-lg shadow-[#85d5c8]/20 active:scale-95">
                             Comprar Vehículo
                         </Link>
                     </div>
