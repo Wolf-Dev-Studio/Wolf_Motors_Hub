@@ -1,8 +1,10 @@
 import React from 'react';
 import Navbar from './Navbar.jsx';
 import Preloader from './Preloader.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Servicios = () => {
+    const navigate = useNavigate();
     const services = [
         {
             id: "01",
@@ -42,6 +44,11 @@ const Servicios = () => {
             <Preloader variant={"servicios"} />
             <section className="bg-[#1a1a1a] py-20 px-6 font-sans border-t border-zinc-900">
                 <div className="max-w-7xl mx-auto">
+                    <div>
+                        <button onClick={() => navigate(-1)} className="flex flex-row items-center gap-3 text-[#85d5c8] hover:text-white transition-all duration-300 px-8 py-3 font-bold uppercase text-xs tracking-widest">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="20" d="M21 12h-17.5"><animate fill="freeze" attributeName="stroke-dashoffset" dur="3s" values="20;0" /></path><path stroke-dasharray="12" stroke-dashoffset="12" d="M3 12l7 7M3 12l7 -7"><animate fill="freeze" attributeName="stroke-dashoffset" begin="3s" dur="1s" to="0" /></path></g></svg> Volver
+                        </button>
+                    </div>
                     {/* Encabezado */}
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-black text-white mb-4 uppercase tracking-tighter">

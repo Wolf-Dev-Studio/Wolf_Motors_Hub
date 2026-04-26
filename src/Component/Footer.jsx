@@ -11,7 +11,7 @@ export default function Footer(props) {
             text: "text-[#F5F5F5]",
             hover: "hover:text-[#B22222]",
             Logo: "bg-[#B22222]",
-            border: "border-[#121212]",
+            border: "border-[#C0C0C0]",
         },
         europeos: {
             Fondo: "bg-gradient-to-t from-[#121212] to-[#1E272E]",

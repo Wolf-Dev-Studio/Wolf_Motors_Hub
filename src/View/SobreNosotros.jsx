@@ -1,13 +1,20 @@
 import React from 'react';
 import Navbar from '../Component/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 function SobreNosotros() {
+    const navigate = useNavigate();
     return (
         <section className='w-full min-h-screen bg-[#1a1a1a] overflow-x-hidden'>
             <Navbar variant="home" />
 
             {/* CONTENEDOR PRINCIPAL - Ajustado el margen por la Navbar lateral si existe */}
             <div className='flex flex-col gap-20 p-6 lg:p-20 max-w-7xl mx-auto'>
+                <div>
+                    <button onClick={() => navigate(-1)} className="flex flex-row items-center gap-3  text-[#85d5c8] hover:text-white transition-all duration-300 px-8 py-3 font-bold uppercase text-xs tracking-widest">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="20" d="M21 12h-17.5"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.9s" values="20;0" /></path><path stroke-dasharray="12" stroke-dashoffset="12" d="M3 12l7 7M3 12l7 -7"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.9s" dur="0.6s" to="0" /></path></g></svg> Volver
+                    </button>
+                </div>
                 <h1 className='text-4xl font-bold uppercase tracking-widest text-center text-[#85d5c8]'>El origen de Wolf Motors Hub</h1>
 
                 {/* --- SECCIÓN 1: INGENIERÍA & RAW MUSCLE (IMAGEN IZQUIERDA) --- */}
