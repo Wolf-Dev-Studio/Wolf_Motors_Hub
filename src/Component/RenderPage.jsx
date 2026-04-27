@@ -2,6 +2,8 @@ import React from 'react';
 import Hub from '../assets/Home/Hub.webp';
 import { useState } from 'react';
 import MuscleCar from '../assets/USA/Dodge-Home.webp';
+import EuropeCar from '../assets/EURO/Hub-EURO.webp';
+import AsiaCar from '../assets/JDM/Hub-JDM.webp';
 
 const Page = ({ variant = "home" }) => {
     const [showBanner, setShowBanner] = useState(true);
@@ -20,15 +22,15 @@ const Page = ({ variant = "home" }) => {
             textfont: "font-bold",
             title: "PRECISIÓN, LUJO Y VELOCIDAD",
             description: "Europa es la cuna del automovilismo deportivo y de lujo. Desde la ingeniería milimétrica alemana en la Autobahn, hasta la pasión desbordante del diseño italiano. En Wolf Performance, cada vehículo representa el pináculo de la aerodinámica y el estatus. Prepárate para conducir obras de arte diseñadas para desafiar los límites de la física.",
-            image: ""
+            image: EuropeCar
         },
         asiaticos: {
             Liner: "from-[#2D3436] via-[#2D3436] to-[#DFE6E9]",
             textColor: "text-[#FFFFFF]",
             textfont: "font-bold",
-            title: "PRECISIÓN, LUJO Y VELOCIDAD",
-            description: "Europa es la cuna del automovilismo deportivo y de lujo. Desde la ingeniería milimétrica alemana en la Autobahn, hasta la pasión desbordante del diseño italiano. En Wolf Performance, cada vehículo representa el pináculo de la aerodinámica y el estatus. Prepárate para conducir obras de arte diseñadas para desafiar los límites de la física.",
-            image: ""
+            title: "PRECISIÓN SIN LÍMITES",
+            description: "Descubre el balance perfecto entre eficiencia y potencia. Los fabricantes líderes de Asia han dominado la tecnología moderna, creando vehículos que desafían el tiempo. En esta sección, el enfoque es la durabilidad legendaria combinada con una estética vanguardista que domina las calles del mundo.",
+            image: AsiaCar
         }
     };
 

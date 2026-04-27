@@ -1,6 +1,10 @@
 import React from 'react';
 import Navbar from '../Component/Navbar';
 import { useNavigate } from 'react-router-dom';
+import RawMuscle from '../assets/Home/RawMuscle.webp';
+import Performance from '../assets/Home/Peformance.webp';
+import Redline from '../assets/Home/Redline.webp';
+
 
 function SobreNosotros() {
     const navigate = useNavigate();
@@ -21,7 +25,7 @@ function SobreNosotros() {
                 <div className='flex flex-col md:flex-row items-center gap-10 group'>
                     <div className='w-full md:w-1/2 overflow-hidden rounded-xl shadow-lg shadow-[#85d5c8]/20'>
                         <img
-                            src="https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&q=80&w=800"
+                            src={RawMuscle}
                             alt="American Muscle"
                             className='w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700'
                         />
@@ -40,7 +44,7 @@ function SobreNosotros() {
                 <div className='flex flex-col md:flex-row-reverse items-center gap-10 group'>
                     <div className='w-full md:w-1/2 overflow-hidden rounded-xl shadow-lg shadow-[#85d5c8]/20'>
                         <img
-                            src="https://images.unsplash.com/photo-1614164185128-e4ec99c436d7?auto=format&fit=crop&q=80&w=800"
+                            src={Performance}
                             alt="European Performance"
                             className='w-full h-[400px] object-cover group-hover:scale-110 transition-transform duration-700'
                         />
@@ -58,7 +62,7 @@ function SobreNosotros() {
                 <div className='flex flex-col gap-8 group'>
                     <div className='w-full h-[300px] md:h-[500px] overflow-hidden rounded-xl shadow-lg shadow-[#85d5c8]/20'>
                         <img
-                            src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&q=80&w=1200"
+                            src={Redline}
                             alt="JDM Redline"
                             className='w-full h-full object-cover group-hover:scale-105 transition-transform duration-1000'
                         />

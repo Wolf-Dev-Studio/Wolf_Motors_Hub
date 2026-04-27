@@ -2,6 +2,7 @@ import React from 'react';
 import Navbar from './Navbar.jsx';
 import Preloader from './Preloader.jsx';
 import { useNavigate } from 'react-router-dom';
+import Taller from '../assets/Home/Taller.webp';
 
 const Servicios = () => {
     const navigate = useNavigate();
@@ -123,7 +124,7 @@ const Servicios = () => {
                             {/* Imagen del Taller */}
                             <div className="lg:w-1/2 h-72 lg:h-[600px] w-full bg-zinc-900 border-l border-[#85d5c8]">
                                 <img
-                                    src="/assets/taller-premium.jpg"
+                                    src={Taller}
                                     alt="Wolf Workshop"
                                     className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700 opacity-80 hover:opacity-100"
                                 />

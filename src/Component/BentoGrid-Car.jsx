@@ -2,7 +2,14 @@ import ImgDodge from "../assets/USA/DodgeBento.webp";
 import ImgFord from "../assets/USA/FordBento.webp";
 import ImgChevrolet from "../assets/USA/ChevroletBento.webp";
 import ImgCorvette from "../assets/USA/CorvetteBento.webp";
-import Catalogo from "./Catalogo";
+import ImgEurope from "../assets/EURO/BMW.webp";
+import ImgEurope2 from "../assets/EURO/Porsche.webp";
+import ImgEurope3 from "../assets/EURO/Audi.webp";
+import ImgEurope4 from "../assets/EURO/AMG.webp";
+import ImgAsia1 from "../assets/JDM/ToyotaBento.webp"
+import ImgAsia2 from "../assets/JDM/MitsubishiBento.webp"
+import ImgAsia3 from "../assets/JDM/MazdaBento.webp"
+import ImgAsia4 from "../assets/JDM/SubaruBento.webp"
 
 export default function BentoGridCar(props) {
 
@@ -24,20 +31,20 @@ export default function BentoGridCar(props) {
             textColor: "text-[#00CEC9]",
             textColor2: "hover:text-[#1E272E] hover:bg-[#0984E3]",
             Catalog: "/catalogo/europeo",
-            Img1: "",
-            Img2: "",
-            Img3: "",
-            Img4: "",
+            Img1: ImgEurope4,
+            Img2: ImgEurope3,
+            Img3: ImgEurope,
+            Img4: ImgEurope2,
         },
         asiaticos: {
             Fondo: "bg-[#DFE6E9]",
             textColor: "text-[#2D3436]",
             textColor2: "hover:text-[#D3B037] hover:bg-[#2D3436]",
             Catalog: "/catalogo/asiatico",
-            Img1: "",
-            Img2: "",
-            Img3: "",
-            Img4: "",
+            Img1: ImgAsia3,
+            Img2: ImgAsia2,
+            Img3: ImgAsia1,
+            Img4: ImgAsia4,
         }
     };
 

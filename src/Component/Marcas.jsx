@@ -29,12 +29,12 @@ export default function Marcas(props) {
             Fondo: "bg-[#DFE6E9]",
             border: "border-2 border-[#2D3436] rounded-lg",
             textColor: "text-[#2D3436]",
-            textMarca: "text-[#00CEC9]",
-            Marca1: "",
-            Img2: "",
-            Img3: "",
-            Img4: "",
-            Img5: "",
+            textMarca: "text-[#2D3436]",
+            Marca1: "Toyota",
+            Marca2: "Honda",
+            Marca3: "Nissan",
+            Marca4: "Subaru",
+            Marca5: "Lexus",
         }
     };
 
