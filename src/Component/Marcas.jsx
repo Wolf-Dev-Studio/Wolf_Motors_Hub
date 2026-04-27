@@ -1,9 +1,3 @@
-import LogoFord from '../assets/USA/LogoFord.webp';
-import LogoDodge from '../assets/USA/LogoDodge.webp';
-import LogoChevrolet from '../assets/USA/LogoChevrolet.webp';
-import LogoCadillac from '../assets/USA/LogoCadillac.webp';
-import LogoShelby from '../assets/USA/LogoShelby.webp';
-
 export default function Marcas(props) {
 
     const { variant } = props;

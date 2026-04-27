@@ -126,7 +126,7 @@ const Catalogo = ({ variant }) => {
                         <label className={`text-xs uppercase tracking-widest ${styles.texto} text-center`}>
                             Precio Máximo: <span className={`${styles.textAccent} font-bold`}>${precioMax.toLocaleString()}</span>
                         </label>
-                        <input type="range" min="5000" max="200000" step="5000" value={precioMax} onChange={(e) => setPrecioMax(Number(e.target.value))}
+                        <input type="range" min="5000" max="20000000" step="5000" value={precioMax} onChange={(e) => setPrecioMax(Number(e.target.value))}
                             className={`w-full ${styles.accentColor} cursor-pointer`}
                         />
                     </div>
