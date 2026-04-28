@@ -39,7 +39,7 @@ const Page = ({ variant = "home" }) => {
         return (
             <section className='w-full h-full bg-[#1a1a1a]'>
                 {showBanner && (
-                    <div className="fixed top-5 right-20 left-20 rounded-xl z-50 flex items-center gap-x-6 bg-[#c2cbd4] px-6 py-2.5 sm:px-3.5 sm:before:flex-1">
+                    <div className="fixed top-5 right-20 left-20 rounded-xl z-50 flex items-center gap-x-6 bg-[#c2cbd4] px-6 py-2.5 sm:px-3.5 sm:before:flex-1 ">
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                             <p className="text-sm leading-6 text-[#1a1a1a]">
                                 Las funciones de compra y transacciones son simuladas; no se realizan ventas reales a través de este dominio técnico.
@@ -57,7 +57,7 @@ const Page = ({ variant = "home" }) => {
                 )}
                 <div className='w-[97%] h-screen flex flex-row-reverse'>
                     <div className='mt-25 ml-5'>
-                        <img src={Hub} alt="" className='w-300 h-200 mr-10 rounded-xl object-cover' />
+                        <img src={Hub} alt="" className='w-300 h-200 mr-10 rounded-xl object-cover shadow-lg shadow-[#85d5c8]' />
                     </div>
                     <div className='flex flex-col gap-10 items-center justify-center flex-[2] ml-25'>
                         <h1 className='text-[#85d5c8] font-bold text-4xl tracking-widest'>DEFINING THE ROAD</h1>
