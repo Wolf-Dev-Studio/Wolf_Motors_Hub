@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 
 const Navbar = ({ variant = "home" }) => {
 
@@ -100,7 +101,11 @@ const Navbar = ({ variant = "home" }) => {
     // 2. CASO ESPECIAL: Si es el Home (porque tu Home tiene un navbar lateral distinto)
     if (variant === "home") {
         return (
-            <aside className="fixed  left-0 top-0 h-screen w-20 bg-[#1a1a1a] p-3 z-50 ">
+            <motion.nav
+                initial={{ opacity: 0, x: -100, }}
+                animate={{ opacity: 1, x: 0, rotate: 0 }}
+                transition={{ duration: 1.5 }}
+                className="fixed  left-0 top-0 h-screen w-20 bg-[#1a1a1a] p-3 z-50 ">
                 <div className="w-full h-full bg-[#c2cbd4] rounded-xl flex flex-col justify-between items-center py-6 ">
                     <div className="flex-1 flex items-start justify-center">
                         <a href="/">
@@ -113,7 +118,7 @@ const Navbar = ({ variant = "home" }) => {
                         <span className="font-black -rotate-45 text-xs">W</span>
                     </div>
                 </div>
-            </aside>
+            </motion.nav>
         );
     }
 

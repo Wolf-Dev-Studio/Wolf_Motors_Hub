@@ -4,6 +4,7 @@ import { useState } from 'react';
 import MuscleCar from '../assets/USA/Dodge-Home.webp';
 import EuropeCar from '../assets/EURO/Hub-EURO.webp';
 import AsiaCar from '../assets/JDM/Hub-JDM.webp';
+import { motion } from 'framer-motion';
 
 const Page = ({ variant = "home" }) => {
     const [showBanner, setShowBanner] = useState(true);
@@ -39,7 +40,11 @@ const Page = ({ variant = "home" }) => {
         return (
             <section className='w-full h-full bg-[#1a1a1a]'>
                 {showBanner && (
-                    <div className="fixed top-5 right-20 left-20 rounded-xl z-50 flex items-center gap-x-6 bg-[#c2cbd4] px-6 py-2.5 sm:px-3.5 sm:before:flex-1 ">
+                    <motion.div
+                        initial={{ opacity: 0, y: -50 }} // Empieza invisible y 50px más arriba
+                        animate={{ opacity: 1, y: 0 }}   // Termina visible y en su posición original
+                        transition={{ duration: 1.5 }} // Dura 0.6 segundos
+                        className="fixed top-5 right-20 left-20 rounded-xl z-50 flex items-center gap-x-6 bg-[#c2cbd4] px-6 py-2.5 sm:px-3.5 sm:before:flex-1 ">
                         <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                             <p className="text-sm leading-6 text-[#1a1a1a]">
                                 Las funciones de compra y transacciones son simuladas; no se realizan ventas reales a través de este dominio técnico.
@@ -53,13 +58,22 @@ const Page = ({ variant = "home" }) => {
                                 </svg>
                             </button>
                         </div>
-                    </div>
+                    </motion.div>
                 )}
                 <div className='w-[97%] h-screen flex flex-row-reverse'>
-                    <div className='mt-25 ml-5'>
+                    <motion.div
+                        className='mt-25 ml-5'
+                        initial={{ opacity: 0, x: 100, }}
+                        animate={{ opacity: 1, x: 0, rotate: 0 }}
+                        transition={{ duration: 1.5 }}
+                    >
                         <img src={Hub} alt="" className='w-300 h-200 mr-10 rounded-xl object-cover shadow-lg shadow-[#85d5c8]' />
-                    </div>
-                    <div className='flex flex-col gap-10 items-center justify-center flex-[2] ml-25'>
+                    </motion.div>
+                    <motion.div
+                        initial={{ opacity: 0, y: -50 }} // Empieza invisible y 50px más arriba
+                        animate={{ opacity: 1, y: 0 }}   // Termina visible y en su posición original
+                        transition={{ duration: 1.5 }} // Dura 0.6 segundos
+                        className='flex flex-col gap-10 items-center justify-center flex-[2] ml-25'>
                         <h1 className='text-[#85d5c8] font-bold text-4xl tracking-widest'>DEFINING THE ROAD</h1>
                         <p className='text-[#f7f4eb] font-bold text-lg tracking-widest'>Bienvenido | SELECCIONA TU MÁQUINA</p>
                         <div className='flex flex-row gap-5'>
@@ -71,7 +85,7 @@ const Page = ({ variant = "home" }) => {
                             <a href="/servicios" className='flex flex-row items-center gap-2  text-[#f7f4eb] font-bold text-xs tracking-widest hover:text-[#85d5c8] hover:rounded-full p-2 cursor-pointer transition-colors'>Servicios<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path stroke-dasharray="42" d="M11 9h6v10h-6.5l-2 -2h-2.5v-6.5l1.5 -1.5Z"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.5s" values="42;0" /></path><path d="M17 13h4v-3h1v8h-1v-3h-4Z" opacity="0"><set fill="freeze" attributeName="opacity" begin="0.6s" to="1" /><animate fill="freeze" attributeName="d" begin="0.6s" dur="0.2s" values="M17 13h0v-3h0v8h0v-3h0Z;M17 13h4v-3h1v8h-1v-3h-4Z" /></path><path d="M6 14h-4M2 11v6" opacity="0"><set fill="freeze" attributeName="opacity" begin="0.8s" to="1" /><animate fill="freeze" attributeName="d" begin="0.8s" dur="0.2s" values="M6 14h0M6 11v6;M6 14h-4M2 11v6" /></path><path d="M11 9v-4M8 5h6" opacity="0"><set fill="freeze" attributeName="opacity" begin="1s" to="1" /><animate fill="freeze" attributeName="d" begin="1s" dur="0.2s" values="M11 9v0M8 9h6;M11 9v-4M8 5h6" /></path></g></svg></a>
                             <a href="/sobre-nosotros" className='flex flex-row items-center gap-2  text-[#f7f4eb] font-bold text-xs tracking-widest hover:text-[#85d5c8] hover:rounded-full p-2 cursor-pointer transition-colors'>Sobre Nosotros<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-dasharray="22" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="M6 19v-1c0 -2.21 1.79 -4 4 -4h4c2.21 0 4 1.79 4 4v1"><animate fill="freeze" attributeName="stroke-dashoffset" dur="0.3s" values="22;0" /></path><path stroke-dashoffset="22" d="M12 11c-1.66 0 -3 -1.34 -3 -3c0 -1.66 1.34 -3 3 -3c1.66 0 3 1.34 3 3c0 1.66 -1.34 3 -3 3Z"><animate fill="freeze" attributeName="stroke-dashoffset" begin="0.3s" dur="0.3s" to="0" /></path></g></svg></a>
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
         );
