@@ -2,8 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase.js';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const CarInvoice = () => {
+    const Alert = () => {
+        Swal.fire({
+            title: "¡Gracias por tu compra!",
+            text: "En breve nuestro equipo se pondra en contacto contigo para agendar el envio",
+            icon: "success",
+            confirmButtonText: "Entendido",
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            background: "#1a1a1a",
+            color: "#fff",
+            confirmButtonColor: "#85d5c8",
+        })
+    }
     const searchParams = new URLSearchParams(window.location.search);
     const idParam = searchParams.get('id');
     const origenParam = searchParams.get('origen');
@@ -150,7 +168,7 @@ const CarInvoice = () => {
                     <div className="p-8 bg-zinc-900/50 border-t border-zinc-800">
                         <button
                             className="w-full bg-[#85d5c8] hover:bg-white text-[#121212] font-black py-5 rounded-2xl transition-all duration-500 shadow-lg shadow-[#85d5c8]/10 uppercase tracking-[0.2em] text-sm"
-                            onClick={() => alert('Orden de compra procesada en Wolf Motor Hub')} >
+                            onClick={Alert} >
                             Finalizar Orden
                         </button>
                         <button

@@ -1,128 +1,134 @@
-import React from 'react';
+import { title } from 'framer-motion/client';
+import { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 
-const posts = [
-    {
-        id: 1,
-        title: 'Boost your conversion rate',
-        href: '#',
-        description:
-            'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-        date: 'Mar 16, 2020',
-        datetime: '2020-03-16',
-        category: { title: 'Marketing', href: '#' },
-        author: {
-            name: 'Michael Foster',
-            role: 'Co-Founder / CTO',
-            href: '#',
-            imageUrl:
-                'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-    },
-    {
-        id: 2,
-        title: 'How to use search engine optimization to drive sales',
-        href: '#',
-        description: 'Optio cum necessitatibus dolor voluptatum provident commodi et. Qui aperiam fugiat nemo cumque.',
-        date: 'Mar 10, 2020',
-        datetime: '2020-03-10',
-        category: { title: 'Sales', href: '#' },
-        author: {
-            name: 'Lindsay Walton',
-            role: 'Front-end Developer',
-            href: '#',
-            imageUrl:
-                'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-    },
-    {
-        id: 3,
-        title: 'Improve your customer experience',
-        href: '#',
-        description:
-            'Cupiditate maiores ullam eveniet adipisci in doloribus nulla minus. Voluptas iusto libero adipisci rem et corporis. Nostrud sint anim sunt aliqua. Nulla eu labore irure incididunt velit cillum quis magna dolore.',
-        date: 'Feb 12, 2020',
-        datetime: '2020-02-12',
-        category: { title: 'Business', href: '#' },
-        author: {
-            name: 'Tom Cook',
-            role: 'Director of Product',
-            href: '#',
-            imageUrl:
-                'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-        },
-    },
-]
+const News = (props) => {
+    const [news, setNews] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-export default function News(props) {
 
     const { variant } = props;
 
     const stylesConfig = {
         americanos: {
             Fondo: "bg-[#121212]",
-            Title: "text-[#b22222]",
-            textColor: "text-[#F5F5F5]",
+            textColor: "text-white",
+            shadow: "#B22222",
+            titleColor: "text-[#B22222]",
+
         },
         europeos: {
             Fondo: "bg-gradient-to-t from-[#1E272E] to-[#F5F6FA]",
-            Title: "text-[#00CEC9]",
+            titleColor: "text-[#00CEC9]",
+            shadow: "#00CEC9",
             textColor: "text-[#1E272E]",
         },
         asiaticos: {
-            Fondo: "bg-gradient-to-b from-[#DFE6E9] to-[#2D3436]",
-            Title: "text-[#2D3436]",
+            Fondo: "bg-[#DFE6E9]",
             textColor: "text-[#2D3436]",
+            shadow: "#D3B037",
+            titleColor: "text-[#D3B037]",
         }
-    }
+    };
+
 
     const currentStyle = stylesConfig[variant];
 
+    useEffect(() => {
+        const fetchNews = async () => {
+            try {
+                // 🛡️ SEGURIDAD: En React (si usas Vite), las variables de entorno se llaman así.
+                // Crea un archivo .env en la raíz de tu proyecto y pon: VITE_NEWS_API_KEY=tu_llave
+                const API_KEY = import.meta.env.VITE_NEWS_API_KEY || 'TU_API_KEY_AQUI';
+                const NEWS_URL = `https://newsapi.org/v2/everything?q=autos OR automotive OR motor&language=es&sortBy=publishedAt&pageSize=3&apiKey=${API_KEY}`;
+
+                const response = await fetch(NEWS_URL);
+
+                if (!response.ok) throw new Error('Error al conectar con la API');
+
+                const data = await response.json();
+                setNews(data.articles);
+            } catch (error) {
+                console.error('Error:', error);
+                // Alerta elegante de error
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Falla de Conexión',
+                    text: 'No pudimos obtener las noticias del motor. Verifica tu internet.',
+                    background: '#1a1a1a',
+                    color: '#ffffff',
+                    confirmButtonColor: '#e63946' // Rojo Wolf
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchNews();
+    }, []); // El array vacío asegura que esto solo corra una vez al cargar la página
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center py-20 w-full">
+                <p className="text-gray-400 animate-pulse text-lg tracking-widest uppercase">
+                    Cargando últimas noticias...
+                </p>
+            </div>
+        );
+    }
+
     return (
-        <div className={`${currentStyle.Fondo} py-24 sm:py-32`}>
-            <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-2xl lg:mx-0">
-                    <h2 className={`text-4xl font-semibold tracking-tight text-pretty ${currentStyle.Title} sm:text-5xl`}>Noticias Del Dia</h2>
-                    <p className={`mt-2 text-lg/8 ${currentStyle.textColor}`}>Enterate de las ultimas noticias del mundo automotriz.</p>
-                </div>
-                <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-700 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-                    {posts.map((post) => (
-                        <article key={post.id} className="flex max-w-xl flex-col items-start justify-between">
-                            <div className="flex items-center gap-x-4 text-xs">
-                                <time dateTime={post.datetime} className="text-gray-400">
-                                    {post.date}
-                                </time>
-                                <a
-                                    href={post.category.href}
-                                    className="relative z-10 rounded-full bg-gray-800/60 px-3 py-1.5 font-medium text-gray-300 hover:bg-gray-800"
-                                >
-                                    {post.category.title}
+        <section className={`${currentStyle.Fondo} py-16 px-4`}>
+            <h2 className={`${currentStyle.textColor} text-3xl font-bold mb-10 text-center uppercase tracking-wider`}>
+                Noticias Del <span className={`${currentStyle.titleColor}`}>Dia</span>
+            </h2>
+
+            {/* Grid Responsive: 1 columna en móvil, 3 en escritorio */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {news.map((article, index) => {
+                    // Fallbacks por si la API no trae algún dato
+                    const imageUrl = article.urlToImage || 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=800';
+                    const authorName = article.author || article.source.name || 'Redacción Wolf';
+                    const sourceName = article.source.name || 'Automotive';
+                    const readTime = Math.ceil((article.description?.length || 800) / 200) + ' min read';
+
+                    // Formateo de fecha
+                    const formattedDate = new Date(article.publishedAt).toLocaleDateString('es-ES', {
+                        month: 'short', day: 'numeric', year: 'numeric'
+                    });
+
+                    return (
+                        <div key={index} className={`bg-[#111111] rounded-xl overflow-hidden border border-gray-800 transition-all duration-300 hover:-translate-y-2 hover:border-gray-700 flex flex-col`}>
+                            <img src={imageUrl} alt={article.title} className="w-full h-52 object-cover" loading="lazy" />
+
+                            <div className="p-6 flex flex-col flex-grow">
+                                <span className={`text-xs font-bold ${currentStyle.titleColor} uppercase tracking-wider mb-3`}>
+                                    {sourceName}
+                                </span>
+                                <a href={article.url} target="_blank" rel="noopener noreferrer" className="group">
+                                    <h3 className={`text-xl font-bold text-white mb-3 line-clamp-2`}>
+                                        {article.title}
+                                    </h3>
                                 </a>
-                            </div>
-                            <div className="group relative grow">
-                                <h3 className="mt-3 text-lg/6 font-semibold text-white group-hover:text-gray-300">
-                                    <a href={post.href}>
-                                        <span className="absolute inset-0" />
-                                        {post.title}
-                                    </a>
-                                </h3>
-                                <p className="mt-5 line-clamp-3 text-sm/6 text-gray-400">{post.description}</p>
-                            </div>
-                            <div className="relative mt-8 flex items-center gap-x-4 justify-self-end">
-                                <img alt="" src={post.author.imageUrl} className="size-10 rounded-full bg-gray-800" />
-                                <div className="text-sm/6">
-                                    <p className="font-semibold text-white">
-                                        <a href={post.author.href}>
-                                            <span className="absolute inset-0" />
-                                            {post.author.name}
-                                        </a>
-                                    </p>
-                                    <p className="text-gray-400">{post.author.role}</p>
+                                <p className="text-gray-400 text-sm mb-6 line-clamp-3 flex-grow">
+                                    {article.description || 'Haz clic para leer la noticia completa en la fuente original.'}
+                                </p>
+                                <div className="flex items-center gap-3 mt-auto pt-4 border-t border-gray-800">
+                                    <div className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center font-bold text-sm">
+                                        {authorName.charAt(0).toUpperCase()}
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <span className="text-white text-sm font-medium">{authorName}</span>
+                                        <span className="text-gray-500 text-xs">{formattedDate} · {readTime}</span>
+                                    </div>
                                 </div>
                             </div>
-                        </article>
-                    ))}
-                </div>
+                        </div>
+                    );
+                })}
             </div>
-        </div>
-    )
-}
+        </section>
+    );
+};
+
+export default News;

@@ -57,7 +57,16 @@ const Catalogo = ({ variant }) => {
             Titletarget: "text-[#B22222]",
             Texttarget: "text-[#121212]",
             HoverButton: "hover:bg-[#121212] hover:text-[#B22222] hover:scale-105 transition-all duration-300",
-            borderOutline: "focus:border-[#C0C0C0]", // Clase completa
+            borderOutline: "focus:border-[#C0C0C0]",
+            option1: "Ford",
+            option2: "Chevrolet",
+            option3: "Dodge",
+            option4: "Jeep",
+            option5: "Ram",
+            option6: "Corvette",
+            option7: "Shelby",
+            option8: "Cadillac",
+            option9: "Hummer",
         },
         europeos: {
             Fondo: "bg-[#121212]",
@@ -71,6 +80,15 @@ const Catalogo = ({ variant }) => {
             Texttarget: "text-[#121212]",
             HoverButton: "hover:bg-[#121212] hover:text-[#00CEC9] hover:scale-105 transition-all duration-300",
             borderOutline: "focus:border-[#C0C0C0]",
+            option1: "Bugatti",
+            option2: "Mercedes-AMG",
+            option3: "McLaren",
+            option4: "BMW",
+            option5: "Porsche",
+            option6: "Audi",
+            option7: "Ferrari",
+            option8: "Lamborghini",
+            option9: "Aston Martin",
         },
         asiaticos: {
             Fondo: "bg-[#121212]",
@@ -84,6 +102,15 @@ const Catalogo = ({ variant }) => {
             Texttarget: "text-[#121212]",
             HoverButton: "hover:bg-[#121212] hover:text-[#D3B037] hover:scale-105 transition-all duration-300",
             borderOutline: "focus:border-[#C0C0C0]",
+            option1: "Nissan",
+            option2: "Toyota",
+            option3: "Mazda",
+            option4: "Honda",
+            option5: "Subaru",
+            option6: "Lexus",
+            option7: "Acura",
+            option8: "Mitsubishi",
+            option9: "Suzuki",
         }
     }
 
@@ -102,23 +129,16 @@ const Catalogo = ({ variant }) => {
                             onChange={(e) => setMarca(e.target.value)}
                             className={`bg-black border border-zinc-700 p-2 rounded text-sm outline-none ${styles.borderOutline} transition-colors`}>
                             <option value="Todas">Todas las Marcas</option>
-                            <option value="Ford">Ford</option>
-                            <option value="Chevrolet">Chevrolet</option>
-                            <option value="Dodge">Dodge</option>
-                        </select>
-                    </div>
+                            <option value={styles.option1}>{styles.option1}</option>
+                            <option value={styles.option2}>{styles.option2}</option>
+                            <option value={styles.option3}>{styles.option3}</option>
+                            <option value={styles.option4}>{styles.option4}</option>
+                            <option value={styles.option5}>{styles.option5}</option>
+                            <option value={styles.option6}>{styles.option6}</option>
+                            <option value={styles.option7}>{styles.option7}</option>
+                            <option value={styles.option8}>{styles.option8}</option>
+                            <option value={styles.option9}>{styles.option9}</option>
 
-                    <div className="flex flex-col gap-2">
-                        <label className={`text-xs uppercase tracking-widest ${styles.texto}`}>Categoría</label>
-                        <select
-                            value={categoria}
-                            onChange={(e) => setCategoria(e.target.value)}
-                            className={`bg-black border border-zinc-700 p-2 rounded text-sm outline-none ${styles.borderOutline} transition-colors`}
-                        >
-                            <option value="Todas">Todas</option>
-                            <option value="Muscle">Muscle</option>
-                            <option value="SUV">SUV</option>
-                            <option value="Sport">Sport</option>
                         </select>
                     </div>
 

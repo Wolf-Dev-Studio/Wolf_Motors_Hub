@@ -3,8 +3,26 @@ import Navbar from './Navbar.jsx';
 import Preloader from './Preloader.jsx';
 import { useNavigate } from 'react-router-dom';
 import Taller from '../assets/Home/Taller.webp';
+import Swal from 'sweetalert2';
 
 const Servicios = () => {
+    const Alert = () => {
+        Swal.fire({
+            title: "¡Agenda tu cita!",
+            text: "En breve nuestro equipo se pondra en contacto contigo para agendar tu cita",
+            icon: "success",
+            confirmButtonText: "Entendido",
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            background: "#1a1a1a",
+            color: "#fff",
+            confirmButtonColor: "#85d5c8",
+        })
+    }
     const navigate = useNavigate();
     const services = [
         {
@@ -116,7 +134,7 @@ const Servicios = () => {
                                     </div>
                                 </div>
 
-                                <button className="bg-zinc-950 text-white px-10 py-4 rounded-xl font-black uppercase tracking-wider hover:bg-zinc-800 hover:scale-105 transition-all duration-300 shadow-2xl">
+                                <button onClick={Alert} className="bg-zinc-950 text-white px-10 py-4 rounded-xl font-black uppercase tracking-wider hover:bg-zinc-800 hover:scale-105 transition-all duration-300 shadow-2xl">
                                     Reservar Cupo
                                 </button>
                             </div>
