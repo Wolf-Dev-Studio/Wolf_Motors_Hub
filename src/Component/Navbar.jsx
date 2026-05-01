@@ -139,7 +139,7 @@ const Navbar = ({ variant = "home" }) => {
 
     return (
 
-        <aside className={`fixed left-0 top-0 w-full ${currentStyle.Fondo} p-2 md:p-3 z-50`}>
+        <aside className={`fixed left-0 top-0 w-screen ${currentStyle.Fondo} p-2 md:p-3 z-50`}>
             <div className={`w-full h-16 md:h-20 ${currentStyle.navBg} rounded-xl flex justify-between items-center px-6 md:px-16 lg:px-30 relative`}>
 
                 {/* LOGO */}

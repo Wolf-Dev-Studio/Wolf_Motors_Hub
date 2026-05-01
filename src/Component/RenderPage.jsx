@@ -136,7 +136,7 @@ const Page = ({ variant = "home" }) => {
     if (!currentStyle) return null;
 
     return (
-        <section className='w-full min-h-screen'>
+        <section className='w-full min-h-screen mt-5'>
             <div className={`w-full min-h-screen flex flex-col md:flex-row bg-linear-to-b ${currentStyle.Liner}`}>
 
                 {/* Contenedor de Texto */}
